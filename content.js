@@ -1,25 +1,51 @@
 
 let selectionLocation = {"x":0, "y":0};
-onmousemove = function(e){selectionLocation.x = e.clientX; selectionLocation.y = e.clientY;}
+let textSelection = "";
 
 const div = document.createElement("div");
+const span = document.createElement("span");
 const button = document.createElement("button");
+button.innerHTML = "Yes";
+button.style.marginLeft = "20px";
+button.addEventListener("click", function(){
+    let newObj = {};
+    newObj[textSelection] = "";
+            
+    if(localStorage.getItem("hlt")){
+        let prevValues = JSON.parse(localStorage.getItem("hlt"));
+        prevValues.push(newObj);
+        let actualValues = JSON.stringify(prevValues)
+        localStorage.setItem("hlt") =  actualValues;
+    }else{
+        localStorage.setItem("hlt") =  JSON.stringify([newObj]);
+    }
 
+})
+
+div.appendChild(span)
 div.appendChild(button)
 
 div.style.position = "fixed";
+div.style['background-color'] = "white";
+div.style['box-shadow'] = "3px 3px 4px #AAA";
+div.style.padding = "6px";
+
 document.body.appendChild(div);
 
 document.addEventListener("selectionchange",event=>{
-    let selection = document.getSelection ? document.getSelection().toString() :  document.selection.createRange().toString() ;
+    let sel = document.getSelection()
+    let selection = sel.toString();
+    let position = sel.focusNode.parentElement.getBoundingClientRect();
+        
     if(selection.length){
-        button.innerHTML = `Agregar "<b>${selection}</b>" ${event.clientX}`;
-        div.style.top = selectionLocation.y - 20;
-        div.style.left = selectionLocation.x + 30;
+        span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
+        div.style.top = (position.y - 36)+"px";
+        div.style.left = position.x+"px";
     }else{
-        div.style.top = -100; 
+        div.style.top = "-100px"; 
     }
+    
+})
 
-  })
-
+onscroll = function(e){div.style.top = "-100px";}
 
