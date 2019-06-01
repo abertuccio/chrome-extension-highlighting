@@ -6,13 +6,27 @@
       "default_icon": "icon.png",
       "default_popup": "popup.html"
     },
-    "permissions": ["storage","activeTab"],
+    "permissions": ["storage","activeTab", "tabs"],
     "content_scripts": [
       {
         "matches": [
           "<all_urls>"
         ],
         "js": ["content.js"],
+        "all_frames": true
+      },
+      {
+        "matches": [
+          "https://www.google.com/*"
+        ],
+        "js": ["imageSearch.js"],
+        "all_frames": true
+      },
+      {
+        "matches": [
+          "https://www.wordreference.com/*"
+        ],
+        "js": ["translationSearch.js"],
         "all_frames": true
       }
     ],

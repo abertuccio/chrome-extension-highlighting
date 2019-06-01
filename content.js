@@ -1,5 +1,5 @@
 
-let selectionLocation = {"x":0, "y":0};
+let selectionLocation = { "x": 0, "y": 0 };
 let textSelection = "";
 
 const div = document.createElement("div");
@@ -7,17 +7,27 @@ const span = document.createElement("span");
 const button = document.createElement("button");
 button.innerHTML = "Yes";
 button.style.marginLeft = "20px";
-button.addEventListener("click", function(){
+button.addEventListener("click", function () {
+
+
+    chrome.runtime.sendMessage({ 'target': 'back', 'search': textSelection }, function (response) {
+         
+          
+    });
+
+
+
+
     let newObj = {};
-    newObj[textSelection] = "";
-            
-    if(localStorage.getItem("hlt")){
+    newObj.text = textSelection;
+
+    if (localStorage.getItem("hlt")) {
         let prevValues = JSON.parse(localStorage.getItem("hlt"));
         prevValues.push(newObj);
         let actualValues = JSON.stringify(prevValues)
-        localStorage.setItem("hlt") =  actualValues;
-    }else{
-        localStorage.setItem("hlt") =  JSON.stringify([newObj]);
+        localStorage.setItem("hlt", actualValues);
+    } else {
+        localStorage.setItem("hlt", JSON.stringify([newObj]));
     }
 
 })
@@ -32,20 +42,21 @@ div.style.padding = "6px";
 
 document.body.appendChild(div);
 
-document.addEventListener("selectionchange",event=>{
+document.addEventListener("selectionchange", event => {
     let sel = document.getSelection()
     let selection = sel.toString();
     let position = sel.focusNode.parentElement.getBoundingClientRect();
-        
-    if(selection.length){
+
+    if (selection.length && selection.length < 100) {
+        textSelection = selection;
         span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
-        div.style.top = (position.y - 36)+"px";
-        div.style.left = position.x+"px";
-    }else{
-        div.style.top = "-100px"; 
+        div.style.top = (position.y - 36) + "px";
+        div.style.left = position.x + "px";
+    } else {
+        div.style.top = "-100px";
     }
-    
+
 })
 
-onscroll = function(e){div.style.top = "-100px";}
+onscroll = function (e) { div.style.top = "-100px"; }
 
