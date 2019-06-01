@@ -12,7 +12,7 @@ button.addEventListener("click", function () {
 
     chrome.runtime.sendMessage({ 'target': 'back', 'search': textSelection }, function (response) {
          
-          
+         console.log(response) 
     });
 
 
