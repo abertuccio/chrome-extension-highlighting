@@ -1,6 +1,7 @@
 
 let selectionLocation = { "x": 0, "y": 0 };
 let textSelection = "";
+let currentTabId = null;
 
 const div = document.createElement("div");
 const span = document.createElement("span");
@@ -11,12 +12,21 @@ button.addEventListener("click", function () {
 
 
     chrome.runtime.sendMessage({ 'target': 'back', 'search': textSelection }, function (response) {
-         
-         console.log(response) 
+
+        currentTabId = response;
+
     });
 
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+        
+        if (message.target === 'content') {
+            const img = document.createElement("img");
+            img.src = message.response.images[0]
+            img.style['max-height'] = "100px"
+            div.appendChild(img);
+        }
 
-
+    });
 
     let newObj = {};
     newObj.text = textSelection;
@@ -50,13 +60,17 @@ document.addEventListener("selectionchange", event => {
     if (selection.length && selection.length < 100) {
         textSelection = selection;
         span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
-        div.style.top = (position.y - 36) + "px";
+        div.style.top = (position.y - 136) + "px";
         div.style.left = position.x + "px";
     } else {
-        div.style.top = "-100px";
+        div.style.top = "-300px";
     }
 
 })
 
-onscroll = function (e) { div.style.top = "-100px"; }
+onscroll = function (e) { div.style.top = "-300px"; }
+
+
+
+chrome.runtime.onMessage.addListener()
 

@@ -4,9 +4,11 @@ let imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c) => {
     if (c.src) { a.push(c.src); } return a;
 }, [])
 
-chrome.runtime.sendMessage({images: imgs}, function(response) {
-    
-  });
-
-console.log(imgs)
-
+chrome.runtime.onMessage.addListener(
+    function (request, sender, sendResponse) {
+        if (request.target === 'imageSearch') {
+            sendResponse({
+                images: imgs
+            });
+        }
+    });
