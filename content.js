@@ -24,7 +24,7 @@ button.addEventListener("click", function () {
 
         currentTabId = response;
 
-    });    
+    });
 
 })
 
