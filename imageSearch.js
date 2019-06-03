@@ -11,4 +11,5 @@ chrome.runtime.onMessage.addListener(
                 images: imgs
             });
         }
+        window.close()
     });
