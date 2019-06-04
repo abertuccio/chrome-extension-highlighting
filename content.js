@@ -33,10 +33,11 @@ const playButtonStyles = {
 
 const imgWrapperStyles = {
     'text-align': 'center',
-    'margin': '6px auto',
-    'max-width': '187px',
+    'margin-top': '6px',
+    'margin-bottom': '6px',
     'clear': 'both',
-    'height': '100px'
+    'height': '100px',
+    'padding': '6px'
 }
 
 const prevStyles = {
@@ -62,9 +63,8 @@ const nextStyles = {
 }
 
 const imgStyles = {
-    'max-height' : "100px",
-    'max-width' : '147px',
-    'float':'left',
+    'max-height': "100px",
+    'float': 'left',
 }
 
 const div = document.createElement("div");
@@ -77,6 +77,7 @@ const span = document.createElement("span");
 const button = document.createElement("button");
 const playSoundButton = document.createElement("button")
 
+playSoundButton.innerHTML = "Sound";
 Object.assign(div.style, wrapperStyles);
 Object.assign(imgWrapper.style, imgWrapperStyles);
 Object.assign(img.style, imgStyles);
@@ -107,6 +108,10 @@ let selection = null;
 let oRange = null;
 let position = null;
 
+playSoundButton.addEventListener("click", () => {
+    var msg = new SpeechSynthesisUtterance(selection);
+    window.speechSynthesis.speak(msg);
+})
 
 button.addEventListener("click", function () {
 
@@ -134,6 +139,12 @@ document.addEventListener("selectionchange", event => {
 window.onmouseup = () => {
 
     if (selection && selection.length > 2 && selection.length < 100) {
+
+        prev.style.display = 'none';
+        next.style.display = 'none';
+        img.src = "";
+
+
         textSelection = selection;
         span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
         let positionY = ((position.y - 185) < 0) ? (position.y + position.height + 3) : (position.y - 185)
@@ -147,7 +158,7 @@ window.onmouseup = () => {
             if (message.target === 'content' && message.action === 'images') {
 
                 img.src = message.response.images[0]
-                
+
                 imageURL = message.response.images[0]
 
             }
@@ -160,21 +171,18 @@ window.onmouseup = () => {
                 textTranslation = message.response.resultTable.translation;
 
                 translation.innerHTML = message.response.resultTable.search + "  |  <b>" + message.response.resultTable.translation + "</b>"
-                // template.innerHTML = message.response.resultTable;
 
-
-                playSoundButton.innerHTML = "Sound";
-
-                playSoundButton.addEventListener("click", () => {
-                    var msg = new SpeechSynthesisUtterance('Hello World');
-                    window.speechSynthesis.speak(msg);
-                })
-
-
-                // template.style.display = "block";
                 div.appendChild(translation)
                 translation.appendChild(playSoundButton)
-                // div.insertAdjacentHTML('beforeend',message.response.resultTable)
+
+
+                img.addEventListener("load", () => {
+                    let marginWarapper = (+div.offsetWidth + 12 - (+img.offsetWidth + 80)) / 2
+                    
+                    imgWrapper.style.marginLeft = marginWarapper + "px";
+                    prev.style.display = 'block';
+                    next.style.display = 'block';
+                });
 
             }
 
