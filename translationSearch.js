@@ -2,8 +2,8 @@
 
 let resultTable = {};
 
-resultTable.search = document.querySelectorAll(".FrWrd strong")[0].innerText
-resultTable.translation = document.querySelectorAll(".ToWrd")[1].innerText
+resultTable.search = (document.querySelectorAll(".FrWrd strong")[0].innerText || "");
+resultTable.translation = (document.querySelectorAll(".ToWrd")[1].innerText || "")
 
 
 chrome.runtime.onMessage.addListener(

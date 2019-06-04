@@ -58,17 +58,13 @@ document.addEventListener("selectionchange", event => {
 
 window.onmouseup = () => {
 
-    if (selection.length > 2 && selection.length < 100) {
+    if (selection && selection.length > 2 && selection.length < 100) {
         textSelection = selection;
         span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
         div.style.top = (position.y - 166) + "px";
         div.style.left = position.x + "px";
 
-        chrome.runtime.sendMessage({ 'target': 'back', 'action': 'newSearch', 'search': textSelection }, function (response) {
-
-            currentTabId = response;
-
-        });
+        chrome.runtime.sendMessage({ 'target': 'back', 'action': 'newSearch', 'search': textSelection });
 
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
@@ -83,6 +79,8 @@ window.onmouseup = () => {
             }
             if (message.target === 'content' && message.action === 'translation') {
 
+                
+
                 translation.innerHTML = "";
 
                 textTranslation = message.response.resultTable.translation;
@@ -90,8 +88,18 @@ window.onmouseup = () => {
                 translation.innerHTML = message.response.resultTable.search + " -> <b>" + message.response.resultTable.translation+"</b>"
                 // template.innerHTML = message.response.resultTable;
                 
+                var playSound = document.createElement("button")
+                playSound.innerHTML = "Play sound";
+
+                playSound.addEventListener("click", ()=>{
+                    var msg = new SpeechSynthesisUtterance('Hello World');
+                    window.speechSynthesis.speak(msg);
+                })
+
+
                 // template.style.display = "block";
                 div.appendChild(translation)
+                translation.appendChild(playSound)
                 // div.insertAdjacentHTML('beforeend',message.response.resultTable)
 
             }
