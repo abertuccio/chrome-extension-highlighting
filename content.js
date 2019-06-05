@@ -179,6 +179,14 @@ window.onmouseup = () => {
 
                 imageURL = message.response.images[currentImage]
 
+                if(!message.response.images[currentImage - 1]){
+                   prev.style.display = 'none';
+                }
+
+                if(!message.response.images[currentImage + 1]){
+                    next.style.display = 'none';
+                 }
+
                 prev.addEventListener("click", () => {
 
                     img.src = message.response.images[--currentImage]
