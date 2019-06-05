@@ -62,15 +62,15 @@ const nextStyles = {
     'width': '20px',
     'height': '20px',
     'transform': 'rotate(45deg)',
-    'float': 'left',
+    'float': 'right',
     'margin-top': '17%',
     'cursor': 'pointer'
 }
 
 const imgStyles = {
     'max-height': "100px",
-    'max-width': "300px",
-    'float': 'left',
+    'max-width': "300px"
+    //'float': 'left',
 }
 
 const div = document.createElement("div");
@@ -116,6 +116,7 @@ let oRange = null;
 let position = null;
 let currentImage = 0;
 let activeUI = false;
+let images = [];
 
 button.addEventListener("click", function () {
 
@@ -128,6 +129,16 @@ button.addEventListener("click", function () {
         currentTabId = response;
     });
 
+})
+
+prev.addEventListener("click", () => {
+
+    img.src = images[--currentImage]
+})
+
+next.addEventListener("click", () => {
+
+    img.src = images[++currentImage]
 })
 
 
@@ -173,29 +184,32 @@ window.onmouseup = () => {
 
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
+            images = [];
+
             if (message.target === 'content' && message.action === 'images') {
 
-                img.src = message.response.images[currentImage]
+                images = message.response.images
 
-                imageURL = message.response.images[currentImage]
+                img.src = images[currentImage]
 
-                if(!message.response.images[currentImage - 1]){
+
+                imageURL = images[currentImage]
+
+                if(!images[currentImage - 1]){ 
+                    console.log("no hay imagenes")                   
                    prev.style.display = 'none';
+                }else{
+                    prev.style.display = 'block'; 
                 }
 
-                if(!message.response.images[currentImage + 1]){
+
+                if(!images[currentImage + 1]){
                     next.style.display = 'none';
-                 }
+                 }else{
+                    next.style.display = 'block'; 
+                }
 
-                prev.addEventListener("click", () => {
-
-                    img.src = message.response.images[--currentImage]
-                })
-
-                next.addEventListener("click", () => {
-
-                    img.src = message.response.images[++currentImage]
-                })
+                
 
             }
             if (message.target === 'content' && message.action === 'translation') {
@@ -215,8 +229,8 @@ window.onmouseup = () => {
 
                 img.addEventListener("load", () => {
                     let marginWarapper = (+div.offsetWidth + 12 - (+img.offsetWidth + 80)) / 2
-
-                    imgWrapper.style.marginLeft = marginWarapper + "px";
+                    marginWarapper = (marginWarapper < 0)?0:marginWarapper;
+                    //imgWrapper.style.marginLeft = marginWarapper + "px";
                     prev.style.display = 'block';
                     next.style.display = 'block';
                     activeUI = true;
