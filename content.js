@@ -21,7 +21,7 @@ const buttonStyles = {
     'border-radius': '4px',
     'font-size': '14px',
     'cursor': 'pointer',
-    'padding' : '3px 8px;'
+    'padding': '3px 8px;'
 }
 
 const playButtonStyles = {
@@ -40,7 +40,8 @@ const imgWrapperStyles = {
     'margin-bottom': '6px',
     'clear': 'both',
     'height': '100px',
-    'padding': '6px'
+    'padding': '6px',
+    'min-width': '152px'
 }
 
 const prevStyles = {
@@ -84,6 +85,7 @@ const button = document.createElement("button");
 const playSoundButton = document.createElement("button")
 
 playSoundButton.innerHTML = "Sound";
+
 Object.assign(div.style, wrapperStyles);
 Object.assign(imgWrapper.style, imgWrapperStyles);
 Object.assign(img.style, imgStyles);
@@ -99,159 +101,185 @@ imgWrapper.appendChild(img);
 imgWrapper.appendChild(next);
 div.appendChild(imgWrapper);
 div.appendChild(translation);
+translation.appendChild(playSoundButton);
 document.body.appendChild(div);
 
 button.innerHTML = "Yes";
 
-
-let selectionLocation = { "x": 0, "y": 0 };
-let textSelection = "";
-let textTranslation = "";
-let imageURL = "";
-let currentTabId = null;
-let sel = null
-let selection = null;
-let prevSelection = null;
-let oRange = null;
-let position = null;
-let currentImage = 0;
-let activeUI = false;
-let images = [];
-
 button.addEventListener("click", function () {
-
-    let data = {};
-    data.selection = textSelection;
-    data.translation = textTranslation;
-    data.image = imageURL;
-
-    chrome.runtime.sendMessage({ 'target': 'back', 'action': 'storeData', 'data': data }, function (response) {
-        currentTabId = response;
-    });
-
+    closeToolTipHL();
 })
 
-prev.addEventListener("click", () => {
+let isToolTipLoaded = false;
+let selectionPosition = { "x": -1000, "y": -1000 };
+let selection = "";
+let isThereAselection = false;
+let isToolTipVisible = false;
+let isThereAMouseUp = false;
+let images = [];
+let areImagesLoading = false;
+let isTranslationLoading = false;
+let currentImage = 0;
+let maxImageIndex = 0;
 
-    img.src = images[--currentImage]
-})
+const closeToolTipHL = () => {
 
-next.addEventListener("click", () => {
+    div.style.top = "-1000px";
+    div.style.left = "-1000px";
+    isToolTipVisible = false;
+    isToolTipLoaded = false;
 
-    img.src = images[++currentImage]
-})
+}
 
+const openToolTipHL = (e) => {
 
+    if (e.type === 'selectionchange') isThereAselection = true;
 
-document.addEventListener("selectionchange", event => {
-    sel = window.getSelection()
-    selection = sel.toString();
-    oRange = sel.getRangeAt(0);
-    position = oRange.getBoundingClientRect();
-})
+    if (e.type === 'mouseup') isThereAMouseUp = true;
 
-playSoundButton.addEventListener("click", () => {
-    activeUI = true;
-    var msg = new SpeechSynthesisUtterance(selection);
-    window.speechSynthesis.speak(msg);
-})
+    if (isThereAselection && isThereAMouseUp) {
 
-window.addEventListener('click', function (e) {
-    if (!div.contains(e.target) && activeUI) {
-        div.style.top = "-300px";
-        activeUI = false;
-    }
-});
+        let positionY = ((selectionPosition.y - 185) < 0) ?
+            (selectionPosition.y + selectionPosition.height + 3) :
+            (selectionPosition.y - 185)
 
-window.onmouseup = () => {
-
-
-    if (!activeUI && selection && selection.length > 2 && selection.length < 100) {
-
-        currentImage = 0;
-        prev.style.display = 'none';
-        next.style.display = 'none';
-        img.src = "";
-
-
-        textSelection = selection;
-        span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
-        let positionY = ((position.y - 185) < 0) ? (position.y + position.height + 3) : (position.y - 185)
         div.style.top = positionY + "px";
-        div.style.left = position.x + "px";
-
-        chrome.runtime.sendMessage({ 'target': 'back', 'action': 'newSearch', 'search': textSelection });
-
-        chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-
-            images = [];
-
-            if (message.target === 'content' && message.action === 'images') {
-
-                images = message.response.images
-
-                img.src = images[currentImage]
-
-
-                imageURL = images[currentImage]
-
-                if(!images[currentImage - 1]){ 
-                    console.log("no hay imagenes")                   
-                   prev.style.display = 'none';
-                }else{
-                    prev.style.display = 'block'; 
-                }
-
-
-                if(!images[currentImage + 1]){
-                    next.style.display = 'none';
-                 }else{
-                    next.style.display = 'block'; 
-                }
-
-                
-
-            }
-            if (message.target === 'content' && message.action === 'translation') {
-
-                translation.innerHTML = "";
-
-                textTranslation = message.response.resultTable.translation;
-
-                translation.innerHTML = message.response.resultTable.search + "  |  <b>" + message.response.resultTable.translation + "</b>"
-
-                div.appendChild(translation);
-
-
-
-                translation.appendChild(playSoundButton)
-
-
-                img.addEventListener("load", () => {
-                    let marginWarapper = (+div.offsetWidth + 12 - (+img.offsetWidth + 80)) / 2
-                    marginWarapper = (marginWarapper < 0)?0:marginWarapper;
-                    //imgWrapper.style.marginLeft = marginWarapper + "px";
-                    prev.style.display = 'block';
-                    next.style.display = 'block';
-                    activeUI = true;
-                });
-
-            }
-
-        });
-
-
-
-    } else {
-        //div.style.top = "-300px";
+        div.style.left = selectionPosition.x + "px";
+        isToolTipVisible = true;
+        removePreviousInformation();
+        lookForInformation();
     }
+
+    isThereAMouseUp = false;
 
 }
 
 
-onscroll = function (e) { div.style.top = "-300px"; }
+document.addEventListener("selectionchange", (e) => {
+    isThereAselection = false;
+    sel = window.getSelection()
+    selection = sel.toString();
+    oRange = sel.getRangeAt(0);
+
+    try {
+        selectionPosition = oRange.getBoundingClientRect();
+    } catch (error) {
+        selection = false;
+    }
+
+    if (selection && selection.length > 1 && selection.length < 100) {
+        openToolTipHL(e);
+    }
+
+})
+
+window.onmouseup = (e) => {
+    isThereAMouseUp = false;
+    openToolTipHL(e);
+};
+
+window.addEventListener('click', function (e) {
+
+    if (!div.contains(e.target)) {
+
+        let yBoundary = [selectionPosition.y, selectionPosition.top + selectionPosition.height];
+        let xBoundary = [selectionPosition.x, selectionPosition.x + selectionPosition.width]
+
+        if (!selectionPosition.width || e.clientY < yBoundary[0] || e.clientY > yBoundary[1]
+            || e.clientX < xBoundary[0] || e.clientY > yBoundary[1]) {
+
+            closeToolTipHL();
+        }
+
+    }
+});
+
+const removePreviousInformation = () => {
+    span.innerHTML = ""
+    translation.innerHTML = "";
+    images = [];
+    prev.style.display = 'none';
+    next.style.display = 'none';
+    maxImageIndex = 0;
+    currentImage = 0;
+}
+
+const lookForInformation = async () => {
+
+    chrome.runtime.sendMessage({ 'target': 'back', 'action': 'newSearch', 'search': selection });
+    
+    areImagesLoading = true;
+    isTranslationLoading = true;
+
+    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+
+        if (message.target === 'content' && message.action === 'images') {
+
+            currentImage = 0;
+
+            images = message.response.images;
+
+            maxImageIndex = images.length - 1;
+
+            img.src = images[currentImage];
+
+            checkConsistencyImages();
+
+            areImagesLoading = false;
+
+        }
+
+        if(selection.split(" ").length < 4){
+            
+            if (message.target === 'content' && message.action === 'translation') {
+    
+                translation.innerHTML = message.response.resultTable.search + "  |  <b>" + message.response.resultTable.translation + "</b>";
+    
+                isTranslationLoading = false;
+            }
+
+        }else{
+            translation.innerHTML = "";
+            isTranslationLoading = false;
+        }
 
 
 
-chrome.runtime.onMessage.addListener()
+        if (!isTranslationLoading && !areImagesLoading) {
+            isToolTipLoaded = true;
+            drawToolTip();
+        }
 
+    })
+
+}
+
+const drawToolTip = () => {
+
+    span.innerHTML = `Add "<b>${selection}</b>" to the store?`;
+
+
+}
+
+onscroll = function (e) { closeToolTipHL(); }
+
+playSoundButton.addEventListener("click", () => {
+    var msg = new SpeechSynthesisUtterance(selection);
+    window.speechSynthesis.speak(msg);
+})
+
+const checkConsistencyImages = () => {
+    (currentImage === 0) ? prev.style.display = 'none' : prev.style.display = 'block';
+    (currentImage === maxImageIndex) ? next.style.display = 'none' : next.style.display = 'block';
+}
+
+prev.addEventListener("click", () => {
+    img.src = images[--currentImage];
+    checkConsistencyImages();
+})
+
+next.addEventListener("click", () => {
+    img.src = images[++currentImage];
+    checkConsistencyImages();
+})

@@ -16,12 +16,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                     });
                 });
 
+
                 chrome.tabs.executeScript(tab2, { file: "translationSearch.js" }, function (response) {
                     chrome.tabs.sendMessage(tab2, { target: 'translation' }, (response) => {
                         chrome.tabs.sendMessage(sender.tab.id, { target: 'content', 'action': 'translation', response, 'idTab': tab2 })
                     });
                 });
-
 
             });
         });
