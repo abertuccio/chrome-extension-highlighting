@@ -222,8 +222,6 @@ window.onmouseup = () => {
 
                 div.appendChild(translation);
 
-
-
                 translation.appendChild(playSoundButton)
 
 
