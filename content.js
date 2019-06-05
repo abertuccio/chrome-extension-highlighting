@@ -19,7 +19,9 @@ const buttonStyles = {
     'border': '1px solid #0095ff',
     'color': '#FFF',
     'border-radius': '4px',
-    'font-size': '14px'
+    'font-size': '14px',
+    'cursor': 'pointer',
+    'padding' : '3px 8px;'
 }
 
 const playButtonStyles = {
@@ -27,7 +29,8 @@ const playButtonStyles = {
     'height': '74px',
     'border-style': 'solid',
     'border-width': '37px 0px 37px 74px',
-    'border-color': 'transparent transparent transparent #202020'
+    'border-color': 'transparent transparent transparent #202020',
+    'cursor': 'pointer'
 }
 
 
@@ -48,7 +51,8 @@ const prevStyles = {
     'height': '20px',
     'transform': 'rotate(-136deg)',
     'float': 'left',
-    'margin-top': '17%'
+    'margin-top': '17%',
+    'cursor': 'pointer'
 }
 
 const nextStyles = {
@@ -59,11 +63,13 @@ const nextStyles = {
     'height': '20px',
     'transform': 'rotate(45deg)',
     'float': 'left',
-    'margin-top': '17%'
+    'margin-top': '17%',
+    'cursor': 'pointer'
 }
 
 const imgStyles = {
     'max-height': "100px",
+    'max-width': "300px",
     'float': 'left',
 }
 
@@ -105,13 +111,11 @@ let imageURL = "";
 let currentTabId = null;
 let sel = null
 let selection = null;
+let prevSelection = null;
 let oRange = null;
 let position = null;
-
-playSoundButton.addEventListener("click", () => {
-    var msg = new SpeechSynthesisUtterance(selection);
-    window.speechSynthesis.speak(msg);
-})
+let currentImage = 0;
+let activeUI = false;
 
 button.addEventListener("click", function () {
 
@@ -127,19 +131,33 @@ button.addEventListener("click", function () {
 })
 
 
+
 document.addEventListener("selectionchange", event => {
     sel = window.getSelection()
     selection = sel.toString();
     oRange = sel.getRangeAt(0);
     position = oRange.getBoundingClientRect();
-    console.log(position)
 })
 
+playSoundButton.addEventListener("click", () => {
+    activeUI = true;
+    var msg = new SpeechSynthesisUtterance(selection);
+    window.speechSynthesis.speak(msg);
+})
+
+window.addEventListener('click', function (e) {
+    if (!div.contains(e.target) && activeUI) {
+        div.style.top = "-300px";
+        activeUI = false;
+    }
+});
 
 window.onmouseup = () => {
 
-    if (selection && selection.length > 2 && selection.length < 100) {
 
+    if (!activeUI && selection && selection.length > 2 && selection.length < 100) {
+
+        currentImage = 0;
         prev.style.display = 'none';
         next.style.display = 'none';
         img.src = "";
@@ -157,14 +175,22 @@ window.onmouseup = () => {
 
             if (message.target === 'content' && message.action === 'images') {
 
-                img.src = message.response.images[0]
+                img.src = message.response.images[currentImage]
 
-                imageURL = message.response.images[0]
+                imageURL = message.response.images[currentImage]
+
+                prev.addEventListener("click", () => {
+
+                    img.src = message.response.images[--currentImage]
+                })
+
+                next.addEventListener("click", () => {
+
+                    img.src = message.response.images[++currentImage]
+                })
 
             }
             if (message.target === 'content' && message.action === 'translation') {
-
-
 
                 translation.innerHTML = "";
 
@@ -172,16 +198,20 @@ window.onmouseup = () => {
 
                 translation.innerHTML = message.response.resultTable.search + "  |  <b>" + message.response.resultTable.translation + "</b>"
 
-                div.appendChild(translation)
+                div.appendChild(translation);
+
+
+
                 translation.appendChild(playSoundButton)
 
 
                 img.addEventListener("load", () => {
                     let marginWarapper = (+div.offsetWidth + 12 - (+img.offsetWidth + 80)) / 2
-                    
+
                     imgWrapper.style.marginLeft = marginWarapper + "px";
                     prev.style.display = 'block';
                     next.style.display = 'block';
+                    activeUI = true;
                 });
 
             }
@@ -191,7 +221,7 @@ window.onmouseup = () => {
 
 
     } else {
-        div.style.top = "-300px";
+        //div.style.top = "-300px";
     }
 
 }
