@@ -1,9 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>    
-  </head>
-  <body>      
-    <button id="stored-elements">Ver elementos guardados</button>
-      <script src="popup.js"></script>
-  </body>
+
+<head>
+  <style>
+    #actions-wrapper {
+      width: 200px;
+    }
+
+    #checkbox-wrapper {
+      margin-bottom: 10px;
+      color: #a5a5a5;
+    }
+
+    #checkbox-wrapper input {
+      vertical-align: middle;
+    }
+
+    .buttons {
+      cursor: pointer;
+      color: #000;
+      margin-bottom: 10px;
+    }
+
+    .buttons:hover {
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="actions-wrapper">
+    <div id="checkbox-wrapper">
+      <label id="checkbox-label" for="highlight">Marcador desactivado</label>
+      <input id="highlight" type="checkbox" name="highlight">
+    </div>
+    <div class="buttons" id="settings">Configuracion</div>
+    <div class="buttons" id="stored-elements">Ver elementos guardados</div>
+    <div class="buttons" id="study-elements">Estudiar elementos guardados</div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
 </html>

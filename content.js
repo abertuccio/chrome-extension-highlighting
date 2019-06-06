@@ -162,7 +162,7 @@ prev.onmouseleave = () => { prev.style.borderColor = "#666"; }
 next.onmouseenter = () => { next.style.borderColor = "#0095ff"; }
 next.onmouseleave = () => { next.style.borderColor = "#666"; }
 
-
+let isActive = false;
 let isToolTipLoaded = false;
 let selectionPosition = { "x": -1000, "y": -1000 };
 let selection = "";
@@ -206,6 +206,8 @@ const closeToolTipHL = () => {
 }
 
 const openToolTipHL = (e) => {
+
+    if(!isActive) return;
 
     if (e.type === 'selectionchange') isThereAselection = true;
 
@@ -254,6 +256,7 @@ const openToolTipHL = (e) => {
 
 
 document.addEventListener("selectionchange", (e) => {
+    if(!isActive) return;
     isThereAselection = false;
     sel = window.getSelection();
     selection = sel.toString();
@@ -304,6 +307,8 @@ const removePreviousInformation = () => {
 }
 
 const lookForInformation = async () => {
+
+    if(!isActive) return;
 
     chrome.runtime.sendMessage({ 'target': 'back', 'action': 'newSearch', 'search': selection });
 
@@ -388,3 +393,15 @@ next.addEventListener("click", (e) => {
     img.src = images[++currentImage];
     checkConsistencyImages();
 }, false)
+
+
+chrome.extension.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.target === 'content' && message.action === 'highlight') {
+        isActive = message.value;
+        if(!isActive){
+            closeToolTipHL();
+        }
+    }
+
+});

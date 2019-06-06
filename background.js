@@ -1,3 +1,12 @@
+let isActive = false;
+if (localStorage.getItem("isHltActive")) {
+    isActive = localStorage.getItem("isHltActive");
+}else{
+    localStorage.setItem("isHltActive",false);
+}
+
+
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'back' && message.action === 'newSearch') {
@@ -43,8 +52,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'back' && message.action === 'seeStoredData') {
 
-        const storedData = localStorage.getItem("hlt");
-
         chrome.tabs.create({ url: chrome.runtime.getURL("stored_data.html"), }, (nTab) => {
             // console.log(nTab);
             // chrome.tabs.executeScript(nTab.id, { file: "storedData.js" }, (res)=>{
@@ -54,8 +61,36 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     }
 
+    if (message.target === 'back' && message.action === 'studyElements') {
+
+        chrome.tabs.create({ url: chrome.runtime.getURL("study_elements.html"), }, (nTab) => {
+            // console.log(nTab);
+            // chrome.tabs.executeScript(nTab.id, { file: "storedData.js" }, (res)=>{
+            //     chrome.tabs.sendMessage(nTab.id, { target: 'storedData', 'data': storedData });
+            // });
+        });
+
+    }
+
+    if (message.target === 'back' && message.action === 'highlight') {
+        
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs)=>{
+            localStorage.setItem("isHltActive",message.value);
+            tabs.forEach(tab => {
+                chrome.tabs.sendMessage(tab.id, {
+                    target: 'content',
+                    action: 'highlight',
+                    value: message.value
+                }, function (response) { });                
+            });
+        });
+        sendResponse();
+    }
+
     try {
-        sendResponse(sender.tab.id);
+        if(sender && ('tab' in sender) && ('id' in sender.tab) ){
+            sendResponse(sender.tab.id);
+        }
     } catch (error) {
         console.log(error)
     }
