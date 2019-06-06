@@ -1,8 +1,8 @@
 let isActive = false;
 if (localStorage.getItem("isHltActive")) {
     isActive = localStorage.getItem("isHltActive");
-}else{
-    localStorage.setItem("isHltActive",false);
+} else {
+    localStorage.setItem("isHltActive", false);
 }
 
 
@@ -74,30 +74,45 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'back' && message.action === 'setHighlight') {
 
-        localStorage.setItem("isHltActive",message.value);
-        
-        chrome.tabs.query({}, (tabs)=>{
+        localStorage.setItem("isHltActive", message.value);
+
+        setIcon(message.value);
+
+        chrome.tabs.query({}, (tabs) => {
             tabs.forEach(tab => {
                 chrome.tabs.sendMessage(tab.id, {
                     target: 'content',
                     action: 'changeHighlight',
                     value: message.value
-                }, function (response) { });                
+                }, function (response) { });
             });
         });
         sendResponse();
     }
 
     if (message.target === 'back' && message.action === 'getHighlight') {
-        console.log("MANDAMOS QUE EL CHECK ES "+localStorage.getItem("isHltActive"))
-        sendResponse(localStorage.getItem("isHltActive"))
+        setIcon(Boolean(localStorage.getItem("isHltActive")));
+        sendResponse(localStorage.getItem("isHltActive"));
     }
 
     try {
-        if(sender && ('tab' in sender) && ('id' in sender.tab) ){
+        if (sender && ('tab' in sender) && ('id' in sender.tab)) {
             sendResponse(sender.tab.id);
         }
     } catch (error) {
         console.log(error)
     }
 });
+
+const setIcon = (active) => {
+    if (active) {
+        chrome.browserAction.setIcon({
+            path: 'pencil.svg'
+        });
+    }else{
+        chrome.browserAction.setIcon({
+            path: 'icon.png'
+        }); 
+    }
+
+}

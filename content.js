@@ -399,11 +399,6 @@ chrome.extension.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'content' && message.action === 'changeHighlight') {
 
-        console.log("-----")
-        console.log("recibimos notificacion de que cambio")
-        console.log(message.value)
-        console.log("-----")
-
         if(!message.value){            
             isActive = false;
             closeToolTipHL();
