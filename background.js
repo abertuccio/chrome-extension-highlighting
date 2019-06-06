@@ -72,19 +72,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     }
 
-    if (message.target === 'back' && message.action === 'highlight') {
+    if (message.target === 'back' && message.action === 'setHighlight') {
+
+        localStorage.setItem("isHltActive",message.value);
         
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs)=>{
-            localStorage.setItem("isHltActive",message.value);
+        chrome.tabs.query({}, (tabs)=>{
             tabs.forEach(tab => {
                 chrome.tabs.sendMessage(tab.id, {
                     target: 'content',
-                    action: 'highlight',
+                    action: 'changeHighlight',
                     value: message.value
                 }, function (response) { });                
             });
         });
         sendResponse();
+    }
+
+    if (message.target === 'back' && message.action === 'getHighlight') {
+        console.log("MANDAMOS QUE EL CHECK ES "+localStorage.getItem("isHltActive"))
+        sendResponse(localStorage.getItem("isHltActive"))
     }
 
     try {

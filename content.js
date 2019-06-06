@@ -397,11 +397,31 @@ next.addEventListener("click", (e) => {
 
 chrome.extension.onMessage.addListener((message, sender, sendResponse) => {
 
-    if (message.target === 'content' && message.action === 'highlight') {
-        isActive = message.value;
-        if(!isActive){
+    if (message.target === 'content' && message.action === 'changeHighlight') {
+
+        console.log("-----")
+        console.log("recibimos notificacion de que cambio")
+        console.log(message.value)
+        console.log("-----")
+
+        if(!message.value){            
+            isActive = false;
             closeToolTipHL();
+        }else{
+            isActive = true;
         }
+    }
+
+});
+
+chrome.runtime.sendMessage({ 'target': 'back', 'action': 'getHighlight' },(response)=>{
+
+    if (response === 'true') {
+        isActive = true;
+    }
+    else {
+        isActive = false;
+        closeToolTipHL();
     }
 
 });

@@ -38,12 +38,27 @@ highlight.addEventListener("change", function () {
 
     chrome.runtime.sendMessage({
         'target': 'back',
-        'action': 'highlight',
+        'action': 'setHighlight',
         'value': highlight.checked
     }, function(response){
-        console.log(`highlight: ${highlight}`);
+        
     });
 
 })
+
+chrome.runtime.sendMessage({ 'target': 'back', 'action': 'getHighlight' }, function (response) {    
+    
+    if (response === 'true') {
+        highlight.checked = true;
+        checkboxWrapper.style.color = "#000";
+        checkboxLabel.innerHTML = "Marcador activado";
+    }
+    else {
+        highlight.checked = false;
+        checkboxWrapper.style.color = "#a5a5a5";
+        checkboxLabel.innerHTML = "Marcador desactivado";
+    }
+
+});
 
 
