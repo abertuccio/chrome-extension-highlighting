@@ -143,15 +143,20 @@ div.appendChild(translation);
 translation.appendChild(playSoundButton);
 document.body.appendChild(wrapperSelection);
 document.body.appendChild(div);
-document.body.appendChild(wrapperSelectionArrow);
+//TODO: POR AHORA LO SACAMOS, HAY QUE ACOMODARLO CON LA ALTURA DE LA SELECTION 
+// document.body.appendChild(wrapperSelectionArrow);
 
 span.style.cursor = 'pointer';
+translation.style.cursor = 'pointer';
+translation.title = 'Play sound';
 span.innerHTML = `Loading...`;
 button.innerHTML = "Yes";
 button.style.display = 'none';
 
 span.onmouseenter = () => { span.style.color = '#0095ff'; }
 span.onmouseleave = () => { span.style.color = '#666'; }
+translation.onmouseenter = () => { translation.style.color = '#0095ff'; }
+translation.onmouseleave = () => { translation.style.color = '#666'; }
 prev.onmouseenter = () => { prev.style.borderColor = "#0095ff"; }
 prev.onmouseleave = () => { prev.style.borderColor = "#666"; }
 next.onmouseenter = () => { next.style.borderColor = "#0095ff"; }
@@ -362,7 +367,7 @@ const drawToolTip = () => {
 
 onscroll = function (e) { closeToolTipHL(); }
 
-playSoundButton.addEventListener("click", () => {
+translation.addEventListener("click", () => {
     var msg = new SpeechSynthesisUtterance(selection);
     window.speechSynthesis.speak(msg);
 })
