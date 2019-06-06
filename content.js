@@ -1,3 +1,12 @@
+const wrapperSelectionStyles = {
+    'position' : 'fixed',
+    'background-color': '#FFF',
+    'padding':'3px',
+    'color' : "#0095ff",
+    'text-align': 'center',
+    'box-shadow': '3px 3px 4px #AAA'
+}
+
 const wrapperStyles = {
     'position': 'fixed',
     'background-color': 'white',
@@ -8,9 +17,9 @@ const wrapperStyles = {
     'font-size': '14px',
     'z-index': "9999999999999999999999999999999999999999999999999999999999999999999999999999",
     'border': '1px solid #e4e4e4',
-    'border-radius': '5px',
     'color': '#545454',
-    'text-align': 'center'
+    'text-align': 'center',
+    'max-width' : '453px'
 }
 
 const buttonStyles = {
@@ -40,7 +49,7 @@ const imgWrapperStyles = {
     'margin-bottom': '6px',
     'clear': 'both',
     'height': '100px',
-    'padding': '6px',
+    'padding': '6px 16px',
     'min-width': '152px'
 }
 
@@ -50,10 +59,11 @@ const prevStyles = {
     'border-right': '1px solid #666',
     'width': '20px',
     'height': '20px',
-    'transform': 'rotate(-136deg)',
-    'float': 'left',
-    'margin-top': '17%',
-    'cursor': 'pointer'
+    'transform': 'rotate(-136deg)',    
+    'cursor': 'pointer',
+    'position': 'absolute',
+    'top': '45%',
+    'left': '6%'
 }
 
 const nextStyles = {
@@ -63,17 +73,20 @@ const nextStyles = {
     'width': '20px',
     'height': '20px',
     'transform': 'rotate(45deg)',
-    'float': 'right',
-    'margin-top': '17%',
-    'cursor': 'pointer'
+    'cursor': 'pointer',
+    'position': 'absolute',
+    'top': '45%',
+    'right': '6%'
 }
 
 const imgStyles = {
     'max-height': "100px",
-    'max-width': "300px"
+    'max-width': "300px",
+    'margin': '0px 10px'
     //'float': 'left',
 }
 
+const wrapperSelection = document.createElement("div");
 const div = document.createElement("div");
 const imgWrapper = document.createElement("div");
 const img = document.createElement("img");
@@ -93,6 +106,7 @@ Object.assign(prev.style, prevStyles);
 Object.assign(next.style, nextStyles);
 Object.assign(button.style, buttonStyles);
 Object.assign(playSoundButton.style, buttonStyles);
+Object.assign(wrapperSelection.style, wrapperSelectionStyles);
 
 div.appendChild(span);
 div.appendChild(button);
@@ -102,9 +116,15 @@ imgWrapper.appendChild(next);
 div.appendChild(imgWrapper);
 div.appendChild(translation);
 translation.appendChild(playSoundButton);
+document.body.appendChild(wrapperSelection);
 document.body.appendChild(div);
 
 button.innerHTML = "Yes";
+
+prev.onmouseenter = () => {prev.style.borderColor = "#0095ff";}
+prev.onmouseleave = () => {prev.style.borderColor = "#666";}
+next.onmouseenter = () => {next.style.borderColor = "#0095ff";}
+next.onmouseleave = () => {next.style.borderColor = "#666";}
 
 button.addEventListener("click", function () {
     closeToolTipHL();
@@ -126,6 +146,8 @@ const closeToolTipHL = () => {
 
     div.style.top = "-1000px";
     div.style.left = "-1000px";
+    wrapperSelection.style.top = "-1000px";
+    wrapperSelection.style.left = "-1000px"; 
     isToolTipVisible = false;
     isToolTipLoaded = false;
 
@@ -139,12 +161,19 @@ const openToolTipHL = (e) => {
 
     if (isThereAselection && isThereAMouseUp) {
 
+        wrapperSelection.style.width = selectionPosition.width*1.14 + 16 + "px";
+        wrapperSelection.style.height = selectionPosition.height + "px";
+        wrapperSelection.style.top = selectionPosition.top - 2 + "px";
+        wrapperSelection.style.left = selectionPosition.x - 2 + "px";
+        wrapperSelection.style.lineHeight = selectionPosition.height + "px";
+        wrapperSelection.innerHTML = selection;
+
         let positionY = ((selectionPosition.y - 185) < 0) ?
             (selectionPosition.y + selectionPosition.height + 3) :
             (selectionPosition.y - 185)
 
         div.style.top = positionY + "px";
-        div.style.left = selectionPosition.x + "px";
+        div.style.left = selectionPosition.x - 3 + "px";
         isToolTipVisible = true;
         removePreviousInformation();
         lookForInformation();
@@ -157,7 +186,7 @@ const openToolTipHL = (e) => {
 
 document.addEventListener("selectionchange", (e) => {
     isThereAselection = false;
-    sel = window.getSelection()
+    sel = window.getSelection();    
     selection = sel.toString();
     oRange = sel.getRangeAt(0);
 
@@ -198,6 +227,7 @@ const removePreviousInformation = () => {
     span.innerHTML = ""
     translation.innerHTML = "";
     images = [];
+    img.src = "";
     prev.style.display = 'none';
     next.style.display = 'none';
     maxImageIndex = 0;
@@ -277,9 +307,9 @@ const checkConsistencyImages = () => {
 prev.addEventListener("click", () => {
     img.src = images[--currentImage];
     checkConsistencyImages();
-})
+}, false)
 
 next.addEventListener("click", () => {
     img.src = images[++currentImage];
     checkConsistencyImages();
-})
+}, false)
