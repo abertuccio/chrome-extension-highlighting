@@ -1,8 +1,8 @@
 const wrapperSelectionStyles = {
-    'position' : 'fixed',
+    'position': 'fixed',
     'background-color': '#FFF',
-    'padding':'3px',
-    'color' : "#0095ff",
+    'padding': '3px',
+    'color': "#0095ff",
     'text-align': 'center',
     'box-shadow': '3px 3px 4px #AAA'
 }
@@ -19,7 +19,22 @@ const wrapperStyles = {
     'border': '1px solid #e4e4e4',
     'color': '#545454',
     'text-align': 'center',
-    'max-width' : '453px'
+    'max-width': '453px',
+    'font-family': 'sans-serif',
+    'font-size': '14px',
+    'min-height': '171px'
+}
+
+const wrapperSelectionArrowStyles = {
+    'width': '12px',
+    'height': '12px',
+    'transform': 'rotate(-136deg)',
+    'background-color': '#FFF',
+    'position': 'fixed',
+    'z-index': "99999999999999999999999999999999999999999999999999999999999999999999999999999",
+    'border-left': '1px solid #e4e4e4',
+    'border-top': '1px solid #e4e4e4'
+
 }
 
 const buttonStyles = {
@@ -59,11 +74,18 @@ const prevStyles = {
     'border-right': '1px solid #666',
     'width': '20px',
     'height': '20px',
-    'transform': 'rotate(-136deg)',    
+    'transform': 'rotate(-136deg)',
     'cursor': 'pointer',
     'position': 'absolute',
     'top': '45%',
     'left': '6%'
+}
+
+const translationStyles = {
+    'height': '16px',
+    'white-space': 'nowrap',
+    'overflow': 'hidden',
+    'text-overflow': 'ellipsis'
 }
 
 const nextStyles = {
@@ -87,6 +109,7 @@ const imgStyles = {
 }
 
 const wrapperSelection = document.createElement("div");
+const wrapperSelectionArrow = document.createElement("div");
 const div = document.createElement("div");
 const imgWrapper = document.createElement("div");
 const img = document.createElement("img");
@@ -100,10 +123,12 @@ const playSoundButton = document.createElement("button")
 playSoundButton.innerHTML = "Sound";
 
 Object.assign(div.style, wrapperStyles);
+Object.assign(wrapperSelectionArrow.style, wrapperSelectionArrowStyles)
 Object.assign(imgWrapper.style, imgWrapperStyles);
 Object.assign(img.style, imgStyles);
 Object.assign(prev.style, prevStyles);
 Object.assign(next.style, nextStyles);
+Object.assign(translation.style, translationStyles);
 Object.assign(button.style, buttonStyles);
 Object.assign(playSoundButton.style, buttonStyles);
 Object.assign(wrapperSelection.style, wrapperSelectionStyles);
@@ -118,21 +143,26 @@ div.appendChild(translation);
 translation.appendChild(playSoundButton);
 document.body.appendChild(wrapperSelection);
 document.body.appendChild(div);
+document.body.appendChild(wrapperSelectionArrow);
 
+span.style.cursor = 'pointer';
+span.innerHTML = `Loading...`;
 button.innerHTML = "Yes";
+button.style.display = 'none';
 
-prev.onmouseenter = () => {prev.style.borderColor = "#0095ff";}
-prev.onmouseleave = () => {prev.style.borderColor = "#666";}
-next.onmouseenter = () => {next.style.borderColor = "#0095ff";}
-next.onmouseleave = () => {next.style.borderColor = "#666";}
+span.onmouseenter = () => { span.style.color = '#0095ff'; }
+span.onmouseleave = () => { span.style.color = '#666'; }
+prev.onmouseenter = () => { prev.style.borderColor = "#0095ff"; }
+prev.onmouseleave = () => { prev.style.borderColor = "#666"; }
+next.onmouseenter = () => { next.style.borderColor = "#0095ff"; }
+next.onmouseleave = () => { next.style.borderColor = "#666"; }
 
-button.addEventListener("click", function () {
-    closeToolTipHL();
-})
 
 let isToolTipLoaded = false;
 let selectionPosition = { "x": -1000, "y": -1000 };
 let selection = "";
+let textSearched = "";
+let textTranslation = "";
 let isThereAselection = false;
 let isToolTipVisible = false;
 let isThereAMouseUp = false;
@@ -142,12 +172,29 @@ let isTranslationLoading = false;
 let currentImage = 0;
 let maxImageIndex = 0;
 
+span.addEventListener("click", function (e) {
+    let data = {};
+    data.selection = textSearched;
+    data.translation = textTranslation;
+    data.image = images[currentImage];
+
+    chrome.runtime.sendMessage({ 'target': 'back', 'action': 'storeData', 'data': data }, function (response) {
+        currentTabId = response;
+        span.innerHTML = `<b>"${textSearched}"</b> was stored`;
+        button.style.display = 'none';
+    });
+})
+
 const closeToolTipHL = () => {
 
+    button.style.display = 'none';
     div.style.top = "-1000px";
     div.style.left = "-1000px";
     wrapperSelection.style.top = "-1000px";
-    wrapperSelection.style.left = "-1000px"; 
+    wrapperSelection.style.left = "-1000px";
+    wrapperSelectionArrow.style.top = "-1000px";
+    wrapperSelectionArrow.style.left = "-1000px";
+
     isToolTipVisible = false;
     isToolTipLoaded = false;
 
@@ -159,17 +206,34 @@ const openToolTipHL = (e) => {
 
     if (e.type === 'mouseup') isThereAMouseUp = true;
 
-    if (isThereAselection && isThereAMouseUp) {
+    if (isThereAselection && isThereAMouseUp && !button.contains(e.target) && !prev.contains(e.target) && !next.contains(e.target)) {
 
-        wrapperSelection.style.width = selectionPosition.width*1.14 + 16 + "px";
-        wrapperSelection.style.height = selectionPosition.height + "px";
-        wrapperSelection.style.top = selectionPosition.top - 2 + "px";
-        wrapperSelection.style.left = selectionPosition.x - 2 + "px";
-        wrapperSelection.style.lineHeight = selectionPosition.height + "px";
-        wrapperSelection.innerHTML = selection;
+        // wrapperSelection.style.width = selectionPosition.width*1.14 + 16 + "px";
+        // wrapperSelection.style.height = selectionPosition.height + "px";
+        // wrapperSelection.style.top = selectionPosition.top - 2 + "px";
+        // wrapperSelection.style.left = selectionPosition.x - 2 + "px";
+        // wrapperSelection.style.lineHeight = selectionPosition.height + "px";
+        // wrapperSelection.innerHTML = selection;
+        wrapperSelectionArrow.style.top = selectionPosition.top - 21 + "px";
+        wrapperSelectionArrow.style.left = selectionPosition.x + 8 + "px";
+
+        if ((selectionPosition.y - 185) < 0) {
+            wrapperSelectionArrow.style.top = selectionPosition.y + selectionPosition.height + 6 + "px";
+            wrapperSelectionArrow.style.borderBottom = '1px solid #e4e4e4';
+            wrapperSelectionArrow.style.borderRight = '1px solid #e4e4e4';
+            wrapperSelectionArrow.style.borderTop = 'none';
+            wrapperSelectionArrow.style.borderLeft = 'none';
+            wrapperSelectionArrow.style.boxShadow = 'none';
+        } else {
+            wrapperSelectionArrow.style.borderBottom = 'none';
+            wrapperSelectionArrow.style.borderRight = 'none';
+            wrapperSelectionArrow.style.borderTop = '1px solid #e4e4e4';
+            wrapperSelectionArrow.style.borderLeft = '1px solid #e4e4e4';
+            wrapperSelectionArrow.style.boxShadow = 'rgb(170, 170, 170) -2px -2px 2px';
+        }
 
         let positionY = ((selectionPosition.y - 185) < 0) ?
-            (selectionPosition.y + selectionPosition.height + 3) :
+            (selectionPosition.y + selectionPosition.height + 12) :
             (selectionPosition.y - 185)
 
         div.style.top = positionY + "px";
@@ -186,7 +250,7 @@ const openToolTipHL = (e) => {
 
 document.addEventListener("selectionchange", (e) => {
     isThereAselection = false;
-    sel = window.getSelection();    
+    sel = window.getSelection();
     selection = sel.toString();
     oRange = sel.getRangeAt(0);
 
@@ -224,7 +288,7 @@ window.addEventListener('click', function (e) {
 });
 
 const removePreviousInformation = () => {
-    span.innerHTML = ""
+    span.innerHTML = "Loading...";
     translation.innerHTML = "";
     images = [];
     img.src = "";
@@ -237,7 +301,7 @@ const removePreviousInformation = () => {
 const lookForInformation = async () => {
 
     chrome.runtime.sendMessage({ 'target': 'back', 'action': 'newSearch', 'search': selection });
-    
+
     areImagesLoading = true;
     isTranslationLoading = true;
 
@@ -260,16 +324,20 @@ const lookForInformation = async () => {
 
         }
 
-        if(selection.split(" ").length < 4){
-            
+        if (selection.split(" ").length < 4) {
+
             if (message.target === 'content' && message.action === 'translation') {
-    
+
+                textSearched = selection;
+
+                textTranslation = message.response.resultTable.translation;
+
                 translation.innerHTML = message.response.resultTable.search + "  |  <b>" + message.response.resultTable.translation + "</b>";
-    
+
                 isTranslationLoading = false;
             }
 
-        }else{
+        } else {
             translation.innerHTML = "";
             isTranslationLoading = false;
         }
@@ -304,12 +372,14 @@ const checkConsistencyImages = () => {
     (currentImage === maxImageIndex) ? next.style.display = 'none' : next.style.display = 'block';
 }
 
-prev.addEventListener("click", () => {
+prev.addEventListener("click", (e) => {
+    e.preventDefault();
     img.src = images[--currentImage];
     checkConsistencyImages();
 }, false)
 
-next.addEventListener("click", () => {
+next.addEventListener("click", (e) => {
+    e.preventDefault();
     img.src = images[++currentImage];
     checkConsistencyImages();
 }, false)
