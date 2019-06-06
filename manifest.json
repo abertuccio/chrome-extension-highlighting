@@ -3,7 +3,7 @@
     "name": "Hightlighting",
     "version": "0.1",
     "browser_action": {
-      "default_icon": "icon.png",
+      "default_icon": "pencil_64.png",
       "default_popup": "popup.html"
     },
     "permissions": ["storage","activeTab", "tabs", "https://*/", "http://*/"],

@@ -91,7 +91,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     if (message.target === 'back' && message.action === 'getHighlight') {
-        setIcon(Boolean(localStorage.getItem("isHltActive")));
+
+        (localStorage.getItem("isHltActive") === 'true')?setIcon(true):setIcon(false);
+
         sendResponse(localStorage.getItem("isHltActive"));
     }
 
@@ -107,11 +109,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 const setIcon = (active) => {
     if (active) {
         chrome.browserAction.setIcon({
-            path: 'pencil.svg'
+            path: 'pencil_active_64.png'
         });
     }else{
         chrome.browserAction.setIcon({
-            path: 'icon.png'
+            path: 'pencil_64.png'
         }); 
     }
 
