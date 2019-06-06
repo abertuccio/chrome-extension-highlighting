@@ -97,6 +97,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse(localStorage.getItem("isHltActive"));
     }
 
+    if (message.target === 'back' && message.action === 'getStoredElements') {
+
+        let storedElements = (localStorage.getItem("hlt"))?JSON.parse(localStorage.getItem("hlt")).length:0;
+        sendResponse(storedElements);
+    }
+
     try {
         if (sender && ('tab' in sender) && ('id' in sender.tab)) {
             sendResponse(sender.tab.id);

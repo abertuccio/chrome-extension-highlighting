@@ -61,4 +61,11 @@ chrome.runtime.sendMessage({ 'target': 'back', 'action': 'getHighlight' }, funct
 
 });
 
+chrome.runtime.sendMessage({ 'target': 'back', 'action': 'getStoredElements' }, function (response) {    
+    
+    storedElements.innerHTML += " ("+response+")";
+
+});
+
+
 
