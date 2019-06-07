@@ -9,6 +9,9 @@ if (localStorage.getItem("isHltActive")) {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
+    // TODO: api de imagenes https://serpapi.com/search.json?q=dog&tbm=isch&ijn=0
+    // BING https://www.bing.com/images/search?q=dog&qpvt=dog&FORM=IGRE
+
     if (message.target === 'back' && message.action === 'newSearch') {
         var newSearch = `https://www.google.com/search?q=${message.search}&source=lnms&tbm=isch`;
 
@@ -38,6 +41,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     if (message.target === 'back' && message.action === 'storeData') {
+
+        message.data.repetitions =  0;
+        message.data.easinessFactor =  2.5;
+        message.data.interval =  1;
 
         if (localStorage.getItem("hlt")) {
             let prevValues = JSON.parse(localStorage.getItem("hlt"));
