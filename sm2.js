@@ -1,4 +1,4 @@
-function sm2(card, quality) {
+export function sm2(card, quality) {
 
     if (quality < 0 || quality > 5) {
         console.log("Invalid quality");
@@ -41,24 +41,24 @@ function sm2(card, quality) {
     return card;
 }
 
-const testCards = [{
-    question: "How old are you?",
-    answer: "39",
-    repetitions: 0,
-    easinessFactor: 2.5,
-    interval: 1,
-    nextPracticeDate:0
-}]
+// const testCards = [{
+//     question: "How old are you?",
+//     answer: "39",
+//     repetitions: 0,
+//     easinessFactor: 2.5,
+//     interval: 1,
+//     nextPracticeDate:0
+// }]
 
 
-const newCard = sm2(testCards[0], 0)
-const newCard2 = sm2(newCard, 2)
-const newCard3 = sm2(newCard2, 2)
-const newCard4 = sm2(newCard3, 2)
-const newCard5 = sm2(newCard4, 3)
-const newCard6 = sm2(newCard5, 3)
+// const newCard = sm2(testCards[0], 0)
+// const newCard2 = sm2(newCard, 2)
+// const newCard3 = sm2(newCard2, 2)
+// const newCard4 = sm2(newCard3, 2)
+// const newCard5 = sm2(newCard4, 3)
+// const newCard6 = sm2(newCard5, 3)
 
-console.log(newCard6)
+// console.log(newCard6)
 
 
 // "5 - perfect response"

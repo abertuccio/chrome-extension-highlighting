@@ -1,3 +1,5 @@
+import {sm2} from './sm2.js';
+
 let originalData = JSON.parse(localStorage.getItem("hlt"));
 let cardContainer = document.getElementById("card");
 
@@ -45,7 +47,11 @@ if (originalData && originalData.length) {
     if (cards.length) {
         document.getElementById("rates").style.display = 'block';
         cardContainer.appendChild(cards[0]);
+    }else{
+        cardContainer.innerText = "Hoy no hay elementos para estudiar.";
+         document.getElementById("rates").style.display = 'none';
     }
+
 
     [...document.getElementsByClassName("rate")].forEach(r => {
 
@@ -56,10 +62,17 @@ if (originalData && originalData.length) {
 
     const showImage = (rate) => {
 
-        const currentIndex = document.getElementsByClassName("card-element")[0].id;
+        const currentIndex = +document.getElementsByClassName("card-element")[0].id;
+        
 
-        const nextIndex = +currentIndex + 1;
+        const newCard = sm2(storedData[currentIndex], rate);
 
+        originalData.originalIndex = newCard;
+
+        localStorage.setItem("hlt", JSON.stringify(originalData));
+
+
+        const nextIndex = currentIndex + 1;
 
         cardContainer.innerHTML = "";
         if (nextIndex <= cards.length - 1) {
@@ -73,6 +86,7 @@ if (originalData && originalData.length) {
 
 
 }else{
-    cardContainer.innerText = "No hay elementos para estudiar.";
+    cardContainer.innerText = "Hoy no hay elementos para estudiar.";
     document.getElementById("rates").style.display = 'none';
 }
+
