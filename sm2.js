@@ -37,6 +37,7 @@ function sm2(card, quality) {
     card.repetitions = repetitions;
     card.easinessFactor = easiness;
     card.interval = interval;
+    card.nextPracticeDate = nextPracticeDate;
     return card;
 }
 
@@ -45,7 +46,8 @@ const testCards = [{
     answer: "39",
     repetitions: 0,
     easinessFactor: 2.5,
-    interval: 1
+    interval: 1,
+    nextPracticeDate:0
 }]
 
 

@@ -23,5 +23,5 @@ chrome.runtime.onMessage.addListener(
                 resultTable: resultTable
             });
         }
-        window.close()
+        window.close();
     });

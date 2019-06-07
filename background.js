@@ -45,6 +45,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         message.data.repetitions = 0;
         message.data.easinessFactor = 2.5;
         message.data.interval = 1;
+        message.data.nextPracticeDate = 0;
 
         if (localStorage.getItem("hlt")) {
             let prevValues = JSON.parse(localStorage.getItem("hlt"));
@@ -71,10 +72,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.target === 'back' && message.action === 'studyElements') {
 
         chrome.tabs.create({ url: chrome.runtime.getURL("study_elements.html"), }, (nTab) => {
-            // console.log(nTab);
-            // chrome.tabs.executeScript(nTab.id, { file: "storedData.js" }, (res)=>{
-            //     chrome.tabs.sendMessage(nTab.id, { target: 'storedData', 'data': storedData });
-            // });
+            
         });
 
     }
