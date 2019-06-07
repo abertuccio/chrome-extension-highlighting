@@ -9,13 +9,13 @@ if (localStorage.getItem("isHltActive")) {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    // TODO: api de imagenes https://serpapi.com/search.json?q=dog&tbm=isch&ijn=0
     // BING https://www.bing.com/images/search?q=dog&qpvt=dog&FORM=IGRE
 
     if (message.target === 'back' && message.action === 'newSearch') {
         var newSearch = `https://www.google.com/search?q=${message.search}&source=lnms&tbm=isch`;
 
-        var newTranslation = `https://www.wordreference.com/es/translation.asp?tranword=${message.search}`
+        // var newTranslation = `https://www.wordreference.com/es/translation.asp?tranword=${message.search}`
+        var newTranslation = `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${message.search}`
 
         chrome.tabs.create({ url: newSearch, active: false }, (sTab) => {
             chrome.tabs.create({ url: newTranslation, active: false }, (tTab) => {
@@ -42,9 +42,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'back' && message.action === 'storeData') {
 
-        message.data.repetitions =  0;
-        message.data.easinessFactor =  2.5;
-        message.data.interval =  1;
+        message.data.repetitions = 0;
+        message.data.easinessFactor = 2.5;
+        message.data.interval = 1;
 
         if (localStorage.getItem("hlt")) {
             let prevValues = JSON.parse(localStorage.getItem("hlt"));
@@ -99,14 +99,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'back' && message.action === 'getHighlight') {
 
-        (localStorage.getItem("isHltActive") === 'true')?setIcon(true):setIcon(false);
+        (localStorage.getItem("isHltActive") === 'true') ? setIcon(true) : setIcon(false);
 
         sendResponse(localStorage.getItem("isHltActive"));
     }
 
     if (message.target === 'back' && message.action === 'getStoredElements') {
 
-        let storedElements = (localStorage.getItem("hlt"))?JSON.parse(localStorage.getItem("hlt")).length:0;
+        let storedElements = (localStorage.getItem("hlt")) ? JSON.parse(localStorage.getItem("hlt")).length : 0;
         sendResponse(storedElements);
     }
 
@@ -124,10 +124,10 @@ const setIcon = (active) => {
         chrome.browserAction.setIcon({
             path: 'pencil_active_64.png'
         });
-    }else{
+    } else {
         chrome.browserAction.setIcon({
             path: 'pencil_64.png'
-        }); 
+        });
     }
 
 }

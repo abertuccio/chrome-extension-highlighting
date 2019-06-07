@@ -260,9 +260,9 @@ document.addEventListener("selectionchange", (e) => {
     isThereAselection = false;
     sel = window.getSelection();
     selection = sel.toString();
-    oRange = sel.getRangeAt(0);
 
     try {
+        oRange = sel.getRangeAt(0);
         selectionPosition = oRange.getBoundingClientRect();
     } catch (error) {
         selection = false;
