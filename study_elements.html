@@ -11,7 +11,6 @@
   <div>Estudiando</div>
   <div class="container">
     <div id="card" class="row">
-
     </div>
     <div id="rates">
       <div>Evalua como te acordaste de tu respuesta</div>
@@ -32,8 +31,13 @@
         </div>
       </div>
     </div>
+    <button id="reverse">Volver a repasar lo de hoy</button>
+    <div id="no-elements">Por hoy, Hoy no hay elementos para estudiar.</div>
   </div>
   <style>
+    #no-elements, #reverse, .answer, #rates{
+      display: none;
+    }
     .rating {
       float: left;
     }
