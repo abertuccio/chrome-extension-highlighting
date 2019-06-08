@@ -1,57 +1,43 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 
 <head>
-  <style>
-    #actions-wrapper {
-      width: 200px;
-    }
-
-    #checkbox-wrapper {
-      margin-bottom: 10px;
-      color: #a5a5a5;
-    }
-
-    #checkbox-wrapper input {
-      vertical-align: middle;
-    }
-
-    .buttons {
-      cursor: pointer;
-      color: #000;
-      margin-bottom: 10px;
-    }
-
-    .buttons:hover {
-      color: #666;
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+    <link rel="stylesheet" href="popUpStyles.css">
+  <title>EL TITULO</title>
 </head>
 
-<body>
+<body>    
   <div id="actions-wrapper">
-    <div id="checkbox-wrapper">
-      <label id="checkbox-label" for="highlight">Marcador desactivado</label>
-      <input id="highlight" type="checkbox" name="highlight">
-    </div>
-    <div class="buttons" id="settings">Configuracion</div>
-    <div class="settings">
+    <div class="buttons custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="highlight">
+      <label id="checkbox-label" class="custom-control-label" for="highlight"></label>
+    </div>   
+
+
+    <div class="buttons" id="settings">Configuracion <i id="more" class="material-icons">keyboard_arrow_down</i></div>
+    <div class="settings hide">
       <div>
-          <label id="translation-checkbox-label" for="translation">Buscar traduccion</label>
-          <input id="translation" type="checkbox" name="translation">
-          <select>
-<option>English</option>
-<option>Spanish</option>
-      </select>
-    </div>
-    <div>
+        <label id="translation-checkbox-label" for="translation">Buscar traduccion</label>
+        <input id="translation" type="checkbox" name="translation">
+        <select>
+          <option>English</option>
+          <option>Spanish</option>
+        </select>
+      </div>
+      <div>
         <label id="definition-checkbox-label" for="definition">Mostrar definición</label>
         <input id="definition" type="checkbox" name="definition">
-    </div>
-    <div>
+      </div>
+      <div>
         <label id="image-checkbox-label" for="image">Mostrar imagen</label>
         <input id="image" type="checkbox" name="image">
-    </div>
+      </div>
     </div>
     <div class="buttons" id="stored-elements">Ver elementos guardados</div>
     <div class="buttons" id="study-elements">Estudiar elementos guardados</div>

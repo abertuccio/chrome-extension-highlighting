@@ -1,4 +1,12 @@
 {
+    "en" : {"message": "English"},
+    "es" : {"message": "Spanish"},
     "markerActivated": {"message": "Marker activated"},
-    "markerDeactivated": {"message": "Marker deactivated"}
+    "markerDeactivated": {"message": "Activate marker"},
+    "settings":{"message": "Settings"},
+    "translation":{"message": "Translation"},
+    "definition":{"message": "Definition"},
+    "image":{"message": "Image"},
+    "storedElements":{"message": "Stored elements"},
+    "studyStoredElements":{"message": "Study stored elements"}
 }
