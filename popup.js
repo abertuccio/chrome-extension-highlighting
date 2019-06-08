@@ -4,6 +4,8 @@ const checkboxWrapper = document.getElementById("checkbox-wrapper");
 const checkboxLabel = document.getElementById("checkbox-label");
 const highlight = document.getElementById("highlight");
 
+var markerActivated_T = chrome.i18n.getMessage("markerActivated", "message");
+
 storedElements.addEventListener("click", function () {
 
     chrome.runtime.sendMessage({ 'target': 'back', 'action': 'seeStoredData' }, function (response) {

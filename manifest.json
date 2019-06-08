@@ -2,6 +2,7 @@
     "manifest_version": 2,
     "name": "Hightlighting",
     "version": "0.1",
+    "default_locale": "en",
     "browser_action": {
       "default_icon": "pencil_64.png",
       "default_popup": "popup.html"

@@ -22,7 +22,9 @@ const wrapperStyles = {
     'max-width': '453px',
     'font-family': 'sans-serif',
     'font-size': '14px',
-    'min-height': '171px'
+    'min-height': '171px',
+    'top':'-1000px',
+    'left': '-1000px'
 }
 
 const wrapperSelectionArrowStyles = {
