@@ -3,6 +3,7 @@ let hltSettings = {
     translation: true,
     targetTranslation : 'en',
     definition: false,
+    targetDefinition: 'en',
     image: true
 }
 
