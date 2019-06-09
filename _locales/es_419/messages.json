@@ -1,6 +1,12 @@
 {
-    "appDescription": {
-        "message": "This app does something awe some.", 
-        "description":"Topu"
-    }
+    "en" : {"message": "Inglés"},
+    "es" : {"message": "Español"},
+    "markerActivated": {"message": "Marcador activado"},
+    "markerDeactivated": {"message": "Activar marcador"},
+    "settings":{"message": "Configuración"},
+    "translation":{"message": "Traducción"},
+    "definition":{"message": "Definición"},
+    "image":{"message": "Imagen"},
+    "storedElements":{"message": "Elementos guardados"},
+    "studyStoredElements":{"message": "Estudiar elementos guardados"}
 }

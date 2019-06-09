@@ -3,6 +3,10 @@ const studyElements = document.getElementById("study-elements");
 const checkboxLabel = document.getElementById("checkbox-label");
 const highlight = document.getElementById("highlight");
 const settingsButton = document.getElementById("settings");
+const settingText = document.getElementById("setting-text");
+const translationCheckboxLabel = document.getElementById("translation-checkbox-label");
+const definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
+const imageCheckboxLabel = document.getElementById("image-checkbox-label");
 const settings = document.getElementsByClassName("settings")[0];
 const more = document.getElementById("more");
 
@@ -16,11 +20,19 @@ const storedElements_T = chrome.i18n.getMessage("storedElements", "message");
 const studyStoredElements_T = chrome.i18n.getMessage("studyStoredElements", "message");
 
 
+window.onload = () => {
+    settingText.innerText = settings_T;
+    translationCheckboxLabel.innerText = translation_T;
+    definitionCheckboxLabel.innerText = definition_T;
+    imageCheckboxLabel.innerText = image_T;
+    storedElements.innerText = storedElements_T;
+    studyElements.innerText = studyStoredElements_T;
+}
 
 
-settingsButton.addEventListener("click", ()=>{    
+settingsButton.addEventListener("click", () => {
     settings.classList.toggle("hide");
-    (more.innerText === 'keyboard_arrow_down')?more.innerText = 'keyboard_arrow_up':more.innerText = 'keyboard_arrow_down';
+    (more.innerText === 'keyboard_arrow_down') ? more.innerText = 'keyboard_arrow_up' : more.innerText = 'keyboard_arrow_down';
 });
 
 
