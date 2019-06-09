@@ -1,9 +1,25 @@
-let isActive = false;
-if (localStorage.getItem("isHltActive")) {
-    isActive = localStorage.getItem("isHltActive");
-} else {
-    localStorage.setItem("isHltActive", false);
+let hltSettings = {
+    isActive: false,
+    translation: true,
+    targetTranslation : 'en',
+    definition: false,
+    image: true
 }
+
+chrome.runtime.onInstalled.addListener(function (details) {
+
+    localStorage.setItem("hltSettings", JSON.stringify(hltSettings));
+    localStorage.setItem("hlt", JSON.stringify([]));
+
+});
+
+if (localStorage.getItem("hltSettings")) {
+    hltSettings = JSON.parse(localStorage.getItem("hltSettings"));
+} else {
+    localStorage.setItem("hltSettings", JSON.stringify(hltSettings));
+}
+
+
 
 
 
