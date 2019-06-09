@@ -125,6 +125,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse(storedElements);
     }
 
+    if (message.target === 'back' && message.action === 'changeSettings') {
+
+        hltSettings[message.settingValue] = message.value; 
+        localStorage.setItem("hltSettings", JSON.stringify(hltSettings));
+        sendResponse(hltSettings);
+
+    }
+
+    if (message.target === 'back' && message.action === 'getSettings') {
+        sendResponse(hltSettings);        
+    }
+
+
     try {
         if (sender && ('tab' in sender) && ('id' in sender.tab)) {
             sendResponse(sender.tab.id);
