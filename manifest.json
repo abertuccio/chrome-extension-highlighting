@@ -27,6 +27,24 @@
         "content/highligter/hightlighter.css"
       ],
       "all_frames": true
+    },
+    {
+      "matches": [
+        "https://translate.google.com/*"
+      ],
+      "js": [
+        "content/translation/translation.js"
+      ],
+      "all_frames": true
+    },
+    {
+      "matches": [
+        "https://www.google.com/*"
+      ],
+      "js": [
+        "content/imageSearch/imageSearch.js"
+      ],
+      "all_frames": true
     }
   ],
   "web_accessible_resources": [

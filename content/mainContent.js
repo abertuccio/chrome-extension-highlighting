@@ -38,7 +38,7 @@ class Highlighter {
     }
 
     showHTML() {
-        this.hgltActions.startLoader();
+        this.lookForInformation();
         hglt.boxActive = true;
         let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 0) ?
             (this.selectionPosition.y + this.selectionPosition.height) :
@@ -49,9 +49,26 @@ class Highlighter {
     }
 
     hideHTML(){
-        this.htmlElement.style.top = '-1000px';
-        this.htmlElement.style.left = '-1000px';
+        if(this.htmlElement){
+            this.htmlElement.style.top = '-1000px';
+            this.htmlElement.style.left = '-1000px';
+            this.hgltActions.startLoader();
+        }
+    }
+
+    lookForInformation() {
         this.hgltActions.startLoader();
+
+        if (this.selection) {
+            chrome.runtime.sendMessage({
+                'target': 'background',
+                'action': 'newSearch',
+                'searchSelection': this.selection
+            });
+        } else {
+            //TODO: ver que hacer
+        }       
+
     }
 
 }
@@ -62,18 +79,20 @@ document.addEventListener("selectionchange", (e) => {
 
     if (hglt.boxActive) return;
     hglt.selection = null;
-    sel = window.getSelection();
-    selection = sel.toString();
+    const sel = window.getSelection();
+    const selection = sel.toString();
 
     try {
-        oRange = sel.getRangeAt(0);
+        const oRange = sel.getRangeAt(0);
         hglt.selectionPosition = oRange.getBoundingClientRect();
     } catch (error) {
         hglt.deleteState();
         return;
     }
 
-    if (!this.selection || this.selection.length < 2 || selection.length > 100) {
+    hglt.selection = selection;
+
+    if (!hglt.selection || hglt.selection.length < 2 || hglt.selection.length > 100) {
         hglt.deleteState();
         return;
     }
@@ -86,3 +105,16 @@ window.onmouseup = (e) => {if (hglt.candidate) hglt.showHTML();}
 
 window.onscroll = (e) => { hglt.deleteState(); }
 
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    console.log(message);
+
+    if(message.target === 'main-content' && message.action === 'sendInformation'){
+
+        if(message.searchTerm === this.selection){
+            console.log(message.result);
+        }
+
+    }
+
+});
