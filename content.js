@@ -274,7 +274,7 @@ document.addEventListener("selectionchange", (e) => {
         openToolTipHL(e);
     }
 
-})
+});
 
 window.onmouseup = (e) => {
     isThereAMouseUp = false;
