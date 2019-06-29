@@ -1,6 +1,7 @@
 class Highlighter {
     constructor() {
 
+        this.hgltActions = new HighlighterActions();
         this.html = false;
         this.candidate = false;
         this.selection = null;
@@ -37,7 +38,7 @@ class Highlighter {
     }
 
     showHTML() {
-        loader();
+        this.hgltActions.startLoader();
         hglt.boxActive = true;
         let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 0) ?
             (this.selectionPosition.y + this.selectionPosition.height) :
@@ -50,6 +51,7 @@ class Highlighter {
     hideHTML(){
         this.htmlElement.style.top = '-1000px';
         this.htmlElement.style.left = '-1000px';
+        this.hgltActions.startLoader();
     }
 
 }
@@ -82,5 +84,5 @@ document.addEventListener("selectionchange", (e) => {
 
 window.onmouseup = (e) => {if (hglt.candidate) hglt.showHTML();}
 
-// window.onscroll = (e) => { hglt.deleteState(); }
+window.onscroll = (e) => { hglt.deleteState(); }
 
