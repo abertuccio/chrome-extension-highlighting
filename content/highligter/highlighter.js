@@ -1,35 +1,40 @@
 class HighlighterActions {
     constructor() {
+        this.hgltTranslationWord = document.getElementById("hglt-translation-word");
+        this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
+        this.hgltWordSelected = document.getElementById("hglt-word-selected");
+        this.hgltImage = document.getElementById("hglt-image");
+        this.hgltImageLoader = document.getElementById("hglt-image-loader");
+        this.hgltAddStore = document.getElementById("hglt-add-store");
+        this.arrows = document.getElementsByClassName("hglt-arrow");
+        this.count = 1;
+        this.translationLoader = setInterval(() => {
+            (this.count < 4) ? this.count++ : this.count = 1;
+            this.hgltTranslationWord.innerText = Array(this.count).fill(".").join(" ");
+            this.hgltMeaningDefinition.innerText = Array(4 - this.count).fill(".").join(" ");
+        }, 900);
     }
-    
+
+
+
+
     startLoader() {
 
-        const hgltTranslationWord = document.getElementById("hglt-translation-word");
-        const hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
-        const hgltImage = document.getElementById("hglt-image");
-        const hgltImageLoader = document.getElementById("hglt-image-loader");
-        const hgltAddStore = document.getElementById("hglt-add-store");
-
-        const arrows = document.getElementsByClassName("hglt-arrow");
-
-        [...arrows].forEach(arrow => {
+        [...this.arrows].forEach(arrow => {
             arrow.style.display = 'none';
         });
-        hgltImage.style.display = 'none';
-        hgltImageLoader.style.display = 'inline-block';
-        hgltAddStore.style.display = 'none';
+        this.hgltImage.style.display = 'none';
+        this.hgltImageLoader.style.display = 'inline-block';
+        this.hgltAddStore.style.display = 'none';
+        // this.translationLoader;
 
+    }
 
-
-        var count = 0;
-
-        setInterval(() => {
-            (count < 4) ? count++ : count = 1;
-
-            hgltTranslationWord.innerText = Array(count).fill(".").join(" ");
-            hgltMeaningDefinition.innerText = Array(4 - count).fill(".").join(" ");
-        }, 900);
-
+    setTranslation(data) {
+        clearInterval(this.translationLoader);
+        this.hgltTranslationWord.innerText = data.result.translation;
+        this.hgltWordSelected.innerText = data.selection;
+        this.hgltAddStore.style.display = 'block';
     }
 }
 

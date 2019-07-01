@@ -13,41 +13,50 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     return true;
 });
 
-function mutate(mutations) {
 
-    //TODO: HACER IN SET INTERVAL Y ESPERAR QUE CARGUE EL ID=SOURCE DE LA PAGINA OSEA EL TEXTO A BUSCAR
+const mutate = (mutations) => {
 
-
-    setTimeout(() => {
-        var resultTable = {};
     
-        var searchGuess = document.querySelectorAll(".text-dummy");
-        resultTable.search = (searchGuess.length) ? (searchGuess[0].innerHTML || "") : "";
     
-        var translationGuess = document.querySelectorAll(".result-shield-container.tlid-copy-target");
-        resultTable.translation = (translationGuess.length) ?
-            (translationGuess[0].innerText || "") : "";
+    for (let i = 0; i < [...mutations].length - 1; i++) {
     
-        var defifitionGuess = document.querySelectorAll(".gt-def-row");
-        resultTable.definition = (defifitionGuess.length) ? (defifitionGuess.innerText || "") : "";
-    
-        console.log("vamos a mandar");
-        console.log(resultTable);
-    
-        chrome.runtime.sendMessage({
-            target: 'background',
-            action: 'SEND_INFORMATION',
-            kind: 'translation',
-            selection: window.location.href.split("=")[5],
-            result: resultTable
-        });
         
-    }, 200);
+        const element = document.querySelectorAll(".tlid-translation.translation")[0];
+                
+        if (!/\.\.\./g.test(element.innerText)) {
+            
+            var resultTable = {};
+            
+            resultTable.search = decodeURIComponent(window.location.href.split("=")[5]);
+
+            resultTable.translation = element.innerText
+
+            var defifitionGuess = document.querySelectorAll(".gt-def-row");
+            console.log(defifitionGuess);
+            resultTable.definition = (defifitionGuess.length) ? (defifitionGuess.innerText || "") : "";
+
+            console.log("mandamos");
+            console.log(resultTable);
+
+            chrome.runtime.sendMessage({
+                target: 'background',
+                action: 'SEND_INFORMATION',
+                kind: 'translation',
+                selection: resultTable.search,
+                result: resultTable
+            });
+
+            break;
+
+        }
+    }
 }
 
 
-var target = document.querySelectorAll(".result-shield-container.tlid-copy-target")[0];
+var target = document.querySelectorAll(".tlid-results-container.results-container")[0];
 var observer = new MutationObserver(mutate);
-var config = { characterData: true, attributes: true, childList: true, subtree: true };
+var config = { characterData: false, attributes: true, childList: false, subtree: false };
 
 observer.observe(target, config);
+
+///TODO: HACER OTRO OBSERVER PARA LAS DEFINICIONES!!

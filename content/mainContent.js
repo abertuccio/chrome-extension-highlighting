@@ -1,7 +1,7 @@
 class Highlighter {
     constructor() {
 
-        this.hgltActions = new HighlighterActions();
+        this.hgltActions = null;
         this.html = false;
         this.candidate = false;
         this.selection = null;
@@ -31,6 +31,7 @@ class Highlighter {
                 document.documentElement.appendChild(hglt);
                 this.html = true;
                 this.htmlElement = document.getElementById("hglt");
+                this.hgltActions = new HighlighterActions();
             }).catch(err => {
                 console.error("we couldn't load the hilighter");
                 this.deleteState();
@@ -98,7 +99,7 @@ document.addEventListener("selectionchange", (e) => {
         return;
     }
 
-    hglt.selection = selection;
+    hglt.selection = selection.trim();
 
     if (!hglt.selection || hglt.selection.length < 2 || hglt.selection.length > 100) {
         hglt.deleteState();
@@ -117,10 +118,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if(message.target === 'main-content' && message.action === 'SEND_INFORMATION'){
 
+        
         if(message.selection === hglt.selection){
             console.log("llegaron los datos!!!!!!!!!!");
             console.log(message);
             console.log("llegaron los datos!!!!!!!!!!");
+            hglt.hgltActions.setTranslation(message);
+        }else{
+            console.log(message.selection);
+            console.log(hglt.selection);
         }
 
     }
