@@ -52,7 +52,7 @@
   ],
   "background": {
     "scripts": [
-      "background.js"
+      "background/background.js"
     ],
     "persistent": false
   }

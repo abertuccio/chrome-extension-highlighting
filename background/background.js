@@ -8,7 +8,7 @@ const createSearchTabs = (search) => {
 
     const newSearch = `https://www.google.com/search?q=${search}&source=lnms&tbm=isch`;
     const newTranslation = `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${search}`
-    
+
     chrome.tabs.create({
         "url": newSearch,
         "pinned": true,
@@ -28,54 +28,59 @@ const createSearchTabs = (search) => {
 
 chrome.runtime.onInstalled.addListener(function (details) {
     if (!tabIdTranslation && !tabIdImageSearch) {
-    createSearchTabs("example");
+        createSearchTabs("example");
     }
 });
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    // target: 'background',
-    // action: 'sendInformation',
-    // kind: 'translation',
-    // searchTerm: currentLocation.href.split("=")[5],
-    // result: resultTabl
-
-    if (message.target === 'background' && message.action === 'sendInformation') {
+    if (message.target === 'background' && message.action === 'SEND_INFORMATION') {
 
         message.target = 'main-content';
         chrome.tabs.query({}, (tabs) => {
             tabs.forEach(tab => {
-                console.log(tab.id);
                 chrome.tabs.sendMessage(tab.id, message);
             });
         });
 
     }
 
-    if (message.target === 'background' && message.action === 'newSearch') {
+    if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
 
         if (tabIdTranslation && tabIdImageSearch) {
 
-            console.log(`Enviamos informacion a ${tabIdTranslation}`)
-            
             chrome.tabs.sendMessage(tabIdTranslation, {
-                target: 'getTranslation',
-                searchSelection: message.searchSelection
+                target: 'translation',
+                action: 'ASK_TRANSLATION',
+                selection: message.selection
             });
 
             chrome.tabs.sendMessage(tabIdImageSearch, {
-                target: 'getImages',
-                searchSelection: message.searchSelection
+                target: 'images',
+                action: 'ASK_IMAGES',
+                selection: message.selection
             });
-        }else{
-            //TODO: VER QUE HACER ACA
+            sendResponse("INFORMATION WAS ASKED FROM COMTENT->BACKGROUND TO ->PINEDTABS");
+        } else {
+            //TODO: TENEMOS QUE ABRIR LOS TABS SI NO EXISTEN
         }
 
 
     }
 
-    
+
 
     return true;
 });
+
+
+// chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
+//     if (tabId === tabIdTranslation && changeInfo.status == 'complete') {
+  
+//         chrome.tabs.executeScript(tabIdTranslation, {
+//             file: 'content/translation/findInformation.js'
+//         });
+  
+//     }
+//   })

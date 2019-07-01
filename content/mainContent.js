@@ -62,12 +62,20 @@ class Highlighter {
         if (this.selection) {
             chrome.runtime.sendMessage({
                 'target': 'background',
-                'action': 'newSearch',
-                'searchSelection': this.selection
+                'action': 'ASK_TRANSLATION_AND_IMAGES',
+                'selection': this.selection
+            }, (info)=>{
+                console.log("informacion solicitada");
+                console.log("backround says: "+info);
+                console.log("informacion solicitada");
             });
         } else {
             //TODO: ver que hacer
-        }       
+        }  
+        
+        //TODO: SAXCAR ESTO
+        // this.hideHTML();
+        // this.deleteState();
 
     }
 
@@ -107,12 +115,12 @@ window.onscroll = (e) => { hglt.deleteState(); }
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    console.log(message);
+    if(message.target === 'main-content' && message.action === 'SEND_INFORMATION'){
 
-    if(message.target === 'main-content' && message.action === 'sendInformation'){
-
-        if(message.searchTerm === this.selection){
-            console.log(message.result);
+        if(message.selection === hglt.selection){
+            console.log("llegaron los datos!!!!!!!!!!");
+            console.log(message);
+            console.log("llegaron los datos!!!!!!!!!!");
         }
 
     }

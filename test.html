@@ -1,0 +1,18 @@
+<div id="random">12345</div>
+<script>
+    const random = document.getElementById("random");
+    random.innerText = Math.random();
+
+    if (random === 12345) {
+        window.location = window.location;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        var random = document.getElementById("random").innerText;
+
+        console.log(random);
+
+    }, false);
+
+</script>
