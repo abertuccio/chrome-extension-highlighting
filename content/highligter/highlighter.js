@@ -34,6 +34,7 @@ class HighlighterActions {
         clearInterval(this.translationLoader);
         this.hgltTranslationWord.innerText = data.result.translation;
         this.hgltWordSelected.innerText = data.selection;
+        this.hgltMeaningDefinition.innerText = data.result.definition;
         this.hgltAddStore.style.display = 'block';
     }
 }
