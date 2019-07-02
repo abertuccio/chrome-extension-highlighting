@@ -30,7 +30,8 @@ class HighlighterActions {
 
     startArrowsActions() {
         [...this.arrows].forEach(arrow => {
-            arrow.addEventListener("click", (e) => {
+            arrow.addEventListener("click", (e) => {    
+                console.log("click en arrow"); 
                //TODO: ACA LAS ACCIONES DE LAS FLECHAS
             })
         });
@@ -63,6 +64,7 @@ class HighlighterActions {
 
         this.hgltWordSelected.innerText = data.selection;
         this.hgltAddStore.style.display = 'block';
+        this.startArrowsActions();
     }
 
     setImages(data) {
@@ -75,6 +77,7 @@ class HighlighterActions {
 
         this.hgltWordSelected.innerText = data.selection;
         this.hgltAddStore.style.display = 'block';
+        this.startArrowsActions();
     }
 }
 

@@ -19,6 +19,7 @@ class Highlighter {
         this.boxActive = false;
         this.selectionPosition = null;
         this.hideHTML();
+        //TODO: agregar que borre los datos del html que creo que no funciona
     }
 
     getHTML() {
@@ -113,6 +114,19 @@ document.addEventListener("selectionchange", (e) => {
 window.onmouseup = (e) => {if (hglt.candidate) hglt.showHTML();}
 
 window.onscroll = (e) => { hglt.deleteState(); }
+
+window.addEventListener('click', function (e) {
+
+    //TODO: VER CUANDO CERRAR EL TOOLTIP QUE NO ANDA
+
+    if (hglt.boxActive && !hglt.htmlElement.contains(e.target)) {
+
+        this.console.log(hglt.htmlElement)
+
+        // hglt.deleteState();
+
+    }
+});
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
