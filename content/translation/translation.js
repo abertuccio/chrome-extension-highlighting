@@ -28,11 +28,20 @@ const mutateTranslation = (mutations) => {
             
             resultTable.search = decodeURIComponent(window.location.href.split("=")[5]);
 
-            resultTable.translation = element.innerText
+            resultTable.translation = [element.innerText]
+
+            var otherTranslations = document.querySelectorAll(".gt-baf-cell.gt-baf-word-clickable");
+
+            if(otherTranslations.length){
+                resultTable.translation = [resultTable.translation, [...otherTranslations].map(t=>t.innerText)]
+            }
+
+
 
             var defifitionGuess = document.querySelectorAll(".gt-def-row");
             // console.log(defifitionGuess);
-            resultTable.definition = (defifitionGuess.length) ? (defifitionGuess[0].innerText || "") : "";
+             
+            resultTable.definitions = (defifitionGuess.length) ? [...defifitionGuess].map(e=>e.innerText) : [];
 
             // console.log("mandamos");
             // console.log(resultTable);
@@ -56,17 +65,3 @@ var targetTranslation = document.querySelectorAll(".tlid-results-container.resul
 var observerTranslation = new MutationObserver(mutateTranslation);
 var configTranslation = { characterData: false, attributes: true, childList: false, subtree: false };
 observerTranslation.observe(targetTranslation, configTranslation);
-
-// const mutateDefinition = (mutations) => {
-// console.log(mutations);
-// }
-
-
-// var targetDefinition = document.querySelectorAll(".tlid-results-container.results-container")[0];
-// var observerDefinition = new MutationObserver(mutateDefinition);
-// var configDefinition = { characterData: false, attributes: true, childList: false, subtree: false };
-// observerDefinition.observe(targetDefinition, configDefinition);
-
-document.addEventListener('DOMContentLoaded', function() {
-    // your code here
- }, false);

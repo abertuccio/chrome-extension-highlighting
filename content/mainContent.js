@@ -117,16 +117,15 @@ window.onscroll = (e) => { hglt.deleteState(); }
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if(message.target === 'main-content' && message.action === 'SEND_INFORMATION'){
-
         
-        if(message.selection === hglt.selection){
-            console.log("llegaron los datos!!!!!!!!!!");
+        if(message.selection === hglt.selection && message.kind === 'translation'){
             console.log(message);
-            console.log("llegaron los datos!!!!!!!!!!");
             hglt.hgltActions.setTranslation(message);
-        }else{
-            console.log(message.selection);
-            console.log(hglt.selection);
+        }
+
+        if(message.selection === hglt.selection && message.kind === 'images'){
+            console.log(message);
+            hglt.hgltActions.setImages(message);
         }
 
     }
