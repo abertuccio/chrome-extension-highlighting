@@ -1,7 +1,7 @@
 class Highlighter {
     constructor() {
 
-        this.allowed = false;
+        this.allowed = true;
         this.hgltActions = null;
         this.html = false;
         this.candidate = false;
@@ -14,10 +14,14 @@ class Highlighter {
         this.htmlElement = null;
     }
 
-    getState(){
-        chrome.storage.sync.get(['isHgltActive'], function (result) {
-            this.allowed = ("status" in result)?true:false;
-        })
+    getState() {
+        // chrome.storage.sync.get(['isHgltActive'], function (result) {
+        //     console.log("el storage dice que isHgltActive")
+        //     console.log(result);
+        //     console.log("el storage dice que isHgltActive")
+        //     this.allowed = ("isHgltActive" in result) ? result.isHgltActive.status : false;
+        //     console.log(this.allowed);
+        // })
     }
 
     deleteState() {
