@@ -52,6 +52,7 @@
   ],
   "background": {
     "scripts": [
+      "background/settingsBackground.js",
       "background/background.js"
     ],
     "persistent": false

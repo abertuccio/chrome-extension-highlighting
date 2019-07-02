@@ -60,14 +60,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
 
-
-        console.log("vamos a buscar la mierda a los ids:");
-        console.log(tabIdTranslation);
-        console.log(tabIdImageSearch);
-        console.log("vamos a buscar la mierda a los ids:");
-
-
-
         if (tabIdTranslation && tabIdImageSearch) {
 
             chrome.tabs.sendMessage(tabIdTranslation, {

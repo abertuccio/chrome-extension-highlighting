@@ -97,12 +97,14 @@ highlight.addEventListener("change", () => {
         checkboxLabel.innerHTML = markerDeactivated_T;
     }
 
+    chrome.storage.sync.set({'isHgltActive':{status:highlight.checked}});
+
     chrome.runtime.sendMessage({
-        'target': 'back',
-        'action': 'setHighlight',
+        'target': 'settings-background',
+        'action': 'SET_HIGHLIGHT_STATE',
         'value': highlight.checked
     }, function (response) {
-
+        console.log("BACKGROUND SAYS: " + response)
     });
 
 })
@@ -144,7 +146,10 @@ const getSettings = () => {
 
 
 
-chrome.runtime.sendMessage({ 'target': 'back', 'action': 'getHighlight' }, function (response) {
+chrome.runtime.sendMessage({ 'target': 'settings-background', 'action': 'GET_HIGHLIGHT_STATE' }, function (response) {
+
+
+    console.log("me devuelve algo este puto "+response);
 
     if (response === 'true') {
         highlight.removeAttribute("checked");

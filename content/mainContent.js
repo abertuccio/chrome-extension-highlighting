@@ -1,6 +1,7 @@
 class Highlighter {
     constructor() {
 
+        this.allowed = false;
         this.hgltActions = null;
         this.html = false;
         this.candidate = false;
@@ -8,8 +9,15 @@ class Highlighter {
         this.boxActive = false;
         this.selectionPosition = null;
 
+        this.getState();
         this.getHTML();
         this.htmlElement = null;
+    }
+
+    getState(){
+        chrome.storage.sync.get(['isHgltActive'], function (result) {
+            this.allowed = ("status" in result)?true:false;
+        })
     }
 
     deleteState() {
@@ -40,6 +48,8 @@ class Highlighter {
     }
 
     showHTML() {
+        if (!this.allowed) return;
+
         this.lookForInformation();
 
         setTimeout(() => {
@@ -96,7 +106,7 @@ document.addEventListener("selectionchange", (e) => {
     const activeElement = document.activeElement.nodeName;
     const input = (activeElement === 'INPUT' || activeElement === 'TEXTAREA' || false);
 
-    if (hglt.boxActive || input) return;
+    if (!hglt.allowed || hglt.boxActive || input) return;
     hglt.selection = null;
     const sel = window.getSelection();
     const selection = sel.toString();
@@ -141,14 +151,25 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.target === 'main-content' && message.action === 'SEND_INFORMATION') {
 
         if (message.selection === hglt.selection && message.kind === 'translation') {
-            console.log(message);
+            // console.log(message);
             hglt.hgltActions.setTranslation(message);
         }
 
         if (message.selection === hglt.selection && message.kind === 'images') {
-            console.log(message);
+            // console.log(message);
             hglt.hgltActions.setImages(message);
         }
+
+    }
+
+    if (message.target === 'main-content' && message.action === 'SET_HIGHLIGHT_STATE') {
+
+        hglt.allowed = message.value;
+        if (message.value) {
+            hglt.deleteState();
+        }
+
+        sendResponse("TAB HIGHLIGHT WAS RECEIVED");
 
     }
 
