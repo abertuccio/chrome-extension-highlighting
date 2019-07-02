@@ -17,8 +17,7 @@ class Popup {
         this.getState();
     }
 
-    getState() {
-        console.log("vamos a pedir el valor")
+    getState() {        
         chrome.storage.sync.get(['isHgltActive'], (result)=>{
             console.log(result);
             this.highlight.checked = ("isHgltActive" in result) ? result.isHgltActive.status : false;  
