@@ -9,7 +9,7 @@ class HighlighterActions {
         this.arrows = document.getElementsByClassName("hglt-arrow");
         this.hgltTranslationArrowLeft = document.querySelectorAll(".hglt-translation-arrow.hglt-left-arrow")[0];
         this.hgltTranslationArrowRight = document.querySelectorAll(".hglt-translation-arrow.hglt-right-arrow")[0];
-        this.hgltMeaningsArrowLeft  = document.querySelectorAll(".hglt-meanings-arrow.hglt-left-arrow")[0];
+        this.hgltMeaningsArrowLeft = document.querySelectorAll(".hglt-meanings-arrow.hglt-left-arrow")[0];
         this.hgltMeaningsArrowRight = document.querySelectorAll(".hglt-meanings-arrow.hglt-right-arrow")[0];
         this.hgltImagesArrowLeft = document.querySelectorAll(".hglt-images-arrow.hglt-left-arrow")[0];
         this.hgltImagesArrowRight = document.querySelectorAll(".hglt-images-arrow.hglt-right-arrow")[0];
@@ -20,11 +20,21 @@ class HighlighterActions {
             this.hgltMeaningDefinition.innerText = Array(4 - this.count).fill(".").join(" ");
         }, 900);
         this.images = null;
+        this.currentImageIndex = 0;
         this.translations = null;
+        this.currentTranslationIndex = 0;
         this.definitions = null;
+        this.currentDefinitionIndex = 0;
     }
 
 
+    startArrowsActions() {
+        [...this.arrows].forEach(arrow => {
+            arrow.addEventListener("click", (e) => {
+               //TODO: ACA LAS ACCIONES DE LAS FLECHAS
+            })
+        });
+    }
 
 
     startLoader() {
@@ -40,26 +50,31 @@ class HighlighterActions {
     }
 
     setTranslation(data) {
+        this.translations = data.result.translations;
+        this.definitions = data.result.definitions;
+
         clearInterval(this.translationLoader);
-        this.hgltTranslationWord.innerText = data.result.translation[0];
+        this.hgltTranslationWord.innerText = data.result.translations[0];
         this.hgltMeaningDefinition.innerText = data.result.definitions[0];
 
-        this.hgltTranslationArrowRight.style.display = (data.result.translation.length>1)?'block':'none';
-        this.hgltMeaningsArrowRight.style.display = (data.result.definitions.length>1)?'block':'none';
+        this.hgltTranslationArrowRight.style.display = (data.result.translations.length > 1) ? 'block' : 'none';
+        this.hgltMeaningsArrowRight.style.display = (data.result.definitions.length > 1) ? 'block' : 'none';
 
 
         this.hgltWordSelected.innerText = data.selection;
         this.hgltAddStore.style.display = 'block';
     }
 
-    setImages(data){
+    setImages(data) {
+        this.images = data.result;
         this.hgltImageLoader.style.display = 'none';
         this.hgltImage.src = data.result[0];
+        this.hgltImage.setAttribute('idx', 0);
         this.hgltImage.style.display = 'inline-block';
-        this.hgltImagesArrowRight.style.display = (data.result.length>1)?'block':'none';
+        this.hgltImagesArrowRight.style.display = (data.result.length > 1) ? 'block' : 'none';
 
         this.hgltWordSelected.innerText = data.selection;
-        this.hgltAddStore.style.display = 'block';    
+        this.hgltAddStore.style.display = 'block';
     }
 }
 

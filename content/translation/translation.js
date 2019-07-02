@@ -28,12 +28,12 @@ const mutateTranslation = (mutations) => {
             
             resultTable.search = decodeURIComponent(window.location.href.split("=")[5]);
 
-            resultTable.translation = [element.innerText]
+            resultTable.translations = [element.innerText]
 
             var otherTranslations = document.querySelectorAll(".gt-baf-cell.gt-baf-word-clickable");
 
             if(otherTranslations.length){
-                resultTable.translation = [resultTable.translation, [...otherTranslations].map(t=>t.innerText)]
+                resultTable.translations = [resultTable.translations, [...otherTranslations].map(t=>t.innerText)]
             }
 
 

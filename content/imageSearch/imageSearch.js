@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 const mutateImages = (mutations) => {
     
-    if (mutations.length > 10) {
+    if (mutations.length > 5) {
 
         let imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c) => {
             if (c.src) { a.push(c.src); } return a;
