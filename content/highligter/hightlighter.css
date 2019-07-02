@@ -29,6 +29,7 @@
     margin: 5px 0;
     font-size: 15px;
     font-weight: bold;
+    transition: all 100ms ease-in-out;
 }
 #hglt-meanings{
     margin: 5px 0;
@@ -51,11 +52,20 @@
 
 #hglt-image-wrapper{
     margin: 5px 0;
+    min-height: 122px;
+
+    background-image: radial-gradient(rgba(88, 88, 88, 0.05), rgba(208, 208, 208, 0.05) 45%, rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0) 95%);
+    background-size: 5px 5px;
 }
 
 #hglt-image{
-    max-height: 122px;
-    max-width: 122px;
+    /* max-height: 122px;
+    max-width: 122px; */
+    max-height: 150px;
+    max-width: 150px;
+    transition: all 100ms ease-in-out;
+    box-shadow: 1px 1px 7px -2px;
+    user-select: none;
 }
 
 #hglt-add-store{
@@ -75,6 +85,15 @@
 .hglt-arrow{
     cursor: pointer;
     color: #dcdcdc;
+    user-select: none;
+}
+
+.hglt-images-arrow{
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 11px;
+  line-height: 20px;
 }
 
 .hglt-arrow:hover{

@@ -17,7 +17,7 @@ class Highlighter {
         this.candidate = false;
         this.selection = null;
         this.boxActive = false;
-        this.selectionPosition = null;
+        this.selectionPosition = null;        
         this.hideHTML();
         //TODO: agregar que borre los datos del html que creo que no funciona
     }
@@ -41,7 +41,11 @@ class Highlighter {
 
     showHTML() {
         this.lookForInformation();
-        hglt.boxActive = true;
+
+        setTimeout(() => {
+            hglt.boxActive = true;            
+        }, 1000);
+
         let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 0) ?
             (this.selectionPosition.y + this.selectionPosition.height) :
             (this.selectionPosition.y - this.htmlElement.offsetHeight)
@@ -55,6 +59,7 @@ class Highlighter {
             this.htmlElement.style.top = '-1000px';
             this.htmlElement.style.left = '-1000px';
             this.hgltActions.startLoader();
+            // this.hgltActions = new HighlighterActions();
         }
     }
 
@@ -87,6 +92,7 @@ let hglt = new Highlighter();
 
 document.addEventListener("selectionchange", (e) => {
 
+    
     if (hglt.boxActive) return;
     hglt.selection = null;
     const sel = window.getSelection();
@@ -111,20 +117,19 @@ document.addEventListener("selectionchange", (e) => {
 
 });
 
-window.onmouseup = (e) => {if (hglt.candidate) hglt.showHTML();}
+window.onmouseup = (e) => {if (hglt.candidate && !hglt.boxActive) hglt.showHTML();}
 
 window.onscroll = (e) => { hglt.deleteState(); }
 
 window.addEventListener('click', function (e) {
 
-    //TODO: VER CUANDO CERRAR EL TOOLTIP QUE NO ANDA
-
     if (hglt.boxActive && !hglt.htmlElement.contains(e.target)) {
 
-        this.console.log(hglt.htmlElement)
+        hglt.deleteState();
 
-        // hglt.deleteState();
-
+    }else{
+        //TODO: VER SI HAY QUE HACER ALGO ACA
+        //LAS ACCIONES ACA LAS MANEJA hgltActions
     }
 });
 

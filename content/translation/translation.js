@@ -33,7 +33,16 @@ const mutateTranslation = (mutations) => {
             var otherTranslations = document.querySelectorAll(".gt-baf-cell.gt-baf-word-clickable");
 
             if(otherTranslations.length){
-                resultTable.translations = [resultTable.translations, [...otherTranslations].map(t=>t.innerText)]
+                // resultTable.translations = [resultTable.translations, [...otherTranslations].map(t=>t.innerText)]
+                [...otherTranslations].forEach(e=>{
+                    if(/,/g.test(e.innerText)){
+                        e.innerText.split(",").forEach(sub=>{
+                            resultTable.translations.push(sub); 
+                        })
+                    }else{
+                        resultTable.translations.push(e.innerText); 
+                    }
+                })
             }
 
 
