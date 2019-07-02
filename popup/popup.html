@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    rel="stylesheet">
+    <link rel="stylesheet" href="popup.css">
+  <title>EL TITULO</title>
+</head>
+
+<body>    
+  <div id="actions-wrapper">
+    <div class="buttons custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="highlight">
+      <label id="checkbox-label" class="custom-control-label" for="highlight"></label>
+    </div>   
+    <div class="buttons" id="settings"><span id="setting-text"></span> <i id="more" class="material-icons">keyboard_arrow_down</i></div>
+    <div class="settings hide">
+      <div>
+        <label id="translation-checkbox-label" for="translation"></label>
+        <input id="translation" type="checkbox" name="translation">
+        <select id="translation-target">
+          <option value="en" >English</option>
+          <option value="es_419" >Spanish</option>
+        </select>
+      </div>
+      <div>
+        <label id="definition-checkbox-label" for="definition"></label>
+        <input id="definition" type="checkbox" name="definition">
+        <select id="definition-target">
+            <option value="en" >English</option>
+            <option value="es_419" >Spanish</option>
+          </select>
+      </div>
+      <div>
+        <label id="image-checkbox-label" for="image"></label>
+        <input id="image" type="checkbox" name="image">
+      </div>
+    </div>
+    <div class="buttons" id="stored-elements"></div>
+    <div class="buttons" id="study-elements"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+
+</html>

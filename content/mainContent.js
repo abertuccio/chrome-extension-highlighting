@@ -15,13 +15,9 @@ class Highlighter {
     }
 
     getState() {
-        // chrome.storage.sync.get(['isHgltActive'], function (result) {
-        //     console.log("el storage dice que isHgltActive")
-        //     console.log(result);
-        //     console.log("el storage dice que isHgltActive")
-        //     this.allowed = ("isHgltActive" in result) ? result.isHgltActive.status : false;
-        //     console.log(this.allowed);
-        // })
+        chrome.storage.sync.get(['isHgltActive'], (result)=>{
+            this.allowed = ("isHgltActive" in result) ? result.isHgltActive.status : false;            
+        })
     }
 
     deleteState() {
@@ -52,6 +48,7 @@ class Highlighter {
     }
 
     showHTML() {
+                
         if (!this.allowed) return;
 
         this.lookForInformation();
