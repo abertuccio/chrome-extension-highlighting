@@ -61,6 +61,7 @@ class HighlighterActions {
                     idx = (next) ? ++this.currentTranslationIndex : --this.currentTranslationIndex;
                     const translation = this.translations[idx];
                     this.hgltTranslationWord.innerText = translation;
+                    this.hgltTranslationWord.title = translation;
                     if (next) {
                         this.hgltTranslationArrowLeft.style.display = (this.currentTranslationIndex > 0) ? 'block' : 'none';
                         e.target.style.display = (this.currentTranslationIndex + 1 > this.translations.length - 1) ? 'none' : 'block';
@@ -76,6 +77,7 @@ class HighlighterActions {
                     idx = (next) ? ++this.currentDefinitionIndex : --this.currentDefinitionIndex;
                     const definition = this.definitions[idx];
                     this.hgltMeaningDefinition.innerText = definition;
+                    this.hgltMeaningDefinition.title = definition;
                     if (next) {
                         this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex > 0) ? 'block' : 'none';
                         e.target.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
@@ -111,7 +113,9 @@ class HighlighterActions {
 
         clearInterval(this.translationLoader);
         this.hgltTranslationWord.innerText = data.result.translations[0];
+        this.hgltTranslationWord.title = data.result.translations[0];
         this.hgltMeaningDefinition.innerText = data.result.definitions[0];
+        this.hgltMeaningDefinition.title = data.result.definitions[0];
         this.hgltTranslationWord.setAttribute('idx', 0);
         this.hgltMeaningDefinition.setAttribute('idx', 0);
         this.currentTranslationIndex = 0;
@@ -122,6 +126,7 @@ class HighlighterActions {
 
 
         this.hgltWordSelected.innerText = data.selection;
+        this.hgltWordSelected.title = data.selection;
         this.hgltAddStore.style.display = 'block';
         // this.startArrowsActions();
     }
@@ -148,6 +153,15 @@ class HighlighterActions {
                 a.style.marginTop = (this.hgltImageWrapper.offsetHeight - a.offsetHeight) / 2 + "px";
             })
         }, 50);
+    }
+
+    restoreInformation(){
+        this.images = null;
+        this.currentImageIndex = 0;
+        this.translations = null;
+        this.currentTranslationIndex = 0;
+        this.definitions = null;
+        this.currentDefinitionIndex = 0;
     }
 }
 

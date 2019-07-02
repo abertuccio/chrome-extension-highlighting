@@ -27,9 +27,21 @@ const createSearchTabs = (search) => {
 }
 
 chrome.runtime.onInstalled.addListener(function (details) {
-    if (!tabIdTranslation && !tabIdImageSearch) {
-        createSearchTabs("example");
-    }
+
+    chrome.tabs.query({ pinned: true }, (tabs) => {
+
+        tabs.forEach(tab => {
+            if (tab.url.includes("https://www.google.com/search")) {
+                chrome.tabs.remove(tab.id);
+            }
+            if (tab.url.includes("https://translate.google.com/")) {
+                chrome.tabs.remove(tab.id);
+            }
+        });
+            createSearchTabs("example");
+    });
+
+
 });
 
 
@@ -47,6 +59,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
     if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
+
+
+        console.log("vamos a buscar la mierda a los ids:");
+        console.log(tabIdTranslation);
+        console.log(tabIdImageSearch);
+        console.log("vamos a buscar la mierda a los ids:");
+
+
 
         if (tabIdTranslation && tabIdImageSearch) {
 
@@ -77,10 +97,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 // chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
 //     if (tabId === tabIdTranslation && changeInfo.status == 'complete') {
-  
+
 //         chrome.tabs.executeScript(tabIdTranslation, {
 //             file: 'content/translation/findInformation.js'
 //         });
-  
+
 //     }
 //   })

@@ -25,12 +25,34 @@
     margin: 0 4px;
 }
 
+
+.hglt-translation-arrow.hglt-left-arrow{
+float: left;
+}
+
+.hglt-translation-arrow.hglt-right-arrow{
+  float: right;
+}
+
 #hglt-translation{
     margin: 5px 0;
     font-size: 15px;
     font-weight: bold;
     transition: all 100ms ease-in-out;
+    height: 22px;
 }
+
+#hglt-translation-word{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 257px;
+  display: block;
+  float: left;
+  text-align: center;
+  padding: 0 10px;
+}
+
 #hglt-meanings{
     margin: 5px 0;
     width: 295px;
@@ -69,7 +91,7 @@
 }
 
 #hglt-add-store{
-    margin-top: 5px;
+    margin-top: 8px;
     cursor: pointer;
 }
 
@@ -80,6 +102,13 @@
 #hglt-word-selected{
     font-style: italic;
     font-weight: bold;    
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block;
+    overflow: hidden;
+    max-width: 170px;
+    margin-bottom: -4px;
 }
 
 .hglt-arrow{

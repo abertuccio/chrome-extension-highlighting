@@ -1,8 +1,8 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-    // console.log("SE SOLICITA ACTUALIZAR LA PAGINA ---------------------");
-    // console.log(request);
-    // console.log("SE SOLICITA ACTUALIZAR LA PAGINA ---------------------");
+    console.log("SE SOLICITA UNA BUSQUEDA ---------------------");
+    console.log(request);
+    console.log("SE SOLICITA UNA BUSQUEDA ---------------------");
 
 
     if (request.target === 'translation' && request.action === 'ASK_TRANSLATION') {
