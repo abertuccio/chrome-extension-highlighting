@@ -109,6 +109,7 @@ float: left;
     overflow: hidden;
     max-width: 170px;
     margin-bottom: -4px;
+    color: #2c2ca0;
 }
 
 .hglt-arrow{  
@@ -117,8 +118,7 @@ float: left;
 }
 
 .hglt-arrow-hover{
-color: rgb(180, 98, 98);
-text-shadow: 3px 1px 5px;
+color: rgb(172, 119, 119);
 }
 
 .hglt-images-arrow{
