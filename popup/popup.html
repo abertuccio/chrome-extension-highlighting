@@ -6,43 +6,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    rel="stylesheet">
-    <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="popup.css">
   <title>EL TITULO</title>
 </head>
 
-<body>    
+<body>
   <div id="actions-wrapper">
     <div class="buttons custom-control custom-switch">
       <input type="checkbox" class="custom-control-input" id="highlight">
       <label id="checkbox-label" class="custom-control-label" for="highlight"></label>
-    </div>   
-    <div class="buttons" id="settings"><span id="setting-text"></span> <i id="more" class="material-icons">keyboard_arrow_down</i></div>
+    </div>
+    <div class="buttons" id="settings"><span id="setting-text"></span> <i id="more"
+        class="material-icons">keyboard_arrow_down</i> Settings</div>
     <div class="settings hide">
       <div>
-        <label id="translation-checkbox-label" for="translation"></label>
+        <label id="translation-checkbox-label" for="translation">Translate</label>
         <input id="translation" type="checkbox" name="translation">
+        <span> to </span>
         <select id="translation-target">
-          <option value="en" >English</option>
-          <option value="es_419" >Spanish</option>
+          <option value="auto">Automatic</option>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
         </select>
       </div>
       <div>
-        <label id="definition-checkbox-label" for="definition"></label>
+        <label id="definition-checkbox-label" for="definition">Definition</label>
         <input id="definition" type="checkbox" name="definition">
+        <span> in </span>
         <select id="definition-target">
-            <option value="en" >English</option>
-            <option value="es_419" >Spanish</option>
-          </select>
+          <option value="auto">Automatic</option>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+        </select>
       </div>
       <div>
-        <label id="image-checkbox-label" for="image"></label>
+        <label id="image-checkbox-label" for="image">Images</label>
         <input id="image" type="checkbox" name="image">
       </div>
     </div>
-    <div class="buttons" id="stored-elements"></div>
-    <div class="buttons" id="study-elements"></div>
+    <div class="buttons" id="stored-elements">Stored elements</div>
+    <div class="buttons" id="study-elements">Study elements</div>
   </div>
   <script src="popup.js"></script>
 </body>

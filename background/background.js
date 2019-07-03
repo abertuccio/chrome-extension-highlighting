@@ -60,19 +60,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
 
+        console.log("settings");
+        console.log(message.settings);
+        console.log(message.settings.translation.fromLang);
+        console.log(message.settings.translation.toLang);
+        console.log("settings");
+
         if (tabIdTranslation && tabIdImageSearch) {
 
             chrome.tabs.sendMessage(tabIdTranslation, {
                 target: 'translation',
                 action: 'ASK_TRANSLATION',
-                selection: message.selection
+                selection: message.selection,
+                from: message.settings.translation.fromLang,
+                to: message.settings.translation.toLang
             });
 
-            chrome.tabs.sendMessage(tabIdImageSearch, {
-                target: 'images',
-                action: 'ASK_IMAGES',
-                selection: message.selection
-            });
+            // if(message.settings.images.availible){
+                chrome.tabs.sendMessage(tabIdImageSearch, {
+                    target: 'images',
+                    action: 'ASK_IMAGES',
+                    selection: message.selection
+                });
+            // }
             sendResponse("INFORMATION WAS ASKED FROM COMTENT->BACKGROUND TO ->PINEDTABS");
         } else {
             //TODO: TENEMOS QUE ABRIR LOS TABS SI NO EXISTEN

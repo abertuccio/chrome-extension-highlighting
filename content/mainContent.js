@@ -8,6 +8,20 @@ class Highlighter {
         this.selection = null;
         this.boxActive = false;
         this.selectionPosition = null;
+        this.settingsData = {
+            translation: {
+                avalible: true,
+                fromLang: 'auto',
+                toLang: 'es',
+            },
+            definition: {
+                avalible: true,
+                lang: 'en'
+            },
+            images: {
+                avalible: true
+            }
+        };
 
         this.getState();
         this.getHTML();
@@ -15,9 +29,19 @@ class Highlighter {
     }
 
     getState() {
-        chrome.storage.sync.get(['isHgltActive'], (result)=>{
-            this.allowed = ("isHgltActive" in result) ? result.isHgltActive.status : false;            
-        })
+        chrome.storage.sync.get({'hgltAvailible': false}, (result) => {            
+            this.allowed = result.hgltAvailible;            
+        });
+
+        chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
+            if (result.hgltSettings) {
+                this.settingsData = result.hgltSettings;
+                //TODO: VER OTRA MANERA DE ACTUALIZAR/PONER LOS DATOS DE SETTINGS
+                if(this.hgltActions){
+                    this.hgltActions.settingsData = result.hgltSettings;
+                }
+            }
+        });
     }
 
     deleteState() {
@@ -41,6 +65,8 @@ class Highlighter {
                 this.html = true;
                 this.htmlElement = document.getElementById("hglt");
                 this.hgltActions = new HighlighterActions();
+                //TODO: LOS SETTING POR PRIMERA VEZ HAY QUE VER SI ESTA BIEN PONERLO ASI;
+                this.hgltActions.settingsData = this.settingsData;
             }).catch(err => {
                 console.error("we couldn't load the hilighter");
                 this.deleteState();
@@ -48,7 +74,7 @@ class Highlighter {
     }
 
     showHTML() {
-                
+
         if (!this.allowed) return;
 
         this.lookForInformation();
@@ -78,24 +104,18 @@ class Highlighter {
     lookForInformation() {
         this.hgltActions.startLoader();
 
-        if (this.selection) {
+        if (!this.selection){return;} 
+
             chrome.runtime.sendMessage({
                 'target': 'background',
                 'action': 'ASK_TRANSLATION_AND_IMAGES',
-                'selection': this.selection
+                'selection': this.selection,
+                'settings': this.settingsData,
             }, (info) => {
                 console.log("informacion solicitada");
                 console.log("backround says: " + info);
                 console.log("informacion solicitada");
             });
-        } else {
-            //TODO: ver que hacer
-        }
-
-        //TODO: SAXCAR ESTO
-        // this.hideHTML();
-        // this.deleteState();
-
     }
 
 }
@@ -156,6 +176,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             hglt.hgltActions.setTranslation(message);
         }
 
+        //TODO: VER DE EVENTUALMENTE SEPARAR TRANSLATION Y DEFINITION
+        // if (message.selection === hglt.selection && message.kind === 'definition') {
+        //     // console.log(message);
+        //     // hglt.hgltActions.setTranslation(message);
+        //     console.log("se envio la definicion");
+        // }
+
         if (message.selection === hglt.selection && message.kind === 'images') {
             // console.log(message);
             hglt.hgltActions.setImages(message);
@@ -163,15 +190,23 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     }
 
-    if (message.target === 'main-content' && message.action === 'SET_HIGHLIGHT_STATE') {
+});
 
-        hglt.allowed = message.value;
-        if (message.value) {
-            hglt.deleteState();
+
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+
+    for (var key in changes) {
+        if (key === 'hgltAvailible') {
+            hglt.allowed = changes[key].newValue; 
+            if(changes[key].newValue) hglt.deleteState();           
         }
 
-        sendResponse("TAB HIGHLIGHT WAS RECEIVED");
-
+        if (key === 'hgltSettings') {
+            //TODO: LA MANERA DE ACTUALIZAR LOS DATOS EN HGLTACTIONS NO SE SI ES LA IDEAL
+            hglt.hgltActions.settingsData = changes[key].newValue;
+            hglt.hgltActions.applySettings();
+            hglt.settingsData = changes[key].newValue;
+        }
     }
 
 });

@@ -1,27 +1,20 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
-    if (message.target === 'settings-background' && message.action === 'SET_HIGHLIGHT_STATE') {
-    
-        setIcon(message.value);
-    
-        message.target = 'main-content';
-        chrome.tabs.query({}, (tabs) => {
-            tabs.forEach(tab => {
-                chrome.tabs.sendMessage(tab.id, message, function (response) { 
-                    console.log("TAB SAYS: "+response);
-                });
-            });
-        });
+});
 
-        sendResponse("HIGHTLIGHT STATE WAS SENT");
-    }
-    
-    if (message.target === 'settings-background' && message.action === 'GET_HIGHLIGHT_STATE') {
-    
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+
+    for (var key in changes) {
+        if (key === 'hgltAvailible') {
+            setIcon(changes[key].newValue);
+        }
     }
 
 });
 
+chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
+    setIcon(result.hgltAvailible);
+});
 
 const setIcon = (active) => {
     if (active) {

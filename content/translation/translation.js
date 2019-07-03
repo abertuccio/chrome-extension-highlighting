@@ -6,7 +6,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 
     if (request.target === 'translation' && request.action === 'ASK_TRANSLATION') {
-        const translationURL = `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${request.selection}`;
+        const translationURL = `https://translate.google.com/#view=home&op=translate&sl=${request.from}&tl=${request.to}&text=${request.selection}`;
         window.location.href = translationURL;
         // window.location = window.location;
     }
