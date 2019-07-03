@@ -111,10 +111,14 @@ float: left;
     margin-bottom: -4px;
 }
 
-.hglt-arrow{
-    cursor: pointer;
+.hglt-arrow{  
     color: #dcdcdc;
     user-select: none;
+}
+
+.hglt-arrow-hover{
+color: rgb(180, 98, 98);
+text-shadow: 3px 1px 5px;
 }
 
 .hglt-images-arrow{
@@ -125,10 +129,10 @@ float: left;
   line-height: 20px;
 }
 
-.hglt-arrow:hover{
+/* .hglt-arrow:hover{
     color: #545454;
     text-shadow: 3px 1px 5px;
-}
+} */
 
 .hglt-left-arrow{
     display: block;

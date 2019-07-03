@@ -51,73 +51,70 @@ class HighlighterActions {
 
 
     startArrowsActions() {
-        [...this.arrows].forEach(arrow => {
-            arrow.addEventListener("click", (e) => {
-                // console.log(e.target);
-                const next = (e.target.classList.value.includes('right')) ? true : false;
-                const imagesBehavior = (e.target.classList.value.includes('images')) ? true : false;
-                const translationBehavior = (e.target.classList.value.includes('translation')) ? true : false;
-                const definitionsBehavior = (e.target.classList.value.includes('meanings')) ? true : false;
-                var idx = 0;
+        // [...this.arrows].forEach(arrow => {
+        //     arrow.addEventListener("click", (e) => {
+        //         // console.log(e.target);
+        //         const next = (e.target.classList.value.includes('right')) ? true : false;
+        //         const imagesBehavior = (e.target.classList.value.includes('images')) ? true : false;
+        //         const translationBehavior = (e.target.classList.value.includes('translation')) ? true : false;
+        //         const definitionsBehavior = (e.target.classList.value.includes('meanings')) ? true : false;
+        //         var idx = 0;
 
-                // if (imagesBehavior) {
-                //     idx = (next) ? ++this.currentImageIndex : --this.currentImageIndex;
-                //     const image = this.images[idx];
-                //     this.hgltImage.src = image;
-                //     this.adjustImage();
-                //     if (next) {
-                //         this.hgltImagesArrowLeft.style.display = (this.currentImageIndex > 0) ? 'block' : 'none';
-                //         e.target.style.display = (this.currentImageIndex + 1 > this.images.length - 1) ? 'none' : 'block';
+        //         // if (imagesBehavior) {
+        //         //     idx = (next) ? ++this.currentImageIndex : --this.currentImageIndex;
+        //         //     const image = this.images[idx];
+        //         //     this.hgltImage.src = image;
+        //         //     this.adjustImage();
+        //         //     if (next) {
+        //         //         this.hgltImagesArrowLeft.style.display = (this.currentImageIndex > 0) ? 'block' : 'none';
+        //         //         e.target.style.display = (this.currentImageIndex + 1 > this.images.length - 1) ? 'none' : 'block';
 
-                //     } else {
-                //         this.hgltImagesArrowRight.style.display = (this.currentImageIndex < this.images.length - 1) ? 'block' : 'none';
-                //         e.target.style.display = (this.currentImageIndex - 1 < 0) ? 'none' : 'block';
-                //     }
-                //     // console.log(idx);
-                // }
+        //         //     } else {
+        //         //         this.hgltImagesArrowRight.style.display = (this.currentImageIndex < this.images.length - 1) ? 'block' : 'none';
+        //         //         e.target.style.display = (this.currentImageIndex - 1 < 0) ? 'none' : 'block';
+        //         //     }
+        //         //     // console.log(idx);
+        //         // }
 
-                // if (translationBehavior) {
-                //     idx = (next) ? ++this.currentTranslationIndex : --this.currentTranslationIndex;
-                //     const translation = this.translations[idx];
-                //     this.hgltTranslationWord.innerText = translation;
-                //     this.hgltTranslationWord.title = translation;
-                //     if (next) {
-                //         this.hgltTranslationArrowLeft.style.display = (this.currentTranslationIndex > 0) ? 'block' : 'none';
-                //         e.target.style.display = (this.currentTranslationIndex + 1 > this.translations.length - 1) ? 'none' : 'block';
+        //         // if (translationBehavior) {
+        //         //     idx = (next) ? ++this.currentTranslationIndex : --this.currentTranslationIndex;
+        //         //     const translation = this.translations[idx];
+        //         //     this.hgltTranslationWord.innerText = translation;
+        //         //     this.hgltTranslationWord.title = translation;
+        //         //     if (next) {
+        //         //         this.hgltTranslationArrowLeft.style.display = (this.currentTranslationIndex > 0) ? 'block' : 'none';
+        //         //         e.target.style.display = (this.currentTranslationIndex + 1 > this.translations.length - 1) ? 'none' : 'block';
 
-                //     } else {
-                //         this.hgltTranslationArrowRight.style.display = (this.currentTranslationIndex < this.translations.length - 1) ? 'block' : 'none';
-                //         e.target.style.display = (this.currentTranslationIndex - 1 < 0) ? 'none' : 'block';
-                //     }
-                //     // console.log(idx);
-                // }
+        //         //     } else {
+        //         //         this.hgltTranslationArrowRight.style.display = (this.currentTranslationIndex < this.translations.length - 1) ? 'block' : 'none';
+        //         //         e.target.style.display = (this.currentTranslationIndex - 1 < 0) ? 'none' : 'block';
+        //         //     }
+        //         //     // console.log(idx);
+        //         // }
 
-                if (definitionsBehavior) {
-                    idx = (next) ? ++this.currentDefinitionIndex : --this.currentDefinitionIndex;
-                    const definition = this.definitions[idx];
-                    this.hgltMeaningDefinition.innerText = definition;
-                    this.hgltMeaningDefinition.title = definition;
-                    if (next) {
-                        this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex > 0) ? 'block' : 'none';
-                        e.target.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
+        //         // if (definitionsBehavior) {
+        //         //     idx = (next) ? ++this.currentDefinitionIndex : --this.currentDefinitionIndex;
+        //         //     const definition = this.definitions[idx];
+        //         //     this.hgltMeaningDefinition.innerText = definition;
+        //         //     this.hgltMeaningDefinition.title = definition;
+        //         //     if (next) {
+        //         //         this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex > 0) ? 'block' : 'none';
+        //         //         e.target.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
 
-                    } else {
-                        this.hgltMeaningsArrowRight.style.display = (this.currentDefinitionIndex < this.definitions.length - 1) ? 'block' : 'none';
-                        e.target.style.display = (this.currentDefinitionIndex - 1 < 0) ? 'none' : 'block';
-                    }
-                    // console.log(idx);
-                }
+        //         //     } else {
+        //         //         this.hgltMeaningsArrowRight.style.display = (this.currentDefinitionIndex < this.definitions.length - 1) ? 'block' : 'none';
+        //         //         e.target.style.display = (this.currentDefinitionIndex - 1 < 0) ? 'none' : 'block';
+        //         //     }
+        //         //     // console.log(idx);
+        //         // }
 
 
-            })
-        });
+        //     })
+        // });
 
         this.hgltImageWrapper.addEventListener("click", (e) => {
 
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;
-            const next = (x > rect.width / 2) ? true : false;
+            const next = this.getAreaPositionNext(e);
 
             if (next && this.currentImageIndex > this.images.length - 1) { return; }
             if (!next && this.currentImageIndex - 1 < 0) { return; }
@@ -140,19 +137,15 @@ class HighlighterActions {
 
         this.hgltTranslationWrapper.addEventListener("click", (e) => {
 
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;
-            const next = (x > rect.width / 2) ? true : false;
-            
-            
+            const next = this.getAreaPositionNext(e);
+
             if (next && this.currentTranslationIndex > this.translations.length - 1) { return; }
             if (!next && this.currentTranslationIndex - 1 < 0) { return; }
-            
+
             var idx = (next) ? ++this.currentTranslationIndex : --this.currentTranslationIndex;
             const translation = this.translations[idx];
-            this.hgltTranslationWord.innerText = (translation || this.hgltTranslationWord.innerText );
-            this.hgltTranslationWord.title = (translation || this.hgltTranslationWord.innerText );
+            this.hgltTranslationWord.innerText = (translation || this.hgltTranslationWord.innerText);
+            this.hgltTranslationWord.title = (translation || this.hgltTranslationWord.innerText);
             if (next) {
                 this.hgltTranslationArrowLeft.style.display = (this.currentTranslationIndex > 0) ? 'block' : 'none';
                 this.hgltTranslationArrowRight.style.display = (this.currentTranslationIndex + 1 > this.translations.length - 1) ? 'none' : 'block';
@@ -165,52 +158,93 @@ class HighlighterActions {
 
         });
 
-        this.hgltTranslationWrapper.addEventListener("mouseover", (e) => {
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;
-            const next = (x > rect.width / 2) ? true : false;
-            //TODO: HACER ESTO CON TOGGLE CLASSES
+        this.hgltMeaningsWrapper.addEventListener("click", (e) => {
+
+            const next = this.getAreaPositionNext(e);
+
+            if (next && this.currentDefinitionIndex > this.definitions.length - 1) { return; }
+            if (!next && this.currentDefinitionIndex - 1 < 0) { return; }
+
+            var idx = (next) ? ++this.currentDefinitionIndex : --this.currentDefinitionIndex;
+            const definition = this.definitions[idx];
+            this.hgltMeaningDefinition.innerText = (definition || this.hgltMeaningDefinition.innerText);
+            this.hgltMeaningDefinition.title = (definition || this.hgltMeaningDefinition.title);
             if (next) {
-                this.hgltTranslationArrowLeft.style.color = "#dcdcdc";
-                this.hgltTranslationArrowRight.style.color = "red";
+                this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex > 0) ? 'block' : 'none';
+                e.target.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
+
             } else {
-                this.hgltTranslationArrowLeft.style.color = "red";
-                this.hgltTranslationArrowRight.style.color = "#dcdcdc";
+                this.hgltMeaningsArrowRight.style.display = (this.currentDefinitionIndex < this.definitions.length - 1) ? 'block' : 'none';
+                e.target.style.display = (this.currentDefinitionIndex - 1 < 0) ? 'none' : 'block';
+            }
+
+        });
+
+        this.hgltTranslationWrapper.addEventListener("mouseover", (e) => {
+
+            if (this.getAreaPositionNext(e)) {
+                this.addHoverArrow(this.hgltTranslationArrowRight);
+                this.removeHoverArrow(this.hgltTranslationArrowLeft);
+            } else {
+                this.addHoverArrow(this.hgltTranslationArrowLeft);
+                this.removeHoverArrow(this.hgltTranslationArrowRight);
             }
 
         });
 
 
         this.hgltImageWrapper.addEventListener("mouseover", (e) => {
-            const rect = e.target.getBoundingClientRect();
-            const x = e.clientX - rect.left; //x position within the element.
-            var y = e.clientY - rect.top;
-            const next = (x > rect.width / 2) ? true : false;
-            //TODO: HACER ESTO CON TOGGLE CLASSES
-            if (next) {
-                this.hgltImagesArrowLeft.style.color = "#dcdcdc";
-                this.hgltImagesArrowRight.style.color = "red";
+
+            if (this.getAreaPositionNext(e)) {
+                this.addHoverArrow(this.hgltImagesArrowRight);
+                this.removeHoverArrow(this.hgltImagesArrowLeft);
             } else {
-                this.hgltImagesArrowLeft.style.color = "red";
-                this.hgltImagesArrowRight.style.color = "#dcdcdc";
+                this.addHoverArrow(this.hgltImagesArrowLeft);
+                this.removeHoverArrow(this.hgltImagesArrowRight);
+            }
+
+        });
+
+        this.hgltMeaningsWrapper.addEventListener("mouseover", (e) => {
+
+            if (this.getAreaPositionNext(e)) {
+                this.addHoverArrow(this.hgltMeaningsArrowRight);
+                this.removeHoverArrow(this.hgltMeaningsArrowLeft);
+            } else {
+                this.addHoverArrow(this.hgltMeaningsArrowLeft);
+                this.removeHoverArrow(this.hgltMeaningsArrowRight);
             }
 
         });
 
         this.hgltImageWrapper.addEventListener("mouseleave", () => {
-            this.hgltImagesArrowLeft.style.color = "#dcdcdc";
-            this.hgltImagesArrowRight.style.color = "#dcdcdc";
+            this.removeHoverArrow(this.hgltImagesArrowLeft);
+            this.removeHoverArrow(this.hgltImagesArrowRight);
         });
 
         this.hgltTranslationWrapper.addEventListener("mouseleave", () => {
-            this.hgltTranslationArrowLeft.style.color = "#dcdcdc";
-            this.hgltTranslationArrowRight.style.color = "#dcdcdc";
+            this.removeHoverArrow(this.hgltTranslationArrowLeft);
+            this.removeHoverArrow(this.hgltTranslationArrowRight);
         });
+
+        this.hgltMeaningsWrapper.addEventListener("mouseleave", () => {
+            this.removeHoverArrow(this.hgltMeaningsArrowLeft);
+            this.removeHoverArrow(this.hgltMeaningsArrowRight);
+        });
+
 
 
     }
 
+    addHoverArrow(element) { element.classList.add("hglt-arrow-hover"); }
+
+    removeHoverArrow(element) { element.classList.remove("hglt-arrow-hover"); }
+
+    getAreaPositionNext(event) {
+        const rect = event.target.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        return (x > rect.width / 2) ? true : false;        
+    }
 
     startLoader() {
 
