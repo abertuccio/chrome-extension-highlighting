@@ -104,7 +104,7 @@ class Popup {
     }
 
     setSettings(settings) {
-        this.translation.checked = settings.translation.avalible;
+        this.translation.checked = settings.translation.avalible;        
         this.pronunciation.checked = settings.pronunciation.avalible;
         this.translationTarget.value = settings.translation.toLang;
         this.definition.checked = settings.definition.avalible;

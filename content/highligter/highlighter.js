@@ -1,5 +1,6 @@
 class HighlighterActions {
-    constructor() {
+    constructor(speachObject) {
+        this.speachObject = speachObject;
         this.hgltImage = document.getElementById("hglt-image");
         this.arrows = document.getElementsByClassName("hglt-arrow");
         this.hgltAddStore = document.getElementById("hglt-add-store");
@@ -13,6 +14,7 @@ class HighlighterActions {
         this.hgltTranslationWord = document.getElementById("hglt-translation-word");
         this.hgltMeaningsDivisor = document.getElementById("hglt-meanings-divisor");
         this.hgltTranslationSound = document.getElementById("hglt-translation-sound");
+        // this.hgltTranslationSound.src = chrome.extension.getURL("content/highligter/baseline-volume_up-24px.svg");
         this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
         this.hgltTranslationDivisor = document.getElementById("hglt-translation-divisor");
         this.hgltImagesArrowLeft = document.querySelectorAll(".hglt-images-arrow.hglt-left-arrow")[0];
@@ -21,6 +23,7 @@ class HighlighterActions {
         this.hgltMeaningsArrowRight = document.querySelectorAll(".hglt-meanings-arrow.hglt-right-arrow")[0];
         this.hgltTranslationArrowLeft = document.querySelectorAll(".hglt-translation-arrow.hglt-left-arrow")[0];
         this.hgltTranslationArrowRight = document.querySelectorAll(".hglt-translation-arrow.hglt-right-arrow")[0];
+        //TODO: MEJORAR ESTO DE LOS SETTING POR DEFECTO
         this.settingsData = {
             translation: {
                 avalible: true,
@@ -55,66 +58,10 @@ class HighlighterActions {
 
 
     startArrowsActions() {
-        // [...this.arrows].forEach(arrow => {
-        //     arrow.addEventListener("click", (e) => {
-        //         // console.log(e.target);
-        //         const next = (e.target.classList.value.includes('right')) ? true : false;
-        //         const imagesBehavior = (e.target.classList.value.includes('images')) ? true : false;
-        //         const translationBehavior = (e.target.classList.value.includes('translation')) ? true : false;
-        //         const definitionsBehavior = (e.target.classList.value.includes('meanings')) ? true : false;
-        //         var idx = 0;
 
-        //         // if (imagesBehavior) {
-        //         //     idx = (next) ? ++this.currentImageIndex : --this.currentImageIndex;
-        //         //     const image = this.images[idx];
-        //         //     this.hgltImage.src = image;
-        //         //     this.adjustImage();
-        //         //     if (next) {
-        //         //         this.hgltImagesArrowLeft.style.display = (this.currentImageIndex > 0) ? 'block' : 'none';
-        //         //         e.target.style.display = (this.currentImageIndex + 1 > this.images.length - 1) ? 'none' : 'block';
-
-        //         //     } else {
-        //         //         this.hgltImagesArrowRight.style.display = (this.currentImageIndex < this.images.length - 1) ? 'block' : 'none';
-        //         //         e.target.style.display = (this.currentImageIndex - 1 < 0) ? 'none' : 'block';
-        //         //     }
-        //         //     // console.log(idx);
-        //         // }
-
-        //         // if (translationBehavior) {
-        //         //     idx = (next) ? ++this.currentTranslationIndex : --this.currentTranslationIndex;
-        //         //     const translation = this.translations[idx];
-        //         //     this.hgltTranslationWord.innerText = translation;
-        //         //     this.hgltTranslationWord.title = translation;
-        //         //     if (next) {
-        //         //         this.hgltTranslationArrowLeft.style.display = (this.currentTranslationIndex > 0) ? 'block' : 'none';
-        //         //         e.target.style.display = (this.currentTranslationIndex + 1 > this.translations.length - 1) ? 'none' : 'block';
-
-        //         //     } else {
-        //         //         this.hgltTranslationArrowRight.style.display = (this.currentTranslationIndex < this.translations.length - 1) ? 'block' : 'none';
-        //         //         e.target.style.display = (this.currentTranslationIndex - 1 < 0) ? 'none' : 'block';
-        //         //     }
-        //         //     // console.log(idx);
-        //         // }
-
-        //         // if (definitionsBehavior) {
-        //         //     idx = (next) ? ++this.currentDefinitionIndex : --this.currentDefinitionIndex;
-        //         //     const definition = this.definitions[idx];
-        //         //     this.hgltMeaningDefinition.innerText = definition;
-        //         //     this.hgltMeaningDefinition.title = definition;
-        //         //     if (next) {
-        //         //         this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex > 0) ? 'block' : 'none';
-        //         //         e.target.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
-
-        //         //     } else {
-        //         //         this.hgltMeaningsArrowRight.style.display = (this.currentDefinitionIndex < this.definitions.length - 1) ? 'block' : 'none';
-        //         //         e.target.style.display = (this.currentDefinitionIndex - 1 < 0) ? 'none' : 'block';
-        //         //     }
-        //         //     // console.log(idx);
-        //         // }
-
-
-        //     })
-        // });
+        this.hgltTranslationSound.addEventListener("click", () => {            
+            window.speechSynthesis.speak(this.speachObject);
+        })
 
         this.hgltImageWrapper.addEventListener("click", (e) => {
 
@@ -142,6 +89,9 @@ class HighlighterActions {
         this.hgltTranslationWrapper.addEventListener("click", (e) => {
 
             const next = this.getAreaPositionNext(e);
+
+            //TODO: VER PORQUE PUEDE PASAR QUE SEA NULL O UN ARRAY VACIO
+            if (this.translations.length) { return; }
 
             if (next && this.currentTranslationIndex > this.translations.length - 1) { return; }
             if (!next && this.currentTranslationIndex - 1 < 0) { return; }
@@ -247,7 +197,7 @@ class HighlighterActions {
     getAreaPositionNext(event) {
         const rect = event.target.getBoundingClientRect();
         const x = event.clientX - rect.left;
-        return (x > rect.width / 2) ? true : false;        
+        return (x > rect.width / 2) ? true : false;
     }
 
     startLoader() {
@@ -275,9 +225,13 @@ class HighlighterActions {
 
         if (this.settingsData.pronunciation.avalible) {
             this.hgltTranslationSound.style.display = 'block';
+            //TODO: NO ES LO IDEAL
+            // this.hgltTranslationWord.style.width = '244px';
         }
         else {
             this.hgltTranslationSound.style.display = 'none';
+            //TODO: NO ES LO IDEAL
+            // this.hgltTranslationWord.style.width = '241px';
         }
 
         if (this.settingsData.definition.avalible) {

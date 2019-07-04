@@ -15,7 +15,8 @@ class Highlighter {
                 toLang: 'es',
             },
             pronunciation: {
-                avalible: true
+                avalible: true,
+                lang: 'en-US',
             },
             definition: {
                 avalible: true,
@@ -64,8 +65,8 @@ class Highlighter {
                 hglt.innerHTML = data;
                 document.documentElement.appendChild(hglt);
                 this.html = true;
-                this.htmlElement = document.getElementById("hglt");
-                this.hgltActions = new HighlighterActions();
+                this.htmlElement = document.getElementById("hglt");                
+                this.hgltActions = new HighlighterActions(this.speachObject);
                 //TODO: LOS SETTING POR PRIMERA VEZ HAY QUE VER SI ESTA BIEN PONERLO ASI;
                 this.hgltActions.settingsData = this.settingsData;
             }).catch(err => {
@@ -99,6 +100,8 @@ class Highlighter {
     }
 
     positionHLTML() {
+        if(!this.selectionPosition) return;
+
         let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 20) ?
             (this.selectionPosition.y + this.selectionPosition.height) :
             (this.selectionPosition.y - this.htmlElement.offsetHeight)
@@ -147,6 +150,10 @@ document.addEventListener("selectionchange", (e) => {
     }
 
     hglt.selection = selection.trim();
+
+    hglt.speachObject = new SpeechSynthesisUtterance(hglt.selection);
+    //TODO: SETEAR EL LENGUAGE AQUI
+    hglt.speachObject.lang = (hglt.settingsData.pronunciation.lang || 'en-US');
 
     if (!hglt.selection || hglt.selection.length < 2 || hglt.selection.length > 100) {
         hglt.deleteState();

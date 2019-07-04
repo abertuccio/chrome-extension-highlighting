@@ -37,17 +37,17 @@ float: left;
 
 #hglt-translation-sound{
   position: absolute;
-  right: 28px;
   background-color: #FFF;
   cursor: pointer;
-  color: #b7b4b4;
-  font-size: 11px;
-  line-height: 17px;
+  display: block;
+  width: 17px;
+  fill: #b7b4b4;
+  top: 9px;
+  right: 22px;
 }
 
 #hglt-translation-sound:hover{
-  background-color: #FFF;
-  color: red;
+  fill: #424242;
 }
 
 #hglt-translation{
@@ -62,7 +62,7 @@ float: left;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  width: 241px;
+  width: 244px;
   display: block;
   float: left;
   text-align: center;
