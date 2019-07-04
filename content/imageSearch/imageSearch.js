@@ -22,6 +22,11 @@ const mutateImages = (mutations) => {
     
     if (mutations.length > 5) {
 
+        //TODO: GUARDAR ESTAS IMAGENES AFUERA CUANDO EL USUARIO ELIJA GUARDAR EL 
+        //ELEMENTO, HAY QUE HACER CLICK Y GUARDAR el vinculo de LA GRANDE 
+        //si guardamos el index hacemos document.getElementsByClassName("irc_mi")[INDEX].CLICK()
+        //quiza hay que esperar unos milisegundos
+        //document.getElementsByClassName("irc_mi")[0, 1 o 2].currentSrc
         let imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c) => {
             if (c.src) { a.push(c.src); } return a;
         }, [])
