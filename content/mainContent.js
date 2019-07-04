@@ -1,18 +1,21 @@
 class Highlighter {
     constructor() {
-
-        this.allowed = true;
-        this.hgltActions = null;
         this.html = false;
-        this.candidate = false;
+        this.allowed = true;
         this.selection = null;
+        this.candidate = false;
         this.boxActive = false;
+        this.hgltActions = null;
+        this.htmlElement = null;
         this.selectionPosition = null;
         this.settingsData = {
             translation: {
                 avalible: true,
                 fromLang: 'auto',
                 toLang: 'es',
+            },
+            pronunciation: {
+                avalible: true
             },
             definition: {
                 avalible: true,
@@ -22,22 +25,20 @@ class Highlighter {
                 avalible: true
             }
         };
-
         this.getState();
         this.getHTML();
-        this.htmlElement = null;
     }
 
     getState() {
-        chrome.storage.sync.get({'hgltAvailible': false}, (result) => {            
-            this.allowed = result.hgltAvailible;            
+        chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
+            this.allowed = result.hgltAvailible;
         });
 
         chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
             if (result.hgltSettings) {
                 this.settingsData = result.hgltSettings;
                 //TODO: VER OTRA MANERA DE ACTUALIZAR/PONER LOS DATOS DE SETTINGS
-                if(this.hgltActions){
+                if (this.hgltActions) {
                     this.hgltActions.settingsData = result.hgltSettings;
                 }
             }
@@ -81,14 +82,10 @@ class Highlighter {
 
         setTimeout(() => {
             hglt.boxActive = true;
+            this.positionHLTML();
         }, 1000);
 
-        let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 0) ?
-            (this.selectionPosition.y + this.selectionPosition.height) :
-            (this.selectionPosition.y - this.htmlElement.offsetHeight - 30)
-
-        this.htmlElement.style.top = positionY + "px";
-        this.htmlElement.style.left = this.selectionPosition.x + "px";
+        this.positionHLTML();
     }
 
     hideHTML() {
@@ -101,21 +98,30 @@ class Highlighter {
         }
     }
 
+    positionHLTML() {
+        let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 20) ?
+            (this.selectionPosition.y + this.selectionPosition.height) :
+            (this.selectionPosition.y - this.htmlElement.offsetHeight)
+
+        this.htmlElement.style.top = positionY + "px";
+        this.htmlElement.style.left = this.selectionPosition.x + "px";
+    }
+
     lookForInformation() {
         this.hgltActions.startLoader();
 
-        if (!this.selection){return;} 
+        if (!this.selection) { return; }
 
-            chrome.runtime.sendMessage({
-                'target': 'background',
-                'action': 'ASK_TRANSLATION_AND_IMAGES',
-                'selection': this.selection,
-                'settings': this.settingsData,
-            }, (info) => {
-                console.log("informacion solicitada");
-                console.log("backround says: " + info);
-                console.log("informacion solicitada");
-            });
+        chrome.runtime.sendMessage({
+            'target': 'background',
+            'action': 'ASK_TRANSLATION_AND_IMAGES',
+            'selection': this.selection,
+            'settings': this.settingsData,
+        }, (info) => {
+            console.log("informacion solicitada");
+            console.log("backround says: " + info);
+            console.log("informacion solicitada");
+        });
     }
 
 }
@@ -162,6 +168,10 @@ window.addEventListener('click', function (e) {
         hglt.deleteState();
 
     } else {
+        //TODO: VER SI ESTA BIEN REPOSICIONAR ACA
+        if(hglt.boxActive){
+            hglt.positionHLTML();
+        }
         //TODO: VER SI HAY QUE HACER ALGO ACA
         //LAS ACCIONES ACA LAS MANEJA hgltActions
     }
@@ -197,8 +207,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
     for (var key in changes) {
         if (key === 'hgltAvailible') {
-            hglt.allowed = changes[key].newValue; 
-            if(changes[key].newValue) hglt.deleteState();           
+            hglt.allowed = changes[key].newValue;
+            if (changes[key].newValue) hglt.deleteState();
         }
 
         if (key === 'hgltSettings') {

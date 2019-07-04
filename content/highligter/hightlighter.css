@@ -15,6 +15,7 @@
     top:-1000px;
     left: -1000px;
     width: auto;
+    z-index: 99999999999999999999;
 }
 
 .hglt-divisor{
@@ -34,6 +35,21 @@ float: left;
   float: right;
 }
 
+#hglt-translation-sound{
+  position: absolute;
+  right: 28px;
+  background-color: #FFF;
+  cursor: pointer;
+  color: #b7b4b4;
+  font-size: 11px;
+  line-height: 17px;
+}
+
+#hglt-translation-sound:hover{
+  background-color: #FFF;
+  color: red;
+}
+
 #hglt-translation{
     margin: 5px 0;
     font-size: 15px;
@@ -46,7 +62,7 @@ float: left;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  width: 257px;
+  width: 241px;
   display: block;
   float: left;
   text-align: center;

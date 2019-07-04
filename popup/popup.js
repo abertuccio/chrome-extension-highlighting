@@ -1,26 +1,30 @@
 class Popup {
     constructor() {
-        this.storedElements = document.getElementById("stored-elements");
-        this.studyElements = document.getElementById("study-elements");
-        this.checkboxLabel = document.getElementById("checkbox-label");
+        this.more = document.getElementById("more");
+        this.image = document.getElementById("image");
         this.highlight = document.getElementById("highlight");
+        this.definition = document.getElementById("definition");
+        this.translation = document.getElementById("translation");
         this.settingsButton = document.getElementById("settings");
         this.settingText = document.getElementById("setting-text");
-        this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
-        this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
-        this.image = document.getElementById("image");
-        this.imageCheckboxLabel = document.getElementById("image-checkbox-label");
+        this.pronunciation = document.getElementById("pronunciation");
+        this.studyElements = document.getElementById("study-elements");
+        this.checkboxLabel = document.getElementById("checkbox-label");
         this.settings = document.getElementsByClassName("settings")[0];
-        this.more = document.getElementById("more");
-        this.translation = document.getElementById("translation");
-        this.translationTarget = document.getElementById("translation-target");
-        this.definition = document.getElementById("definition");
+        this.storedElements = document.getElementById("stored-elements");
         this.definitionTarget = document.getElementById("definition-target");
+        this.translationTarget = document.getElementById("translation-target");
+        this.imageCheckboxLabel = document.getElementById("image-checkbox-label");
+        this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
+        this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
         this.settingsData = {
             translation: {
                 avalible: true,
                 fromLang: 'auto',
                 toLang: 'es',
+            },
+            pronunciation: {
+                avalible: true
             },
             definition: {
                 avalible: true,
@@ -33,7 +37,7 @@ class Popup {
 
 
         this.getState();
-        this.addActions();        
+        this.addActions();
     }
 
     getState() {
@@ -59,45 +63,52 @@ class Popup {
             this.setCheckboxState(e.target.checked);
         });
 
+
         this.settingsButton.addEventListener("click", () => {
             this.settings.classList.toggle("hide");
             (this.more.innerText === 'keyboard_arrow_down') ? this.more.innerText = 'keyboard_arrow_up' : more.innerText = 'keyboard_arrow_down';
         });
 
-        this.translation.addEventListener("change", (e)=>{
-            this.settingsData.translation.avalible = e.target.checked;            
+        this.translation.addEventListener("change", (e) => {
+            this.settingsData.translation.avalible = e.target.checked;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
-        this.translationTarget.addEventListener("change", (e)=>{
+        this.pronunciation.addEventListener("change", (e) => { 
+            this.settingsData.pronunciation.avalible = e.target.checked;
+            chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
+        });
+
+        this.translationTarget.addEventListener("change", (e) => {
             //TODO: VER ESTO DE CAMBIARLO CUANDO SEA EL CASO
             this.settingsData.translation.fromLang = 'auto';
             this.settingsData.translation.toLang = e.target.value;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
-        this.definition.addEventListener("change", (e)=>{
+        this.definition.addEventListener("change", (e) => {
             this.settingsData.definition.avalible = e.target.checked;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
-        this.definitionTarget.addEventListener("change", (e)=>{
+        this.definitionTarget.addEventListener("change", (e) => {
             this.settingsData.definition.lang = e.target.value;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
-        this.image.addEventListener("change", (e)=>{
+        this.image.addEventListener("change", (e) => {
             this.settingsData.images.avalible = e.target.checked;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
     }
 
-    setSettings(settings){
+    setSettings(settings) {
         this.translation.checked = settings.translation.avalible;
+        this.pronunciation.checked = settings.pronunciation.avalible;
         this.translationTarget.value = settings.translation.toLang;
         this.definition.checked = settings.definition.avalible;
-        this.definitionTarget.value = settings.definition.lang; 
+        this.definitionTarget.value = settings.definition.lang;
         this.image.checked = settings.images.avalible;
     }
 
@@ -108,7 +119,7 @@ class Popup {
 
 }
 
-const popup = new Popup();  
+const popup = new Popup();
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
 

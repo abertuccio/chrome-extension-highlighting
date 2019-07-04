@@ -1,30 +1,33 @@
 class HighlighterActions {
     constructor() {
-        this.hgltTranslationWrapper = document.getElementById("hglt-translation");
-        this.hgltTranslationDivisor = document.getElementById("hglt-translation-divisor");
-        this.hgltTranslationWord = document.getElementById("hglt-translation-word");
-        this.hgltMeaningsWrapper = document.getElementById("hglt-meanings");
-        this.hgltMeaningsDivisor = document.getElementById("hglt-meanings-divisor");
-        this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
-        this.hgltWordSelected = document.getElementById("hglt-word-selected");
         this.hgltImage = document.getElementById("hglt-image");
+        this.arrows = document.getElementsByClassName("hglt-arrow");
+        this.hgltAddStore = document.getElementById("hglt-add-store");
+        this.hgltImageLoader = document.getElementById("hglt-image-loader");
+        this.hgltMeaningsWrapper = document.getElementById("hglt-meanings");
+        this.hgltWordSelected = document.getElementById("hglt-word-selected");
         this.hgltImageWrapper = document.getElementById("hglt-image-wrapper");
         this.hgltImageDivisor = document.getElementById("hglt-image-divisor");
-        this.hgltImageLoader = document.getElementById("hglt-image-loader");
-        this.hgltAddStore = document.getElementById("hglt-add-store");
-        this.arrows = document.getElementsByClassName("hglt-arrow");
-        this.hgltTranslationArrowLeft = document.querySelectorAll(".hglt-translation-arrow.hglt-left-arrow")[0];
-        this.hgltTranslationArrowRight = document.querySelectorAll(".hglt-translation-arrow.hglt-right-arrow")[0];
-        this.hgltMeaningsArrowLeft = document.querySelectorAll(".hglt-meanings-arrow.hglt-left-arrow")[0];
-        this.hgltMeaningsArrowRight = document.querySelectorAll(".hglt-meanings-arrow.hglt-right-arrow")[0];
         this.hgltImagesArrow = document.querySelectorAll(".hglt-images-arrow");
+        this.hgltTranslationWrapper = document.getElementById("hglt-translation");
+        this.hgltTranslationWord = document.getElementById("hglt-translation-word");
+        this.hgltMeaningsDivisor = document.getElementById("hglt-meanings-divisor");
+        this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
+        this.hgltTranslationDivisor = document.getElementById("hglt-translation-divisor");
         this.hgltImagesArrowLeft = document.querySelectorAll(".hglt-images-arrow.hglt-left-arrow")[0];
         this.hgltImagesArrowRight = document.querySelectorAll(".hglt-images-arrow.hglt-right-arrow")[0];
+        this.hgltMeaningsArrowLeft = document.querySelectorAll(".hglt-meanings-arrow.hglt-left-arrow")[0];
+        this.hgltMeaningsArrowRight = document.querySelectorAll(".hglt-meanings-arrow.hglt-right-arrow")[0];
+        this.hgltTranslationArrowLeft = document.querySelectorAll(".hglt-translation-arrow.hglt-left-arrow")[0];
+        this.hgltTranslationArrowRight = document.querySelectorAll(".hglt-translation-arrow.hglt-right-arrow")[0];
         this.settingsData = {
             translation: {
                 avalible: true,
                 fromLang: 'auto',
                 toLang: 'es',
+            },
+            pronunciation: {
+                avalible: true
             },
             definition: {
                 avalible: true,
