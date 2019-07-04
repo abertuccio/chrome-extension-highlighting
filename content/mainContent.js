@@ -70,6 +70,7 @@ class Highlighter {
                 //TODO: LOS SETTING POR PRIMERA VEZ HAY QUE VER SI ESTA BIEN PONERLO ASI;
                 this.hgltActions.settingsData = this.settingsData;
             }).catch(err => {
+                console.log(err);
                 console.error("we couldn't load the hilighter");
                 this.deleteState();
             });

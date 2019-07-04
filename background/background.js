@@ -93,13 +93,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'SEE_STORED_DATA') {
 
-        chrome.tabs.create({ url: chrome.runtime.getURL("stored_data.html")});
+        chrome.tabs.create({ url: chrome.runtime.getURL("store/stored_data.html")});
 
     }
 
     if (message.target === 'background' && message.action === 'STUDY_ELEMENTS') {
 
-        chrome.tabs.create({ url: chrome.runtime.getURL("study_elements.html")});
+        chrome.tabs.create({ url: chrome.runtime.getURL("store/study_elements.html")});
 
     }
 
@@ -114,8 +114,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (var key in changes) {
         if (key === 'hgltAvailible') {
             if(!changes[key].newValue){
-                chrome.tabs.remove(tabIdTranslation);
-                chrome.tabs.remove(tabIdImageSearch);
+                if(tabIdTranslation) chrome.tabs.remove(tabIdTranslation);
+                if(tabIdImageSearch) chrome.tabs.remove(tabIdImageSearch);
             }else{
                 chrome.tabs.query({ pinned: true }, (tabs) => {
                     tabs.forEach(tab => {

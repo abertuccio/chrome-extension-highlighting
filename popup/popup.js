@@ -101,7 +101,7 @@ class Popup {
 
     addActions() {
 
-        this.languagesEquivalence.forEach(l=>{
+        this.languagesEquivalence.forEach(l => {
             const option = document.createElement("option");
             option.value = l.translationLang;
             option.innerText = l.language;
@@ -153,6 +153,19 @@ class Popup {
             this.settingsData.images.avalible = e.target.checked;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
+
+        //TODO: VER EL TEMA DE ELIMINAR EL ERROR AL LANZAR ESTO
+        this.storedElements.addEventListener("click", function () {
+            chrome.runtime.sendMessage({ 'target': 'background', 'action': 'SEE_STORED_DATA' }, function (res) {
+                console.log(res);
+            });
+        })
+        //TODO: VER EL TEMA DE ELIMINAR EL ERROR AL LANZAR ESTO
+        this.studyElements.addEventListener("click", function () {
+            chrome.runtime.sendMessage({ 'target': 'background', 'action': 'STUDY_ELEMENTS' }, function (res) {
+                console.log(res);
+            });
+        })
 
     }
 

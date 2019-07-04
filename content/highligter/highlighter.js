@@ -1,6 +1,7 @@
 class HighlighterActions {
     constructor(speachObject) {
         this.speachObject = speachObject;
+        this.data = null;
         this.hgltImage = document.getElementById("hglt-image");
         this.arrows = document.getElementsByClassName("hglt-arrow");
         this.hgltAddStore = document.getElementById("hglt-add-store");
@@ -53,15 +54,24 @@ class HighlighterActions {
         this.currentTranslationIndex = 0;
         this.definitions = null;
         this.currentDefinitionIndex = 0;
-        this.startArrowsActions();
+        this.startListeners();
     }
 
 
-    startArrowsActions() {
+    startListeners() {
 
-        this.hgltTranslationSound.addEventListener("click", () => {            
+        this.hgltTranslationSound.addEventListener("click", () => {
             window.speechSynthesis.speak(this.speachObject);
-        })
+        });
+
+        this.hgltAddStore.addEventListener("click", () => {
+            chrome.storage.sync.get({ 'hgltStoredElement': [] }, (result) => {                
+                result.hgltStoredElement.push(this.data);
+                chrome.storage.sync.set({ 'hgltStoredElement': result.hgltStoredElement }, function (res) {
+                    console.log(res)
+                });
+            });
+        });
 
         this.hgltImageWrapper.addEventListener("click", (e) => {
 
@@ -255,6 +265,7 @@ class HighlighterActions {
 
     setTranslation(data) {
         this.applySettings();
+        this.data = data;
         this.hgltAddStore.style.display = 'block';
         this.translations = data.result.translations;
         this.definitions = data.result.definitions;
@@ -275,11 +286,12 @@ class HighlighterActions {
 
         this.hgltWordSelected.innerText = data.selection;
         this.hgltWordSelected.title = data.selection;
-        // this.startArrowsActions();
+        // this.startListeners();
     }
 
     setImages(data) {
         this.applySettings();
+        this.data = data;
         this.images = data.result;
         this.hgltImageLoader.style.display = 'none';
         this.hgltImage.src = data.result[0];
@@ -291,7 +303,7 @@ class HighlighterActions {
 
         this.hgltWordSelected.innerText = data.selection;
         this.hgltAddStore.style.display = 'block';
-        // this.startArrowsActions();
+        // this.startListeners();
     }
 
     adjustImage() {
@@ -311,6 +323,6 @@ class HighlighterActions {
         this.definitions = null;
         this.currentDefinitionIndex = 0;
     }
+
+    
 }
-
-
