@@ -6,7 +6,7 @@
 
 .buttons {
     cursor: pointer;
-    color: #000;
+    color: #5d5d5d;
     margin-bottom: 10px;
     line-height: 24px;
 }
@@ -26,6 +26,15 @@ color: #666;
 
 .settings{
     padding: 9px 10px;
-    background-color: #d2d1d1;
+    background-color: #e8e8e8;
     margin-bottom: 12px;
+    border-radius: 3px;
+}
+
+.settings div{
+    padding: 5px;
+}
+
+input{
+    vertical-align: middle;
 }

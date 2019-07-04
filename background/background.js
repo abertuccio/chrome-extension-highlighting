@@ -26,23 +26,23 @@ const createSearchTabs = (search) => {
 
 }
 
-chrome.runtime.onInstalled.addListener(function (details) {
+// chrome.runtime.onInstalled.addListener(function (details) {
 
-    chrome.tabs.query({ pinned: true }, (tabs) => {
+//     chrome.tabs.query({ pinned: true }, (tabs) => {
 
-        tabs.forEach(tab => {
-            if (tab.url.includes("https://www.google.com/search")) {
-                chrome.tabs.remove(tab.id);
-            }
-            if (tab.url.includes("https://translate.google.com/")) {
-                chrome.tabs.remove(tab.id);
-            }
-        });
-            createSearchTabs("example");
-    });
+//         tabs.forEach(tab => {
+//             if (tab.url.includes("https://www.google.com/search")) {
+//                 chrome.tabs.remove(tab.id);
+//             }
+//             if (tab.url.includes("https://translate.google.com/")) {
+//                 chrome.tabs.remove(tab.id);
+//             }
+//         });
+//             createSearchTabs("example");
+//     });
 
 
-});
+// });
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
@@ -91,18 +91,46 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     }
 
+    if (message.target === 'background' && message.action === 'SEE_STORED_DATA') {
+
+        chrome.tabs.create({ url: chrome.runtime.getURL("stored_data.html")});
+
+    }
+
+    if (message.target === 'background' && message.action === 'STUDY_ELEMENTS') {
+
+        chrome.tabs.create({ url: chrome.runtime.getURL("study_elements.html")});
+
+    }
+
 
 
     return true;
 });
 
 
-// chrome.tabs.onUpdated.addListener( function (tabId, changeInfo, tab) {
-//     if (tabId === tabIdTranslation && changeInfo.status == 'complete') {
+chrome.storage.onChanged.addListener(function (changes, namespace) {
 
-//         chrome.tabs.executeScript(tabIdTranslation, {
-//             file: 'content/translation/findInformation.js'
-//         });
+    for (var key in changes) {
+        if (key === 'hgltAvailible') {
+            if(!changes[key].newValue){
+                chrome.tabs.remove(tabIdTranslation);
+                chrome.tabs.remove(tabIdImageSearch);
+            }else{
+                chrome.tabs.query({ pinned: true }, (tabs) => {
+                    tabs.forEach(tab => {
+                        if (tab.url.includes("https://www.google.com/search")) {
+                            chrome.tabs.remove(tab.id);
+                        }
+                        if (tab.url.includes("https://translate.google.com/")) {
+                            chrome.tabs.remove(tab.id);
+                        }
+                    });
+                        createSearchTabs("example");
+                });
+            }
 
-//     }
-//   })
+        }
+    }
+
+});

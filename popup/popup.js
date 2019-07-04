@@ -34,6 +34,48 @@ class Popup {
                 avalible: true
             }
         };
+        this.languagesEquivalence = [
+            {
+                "language": "Español",
+                "speechLang": "es-ES",
+                "translationLang": "es"
+            },
+            {
+                "language": "English",
+                "speechLang": "en-US",
+                "translationLang": "en"
+            },
+            {
+                "language": "Deutsch",
+                "speechLang": "de-DE",
+                "translationLang": "de"
+            },
+            {
+                "language": "Français",
+                "speechLang": "fr-FR",
+                "translationLang": "fr"
+
+            },
+            {
+                "language": "Italiano",
+                "speechLang": "it-IT",
+                "translationLang": "it"
+            },
+            {
+                "language": "Nederlands",
+                "speechLang": "nl-NL",
+                "translationLang": "nl"
+            },
+            {
+                "language": "Polski",
+                "speechLang": "pl-PL",
+                "translationLang": "pl"
+            },
+            {
+                "language": "Português",
+                "speechLang": "pt-BR",
+                "translationLang": "pt"
+            }];
 
 
         this.getState();
@@ -58,6 +100,17 @@ class Popup {
     }
 
     addActions() {
+
+        this.languagesEquivalence.forEach(l=>{
+            const option = document.createElement("option");
+            option.value = l.translationLang;
+            option.innerText = l.language;
+            this.definitionTarget.appendChild(option);
+            this.translationTarget.appendChild(option.cloneNode(true));
+        })
+
+
+
         this.highlight.addEventListener("change", (e) => {
             chrome.storage.sync.set({ hgltAvailible: e.target.checked });
             this.setCheckboxState(e.target.checked);
@@ -74,7 +127,7 @@ class Popup {
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
-        this.pronunciation.addEventListener("change", (e) => { 
+        this.pronunciation.addEventListener("change", (e) => {
             this.settingsData.pronunciation.avalible = e.target.checked;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
@@ -104,7 +157,7 @@ class Popup {
     }
 
     setSettings(settings) {
-        this.translation.checked = settings.translation.avalible;        
+        this.translation.checked = settings.translation.avalible;
         this.pronunciation.checked = settings.pronunciation.avalible;
         this.translationTarget.value = settings.translation.toLang;
         this.definition.checked = settings.definition.avalible;
