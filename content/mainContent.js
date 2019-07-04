@@ -216,6 +216,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             hglt.hgltActions.settingsData = changes[key].newValue;
             hglt.hgltActions.applySettings();
             hglt.settingsData = changes[key].newValue;
+            hglt.positionHLTML();
         }
     }
 

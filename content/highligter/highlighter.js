@@ -12,6 +12,7 @@ class HighlighterActions {
         this.hgltTranslationWrapper = document.getElementById("hglt-translation");
         this.hgltTranslationWord = document.getElementById("hglt-translation-word");
         this.hgltMeaningsDivisor = document.getElementById("hglt-meanings-divisor");
+        this.hgltTranslationSound = document.getElementById("hglt-translation-sound");
         this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
         this.hgltTranslationDivisor = document.getElementById("hglt-translation-divisor");
         this.hgltImagesArrowLeft = document.querySelectorAll(".hglt-images-arrow.hglt-left-arrow")[0];
@@ -270,6 +271,13 @@ class HighlighterActions {
         else {
             this.hgltTranslationWrapper.style.display = 'none';
             this.hgltTranslationDivisor.style.display = 'none';
+        }
+
+        if (this.settingsData.pronunciation.avalible) {
+            this.hgltTranslationSound.style.display = 'block';
+        }
+        else {
+            this.hgltTranslationSound.style.display = 'none';
         }
 
         if (this.settingsData.definition.avalible) {
