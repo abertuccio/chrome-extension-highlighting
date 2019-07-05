@@ -3,6 +3,8 @@ const content = document.getElementById("content")
 const tbody = document.getElementById("tbody");
 
 
+const soundButton = '<svg id="hglt-translation-sound" title="Play Sound" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>'
+
 
 chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 
@@ -13,10 +15,10 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
     // search: "alert"
     // translations: (11) ["alerta", "alerta", "despierto", "vigilante", "atento a", "activo", "zafado", "alerta", "alarma", "alertar", "avisar"]
 
-    storedData.forEach((e,elementIndex )=> {
+    storedData.forEach((e, elementIndex) => {
         const emptyTr = document.createElement("tr");
         const emptyTd = document.createElement("td");
-        emptyTd.setAttribute("colspan","5");
+        emptyTd.setAttribute("colspan", "5");
         emptyTr.appendChild(emptyTd);
         tbody.appendChild(emptyTr);
 
@@ -25,20 +27,21 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
         // const pronunciation = document.createElement("td");
         const translation = document.createElement("td");
         const definition = document.createElement("td");
+        const context = document.createElement("td");
         const image = document.createElement("td");
         const actions = document.createElement("td");
         const removeButton = document.createElement("button");
         removeButton.setAttribute("type", "button");
-        removeButton.classList.add("btn","btn-danger");
+        removeButton.classList.add("btn", "btn-danger");
         removeButton.innerText = "Remove";
         actions.appendChild(removeButton);
 
-        removeButton.addEventListener("click", ()=>{
-            storedData.splice(elementIndex,1);
+        removeButton.addEventListener("click", () => {
+            storedData.splice(elementIndex, 1);
             const newData = storedData.reverse();
-            chrome.storage.local.set({ 'hgltStoredElement': newData }, (res)=>{
+            chrome.storage.local.set({ 'hgltStoredElement': newData }, (res) => {
                 window.location = window.location;
-               });
+            });
         })
 
 
@@ -46,27 +49,45 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
         // pronunciation.id = "pronunciation";
         translation.id = "translation";
         definition.id = "definition";
+        context.id = "context"
         image.id = "image";
         actions.id = "actions";
 
-
+        const soundButtonWrapper = document.createElement("span");
+        soundButtonWrapper.innerHTML = soundButton;
         selection.innerHTML = e.search;
+        selection.appendChild(soundButtonWrapper);
         // pronunciation.innerHTML = "pronunciation";
-        e.translations.forEach((t, i) => {
-            if (i < 7) {
-                translation.innerHTML += t + "<hr>";
-            }
-        })
-        // translation.innerHTML = e.translations.join("<hr>");
+        // e.translations.forEach((t, i) => {
+        //     if (i < 7) {
+        //         translation.innerHTML += t + "<hr>";
+        //     }
+        // })
+        translation.innerHTML = e.translations.join("<hr>");
         definition.innerHTML = e.definitions.join("<hr>");
-        const img = document.createElement("img");
-        img.src = e.image;
-        image.appendChild(img)
+        if (e.image) {
+            const img = document.createElement("img");
+            img.src = e.image;
+            image.appendChild(img);
+        } else {
+            image.innerText = "We couldn't download the image";
+        }
+
+        if ('context' in e && e.context.length) {
+            const reg = new RegExp("(" + e.search + ")", "g");
+            context.innerHTML = e.context.replace((reg), "<span class='hglt-selected-text'>$1</span>");
+        }
+
+        selection.innerHTML = "<div class='content-wrapper' >" + selection.innerHTML + "</div>";
+        translation.innerHTML = "<div class='content-wrapper' >" + translation.innerHTML + "</div>";
+        definition.innerHTML = "<div class='content-wrapper' >" + definition.innerHTML + "</div>";
+        context.innerHTML = "<div class='content-wrapper' >" + context.innerHTML + "</div>";
 
         tr.appendChild(selection);
         // tr.appendChild(pronunciation);
         tr.appendChild(translation);
         tr.appendChild(definition);
+        tr.appendChild(context);
         tr.appendChild(image);
         tr.appendChild(actions);
 

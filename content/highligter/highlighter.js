@@ -87,7 +87,7 @@ console.log("veriamos los elementos guardados");
                 'action': 'ASK_LARGER_IMAGE_LINK',
                 'index': this.currentImageIndex
             }, (srcResponse)=>{                
-               chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+               chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {                   
                    this.data.result.image = srcResponse;
                    result.hgltStoredElement.push(this.data.result);
                    chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res)=>{

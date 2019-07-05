@@ -3,6 +3,7 @@ class Highlighter {
         this.html = false;
         this.allowed = true;
         this.selection = null;
+        this.context = null;
         this.candidate = false;
         this.boxActive = false;
         this.hgltActions = null;
@@ -151,6 +152,7 @@ document.addEventListener("selectionchange", (e) => {
     }
 
     hglt.selection = selection.trim();
+    hglt.context = (window.getSelection().focusNode.data || "");
 
     hglt.speachObject = new SpeechSynthesisUtterance(hglt.selection);
     //TODO: SETEAR EL LENGUAGE AQUI
@@ -189,8 +191,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'main-content' && message.action === 'SEND_INFORMATION') {
 
-        if (message.selection === hglt.selection && message.kind === 'translation') {
-            // console.log(message);
+        if (message.selection === hglt.selection && message.kind === 'translation') {            
+            message.result.context = hglt.context;
             hglt.hgltActions.setTranslation(message);
         }
 

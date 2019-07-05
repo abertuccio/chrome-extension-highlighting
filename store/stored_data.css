@@ -1,6 +1,7 @@
 .table #tbody td{
     vertical-align: middle;
     border-right: 1px solid #e2e2e2;
+    text-align: center;
 }
 
 .table{
@@ -12,6 +13,22 @@
     font-weight: bold;
 }
 
+.hglt-selected-text{
+    color: red;
+}
+
 #image img{
     max-height: 230px;
+    max-width: 519px;
+}
+
+.content-wrapper{
+    height: 233px;
+    overflow: auto;
+}
+
+span svg{
+    display: inline;
+    vertical-align: middle;
+    margin-left: 13px;
 }
