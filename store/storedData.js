@@ -10,15 +10,25 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 
     const storedData = result.hgltStoredElement.reverse();
 
-    //     definitions: (3) ["quick to notice any unusual and potentially dangerous or difficult circumstances; vigilant.", "the state of being watchful for possible danger.", "warn (someone) of a danger, threat, or problem, ty…the intention of having it avoided or dealt with."]
+    // definitions: (3) ["quick to notice any unusual and potentially dangerous or difficult circumstances; vigilant.", "the state of being watchful for possible danger.", "warn (someone) of a danger, threat, or problem, ty…the intention of having it avoided or dealt with."]
     // image: "https://www.talkwalker.com/assets/frontend/media/pop-up-alert.png"
     // search: "alert"
     // translations: (11) ["alerta", "alerta", "despierto", "vigilante", "atento a", "activo", "zafado", "alerta", "alarma", "alertar", "avisar"]
+    // positions: {search: front, translations: back, definitions: back, context:back, image: back, }
 
     storedData.forEach((e, elementIndex) => {
+        if (!('positions' in e)) {
+            e.positions = {
+                selection: 'front',
+                translation: 'back',
+                definition: 'back',
+                context: 'back',
+                image: 'back'
+            };
+        }
         const emptyTr = document.createElement("tr");
         const emptyTd = document.createElement("td");
-        emptyTd.setAttribute("colspan", "5");
+        emptyTd.setAttribute("colspan", "6");
         emptyTr.appendChild(emptyTd);
         tbody.appendChild(emptyTr);
 
@@ -78,10 +88,46 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
             context.innerHTML = e.context.replace((reg), "<span class='hglt-selected-text'>$1</span>");
         }
 
+        var cardPosition = {
+            selection: null,
+            translation: null,
+            definition: null,
+            context: null,
+            image: null
+        };
+
+
+
+        for (let prop in cardPosition) {
+            const positionSelect = document.createElement("select");
+            positionSelect.classList.add("card-position", "form-control");
+            const front = document.createElement("option");
+            front.selected = (e.positions[prop] === 'front')?true:false;
+            front.innerText = 'Front';
+            const back = document.createElement("option");
+            back.selected = (e.positions[prop] === 'back')?true:false;
+            back.innerText = 'Back';
+            const hide = document.createElement("option");
+            hide.selected = (e.positions[prop] === 'hide')?true:false;
+            hide.innerText = 'Hide';
+            positionSelect.appendChild(front);
+            positionSelect.appendChild(back);
+            positionSelect.appendChild(hide);
+            cardPosition[prop] = positionSelect;
+        }
+
+
         selection.innerHTML = "<div class='content-wrapper' >" + selection.innerHTML + "</div>";
         translation.innerHTML = "<div class='content-wrapper' >" + translation.innerHTML + "</div>";
         definition.innerHTML = "<div class='content-wrapper' >" + definition.innerHTML + "</div>";
         context.innerHTML = "<div class='content-wrapper' >" + context.innerHTML + "</div>";
+
+        selection.appendChild(cardPosition.selection);
+        translation.appendChild(cardPosition.translation);
+        definition.appendChild(cardPosition.definition);
+        context.appendChild(cardPosition.context);
+        image.appendChild(cardPosition.image);
+
 
         tr.appendChild(selection);
         // tr.appendChild(pronunciation);

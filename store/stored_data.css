@@ -1,3 +1,6 @@
+h1{
+    padding: 5px;
+}
 .table #tbody td{
     vertical-align: middle;
     border-right: 1px solid #e2e2e2;
@@ -31,4 +34,8 @@ span svg{
     display: inline;
     vertical-align: middle;
     margin-left: 13px;
+}
+
+.card-position{
+    margin-top: 10px;
 }
