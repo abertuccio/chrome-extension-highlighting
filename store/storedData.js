@@ -16,6 +16,9 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
     // translations: (11) ["alerta", "alerta", "despierto", "vigilante", "atento a", "activo", "zafado", "alerta", "alarma", "alertar", "avisar"]
     // positions: {search: front, translations: back, definitions: back, context:back, image: back, }
 
+    //TODO: FALTA ACCION DE CAMBIAR A FRONT BACK Y HIDE Y REPRODUCIR SONIDO
+    //TODO: ESTE ARCHIVO ES UN KILOMBO
+
     storedData.forEach((e, elementIndex) => {
         if (!('positions' in e)) {
             e.positions = {
@@ -96,24 +99,35 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
             image: null
         };
 
+        const changePosition = (selectedElement, property) => {
+
+            let index  = selectedElement.target.options.selectedIndex;
+            e.positions[property] = selectedElement.target.options[index].value;
+            //TODO]: ACA GUARDAMOS LOS CAMNBIOS
+        }
+
 
 
         for (let prop in cardPosition) {
             const positionSelect = document.createElement("select");
             positionSelect.classList.add("card-position", "form-control");
             const front = document.createElement("option");
-            front.selected = (e.positions[prop] === 'front')?true:false;
+            front.selected = (e.positions[prop] === 'front') ? true : false;
             front.innerText = 'Front';
+            front.value = 'front';
             const back = document.createElement("option");
-            back.selected = (e.positions[prop] === 'back')?true:false;
+            back.selected = (e.positions[prop] === 'back') ? true : false;
             back.innerText = 'Back';
+            back.value = 'back';
             const hide = document.createElement("option");
-            hide.selected = (e.positions[prop] === 'hide')?true:false;
+            hide.selected = (e.positions[prop] === 'hide') ? true : false;
             hide.innerText = 'Hide';
+            hide.value = 'hide';
             positionSelect.appendChild(front);
             positionSelect.appendChild(back);
             positionSelect.appendChild(hide);
             cardPosition[prop] = positionSelect;
+            positionSelect.addEventListener("change", (elmt) => { changePosition(elmt, prop) })
         }
 
 
