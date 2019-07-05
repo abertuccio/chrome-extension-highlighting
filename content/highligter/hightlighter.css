@@ -106,13 +106,28 @@ float: left;
     user-select: none;
 }
 
-#hglt-add-store{
+.hglt-add-store{
     margin-top: 8px;
     cursor: pointer;
 }
 
+#hglt-add-store-saving{
+  display: none;
+}
+
+#hglt-add-store-store-study{
+  display: none;
+}
+
 #hglt-add-store:hover{
     color:#000;
+}
+
+#hglt-see-stored-elements, #hglt-study-elements{
+  cursor: pointer;
+}
+#hglt-see-stored-elements:hover, #hglt-study-elements:hover{
+  color:#000;
 }
 
 #hglt-word-selected{

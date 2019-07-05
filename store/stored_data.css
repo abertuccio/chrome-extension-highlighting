@@ -1,0 +1,17 @@
+.table #tbody td{
+    vertical-align: middle;
+    border-right: 1px solid #e2e2e2;
+}
+
+.table{
+    font-size: 14px;
+}
+
+#selection{
+    font-size: 31px;
+    font-weight: bold;
+}
+
+#image img{
+    max-height: 230px;
+}

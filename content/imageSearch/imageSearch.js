@@ -1,22 +1,26 @@
+var img = [];
+var metaInfo = [];
+
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
     if (request.target === 'images' && request.action === 'ASK_IMAGES') {
         const imageSearchURL = `https://www.google.com/search?q=${request.selection}&source=lnms&tbm=isch`;
         window.location.href = imageSearchURL;
     }
+    if (request.target === 'images' && request.action === 'ASK_LARGER_IMAGE_LINK') {
+        document.querySelectorAll(".rg_ic.rg_i")[metaInfo[request.index]].click(); 
+        setInterval(() => {
+            let candidates = [...document.getElementsByClassName("irc_mi")];
+            for(let i = 0; i < candidates.length -1; i++){
+                if(candidates[i].src){
+                    sendResponse(candidates[i].src);
+                    break;
+                }
+            }
+        }, 1000);  
+    }
     return true;
 });
-
-
-
-// chrome.runtime.onMessage.addListener(
-//     function (request, sender, sendResponse) {
-//         if (request.target === 'getImages') {
-//             sendResponse({
-//                 images: imgs
-//             });
-//         }
-//     });
 
 const mutateImages = (mutations) => {
     
@@ -27,8 +31,12 @@ const mutateImages = (mutations) => {
         //si guardamos el index hacemos document.getElementsByClassName("irc_mi")[INDEX].CLICK()
         //quiza hay que esperar unos milisegundos
         //document.getElementsByClassName("irc_mi")[0, 1 o 2].currentSrc
-        let imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c) => {
-            if (c.src) { a.push(c.src); } return a;
+        imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c, i) => {
+            if (c.src) { 
+                a.push(c.src); 
+                metaInfo.push(i);
+            } 
+            return a;
         }, [])
 
 

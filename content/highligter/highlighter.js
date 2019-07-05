@@ -15,6 +15,10 @@ class HighlighterActions {
         this.hgltTranslationWord = document.getElementById("hglt-translation-word");
         this.hgltMeaningsDivisor = document.getElementById("hglt-meanings-divisor");
         this.hgltTranslationSound = document.getElementById("hglt-translation-sound");
+        this.hgltAddStoreSaving = document.getElementById("hglt-add-store-saving");
+        this.hgltAddStoreStoreStudy = document.getElementById("hglt-add-store-store-study");
+        this.hgltSeeStoredElements = document.getElementById("hglt-see-stored-elements");
+        this.hgltStudyElements = document.getElementById("hglt-study-elements");
         // this.hgltTranslationSound.src = chrome.extension.getURL("content/highligter/baseline-volume_up-24px.svg");
         this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
         this.hgltTranslationDivisor = document.getElementById("hglt-translation-divisor");
@@ -60,17 +64,39 @@ class HighlighterActions {
 
     startListeners() {
 
+        this.hgltSeeStoredElements.addEventListener("click", ()=>{
+console.log("veriamos los elementos guardados");
+        });
+
+        this.hgltStudyElements.addEventListener("click", ()=>{
+            console.log("veriamos la pantalla para estudiar los elementos guardados");            
+        })
+
+
         this.hgltTranslationSound.addEventListener("click", () => {
             window.speechSynthesis.speak(this.speachObject);
         });
 
-        this.hgltAddStore.addEventListener("click", () => {
-            chrome.storage.sync.get({ 'hgltStoredElement': [] }, (result) => {                
-                result.hgltStoredElement.push(this.data);
-                chrome.storage.sync.set({ 'hgltStoredElement': result.hgltStoredElement }, function (res) {
-                    console.log(res)
-                });
+        this.hgltAddStore.addEventListener("click", (e) => {
+
+            this.hgltAddStore.style.display = 'none';
+            this.hgltAddStoreSaving.style.display = 'block';
+
+            chrome.runtime.sendMessage({
+                'target': 'background',
+                'action': 'ASK_LARGER_IMAGE_LINK',
+                'index': this.currentImageIndex
+            }, (srcResponse)=>{                
+               chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+                   this.data.result.image = srcResponse;
+                   result.hgltStoredElement.push(this.data.result);
+                   chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res)=>{
+                    this.hgltAddStoreSaving.style.display = 'none';
+                    this.hgltAddStoreStoreStudy.style.display = 'block';
+                   });
+               });
             });
+
         });
 
         this.hgltImageWrapper.addEventListener("click", (e) => {
@@ -218,6 +244,7 @@ class HighlighterActions {
         this.hgltImage.style.display = 'none';
         this.hgltImageLoader.style.display = 'inline-block';
         this.hgltAddStore.style.display = 'none';
+        this.hgltAddStoreStoreStudy.style.display = 'none';
         this.translationLoader;
 
     }
@@ -291,7 +318,7 @@ class HighlighterActions {
 
     setImages(data) {
         this.applySettings();
-        this.data = data;
+        // this.data = data;
         this.images = data.result;
         this.hgltImageLoader.style.display = 'none';
         this.hgltImage.src = data.result[0];
@@ -324,5 +351,5 @@ class HighlighterActions {
         this.currentDefinitionIndex = 0;
     }
 
-    
+
 }
