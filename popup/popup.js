@@ -14,6 +14,7 @@ class Popup {
         this.storedElements = document.getElementById("stored-elements");
         this.definitionTarget = document.getElementById("definition-target");
         this.translationTarget = document.getElementById("translation-target");
+        this.translationFromTarget = document.getElementById("translation-from-target");
         this.imageCheckboxLabel = document.getElementById("image-checkbox-label");
         this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
         this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
@@ -107,6 +108,7 @@ class Popup {
             option.innerText = l.language;
             this.definitionTarget.appendChild(option);
             this.translationTarget.appendChild(option.cloneNode(true));
+            this.translationFromTarget.appendChild(option.cloneNode(true));
         })
 
 
@@ -134,8 +136,15 @@ class Popup {
 
         this.translationTarget.addEventListener("change", (e) => {
             //TODO: VER ESTO DE CAMBIARLO CUANDO SEA EL CASO
-            this.settingsData.translation.fromLang = 'auto';
+            // this.settingsData.translation.fromLang = 'auto';
             this.settingsData.translation.toLang = e.target.value;
+            chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
+        });
+
+        this.translationFromTarget.addEventListener("change", (e) => {
+            //TODO: VER ESTO DE CAMBIARLO CUANDO SEA EL CASO
+            this.settingsData.translation.fromLang = e.target.value;
+            // this.settingsData.translation.toLang = e.target.value;
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
@@ -172,6 +181,7 @@ class Popup {
     setSettings(settings) {
         this.translation.checked = settings.translation.avalible;
         this.pronunciation.checked = settings.pronunciation.avalible;
+        this.translationFromTarget.value = settings.translation.fromLang;
         this.translationTarget.value = settings.translation.toLang;
         this.definition.checked = settings.definition.avalible;
         this.definitionTarget.value = settings.definition.lang;

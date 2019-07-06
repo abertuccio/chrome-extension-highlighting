@@ -13,6 +13,7 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
     // definitions: (3) ["quick to notice any unusual and potentially dangerous or difficult circumstances; vigilant.", "the state of being watchful for possible danger.", "warn (someone) of a danger, threat, or problem, ty…the intention of having it avoided or dealt with."]
     // image: "https://www.talkwalker.com/assets/frontend/media/pop-up-alert.png"
     // search: "alert"
+    // pronunciationLang: 'en-US'
     // translations: (11) ["alerta", "alerta", "despierto", "vigilante", "atento a", "activo", "zafado", "alerta", "alarma", "alertar", "avisar"]
     // positions: {search: front, translations: back, definitions: back, context:back, image: back, }
 
@@ -20,6 +21,7 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
     //TODO: ESTE ARCHIVO ES UN KILOMBO
 
     storedData.forEach((e, elementIndex) => {
+        console.log(e);
         if (!('positions' in e)) {
             e.positions = {
                 selection: 'front',
@@ -28,6 +30,9 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
                 context: 'back',
                 image: 'back'
             };
+        }
+        if (!('pronunciationLang' in e)) {
+            e.pronunciationLang = 'en-US';
         }
         const emptyTr = document.createElement("tr");
         const emptyTd = document.createElement("td");
@@ -69,6 +74,12 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
         const soundButtonWrapper = document.createElement("span");
         soundButtonWrapper.innerHTML = soundButton;
         selection.innerHTML = e.search;
+        selection.addEventListener("click", () => {
+            const utterance = new SpeechSynthesisUtterance(e.search);
+            utterance.lang = e.pronunciationLang;
+            speechSynthesis.speak(utterance);
+            console.log(utterance);
+        })
         selection.appendChild(soundButtonWrapper);
         // pronunciation.innerHTML = "pronunciation";
         // e.translations.forEach((t, i) => {
@@ -101,9 +112,11 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 
         const changePosition = (selectedElement, property) => {
 
-            let index  = selectedElement.target.options.selectedIndex;
+            let index = selectedElement.target.options.selectedIndex;
             e.positions[property] = selectedElement.target.options[index].value;
-            //TODO]: ACA GUARDAMOS LOS CAMNBIOS
+            chrome.storage.local.set({ 'hgltStoredElement': storedData.reverse() }, (res) => {
+                console.log("storage changes are completed")
+            });
         }
 
 

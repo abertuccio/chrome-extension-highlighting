@@ -14,6 +14,7 @@ h1{
 #selection{
     font-size: 31px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .hglt-selected-text{
