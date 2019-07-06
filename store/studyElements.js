@@ -45,6 +45,15 @@ const mainLoad = () => {
                 if(!('interval' in e)){
                     originalData[i].interval = 1;
                 }
+                if (!('positions' in e)) {
+                    originalData[i].positions = {
+                        selection: 'front',
+                        translation: 'back',
+                        definition: 'back',
+                        context: 'back',
+                        image: 'back'
+                    };
+                }
                 return originalData[i];
             });
             
@@ -63,7 +72,7 @@ const mainLoad = () => {
                 
                 card.appendChild(question);
                 card.appendChild(answer);
-                // console.log(e);
+                
                 
                 for (let property in e.positions) {
                     
@@ -105,6 +114,7 @@ const mainLoad = () => {
                 return card;
 
             });
+
 
             if (cards.length) {
                 drawThereAreItems();
