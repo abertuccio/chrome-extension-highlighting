@@ -1,17 +1,36 @@
 h1{
     padding: 5px;
+    text-align: center;
 }
 
 #card div{
     margin: auto;
 }
 
+.selection{
+    font-size: 64px;
+    border: 1px solid #bbb;
+    padding: 81px;
+    border-radius: 9px;
+    color: #949494;
+}
+
+.selection:hover{
+    background-color: #bbb;
+    color: #505050;
+}
+
 .question{
     cursor: pointer;
 }
 
+.answer{
+    border: 1px solid #c3c3c3;
+    border-radius: 5px;
+}
+
 .context{
-    border: 1px solid #dcdcdc;
+    /* border: 1px solid #dcdcdc; */
     padding: 9px;
     border-radius: 5px;
     color: #3e3e3e;
@@ -20,7 +39,7 @@ h1{
 
 .definition{
     font-style: italic;
-    border: 1px solid #c1c1c1;
+    /* border: 1px solid #c1c1c1; */
     padding: 30px;
     border-radius: 5px;
     color: #808080;
@@ -33,18 +52,12 @@ h1{
     box-shadow: 5px 4px 9px 0px #d2d2d2;
     margin-bottom: 23px;
 }
-.selection{
-    font-size: 64px;
-    border: 1px solid #666;
-    padding: 81px;
-    border-radius: 9px;
-}
 
 .translation{
     font-weight: bold;
     padding: 40px;
     color: blue;
-    border: 1px solid blue;
+    /* border: 1px solid blue; */
     border-radius: 5px;
 }
 
@@ -60,6 +73,7 @@ h1{
     border-radius: 6px;
     color: #FFF;
     margin-bottom: 21px;
+    margin-top: 21px;
 }
 #rates .row{
     margin: auto;

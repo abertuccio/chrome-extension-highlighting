@@ -20,6 +20,7 @@
         "<all_urls>"
       ],
       "js": [
+        "content/HgltElement.js",
         "content/highligter/highlighter.js",
         "content/mainContent.js"
       ],

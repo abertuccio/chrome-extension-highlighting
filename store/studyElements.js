@@ -26,37 +26,47 @@ const mainLoad = () => {
 
         let originalData = result.hgltStoredElement;
 
-   console.log(originalData);
-
+        
         if (originalData && originalData.length) {
-
+            
             isThereAnyElement = true;
-
+            
             let storedData = originalData.map((e, i) => {
                 originalData[i].originalIndex = i;
                 if (!('nextPracticeDate' in e)) {
                     originalData[i].nextPracticeDate = 0;
                 }
+                if(!('repetition' in e)){
+                    originalData[i].repetitions = 0;
+                }
+                if(!('easinessFactor' in e)){
+                    originalData[i].easinessFactor = 2.5;
+                }
+                if(!('interval' in e)){
+                    originalData[i].interval = 1;
+                }
                 return originalData[i];
             });
-
+            
+            
             let todayInSeconds = Math.floor(Date.now() / 1000);
-
+            
             storedData = storedData.filter(e => e.nextPracticeDate < todayInSeconds);
-
+            
             storedData = storedData.sort((a, b) => { a.nextPracticeDate - b.nextPracticeDate });
-
-
+            
+            
             let cards = storedData.map((e, i) => {
                 const card = document.createElement("div");
                 const question = document.createElement("div");
                 const answer = document.createElement("div");
-
+                
                 card.appendChild(question);
                 card.appendChild(answer);
-
+                // console.log(e);
+                
                 for (let property in e.positions) {
-
+                    
                     // console.log(property);
                     // console.log(e[property]);
                     // console.log(kindOfWrapper[property]);
@@ -117,7 +127,7 @@ const mainLoad = () => {
 
                 const currentIndex = +document.getElementsByClassName("question")[0].id;
 
-
+                console.log(storedData[currentIndex]);
                 const newCard = sm2(storedData[currentIndex], rate);
 
                 originalData.originalIndex = newCard;
