@@ -1,0 +1,66 @@
+h1{
+    padding: 5px;
+}
+
+#card div{
+    margin: auto;
+}
+
+.question{
+    cursor: pointer;
+}
+
+.context{
+    border: 1px solid #dcdcdc;
+    padding: 9px;
+    border-radius: 5px;
+    color: #3e3e3e;
+    background-color: #dcdcdc;
+}
+
+.definition{
+    font-style: italic;
+    border: 1px solid #c1c1c1;
+    padding: 30px;
+    border-radius: 5px;
+    color: #808080;
+}
+
+.image{
+    border-style: none;
+    margin: auto;
+    display: block;
+    box-shadow: 5px 4px 9px 0px #d2d2d2;
+    margin-bottom: 23px;
+}
+.selection{
+    font-size: 64px;
+    border: 1px solid #666;
+    padding: 81px;
+    border-radius: 9px;
+}
+
+.translation{
+    font-weight: bold;
+    padding: 40px;
+    color: blue;
+    border: 1px solid blue;
+    border-radius: 5px;
+}
+
+#rates{
+    display: block;
+    padding: 82px;
+    /* text-align: center; */
+    width: 764px;
+    margin: auto;
+    font-size: 31px;
+    display: block;
+    background-color: #000;
+    border-radius: 6px;
+    color: #FFF;
+    margin-bottom: 21px;
+}
+#rates .row{
+    margin: auto;
+}

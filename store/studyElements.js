@@ -22,7 +22,11 @@ const drawThereAreItems = () => {
 const mainLoad = () => {
 
     chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+
+
         let originalData = result.hgltStoredElement;
+
+   console.log(originalData);
 
         if (originalData && originalData.length) {
 
@@ -47,11 +51,7 @@ const mainLoad = () => {
                 const card = document.createElement("div");
                 const question = document.createElement("div");
                 const answer = document.createElement("div");
-                const answerImage = document.createElement("img");
-                const answerText = document.createElement("div");
 
-                answer.appendChild(answerImage);
-                answer.appendChild(answerText);
                 card.appendChild(question);
                 card.appendChild(answer);
 
@@ -61,6 +61,7 @@ const mainLoad = () => {
                     // console.log(e[property]);
                     // console.log(kindOfWrapper[property]);
                     var element = document.createElement(kindOfWrapper[property]);
+                    element.classList.add(property);
                     if (kindOfWrapper[property] === 'p') {
                         //TODO: ACOMODAR ESTE TEMA DE LOS NOMBRES
                         var prop = property; 
@@ -73,8 +74,7 @@ const mainLoad = () => {
                         element.src = e[property];
                     }
                     if (e.positions[property] === 'front') {
-                        console.log("vamos a agregar")
-                        console.log(e.positions[property])
+                        
                         question.appendChild(element);
                     }
                     else if (e.positions[property] === 'back') {
