@@ -24,9 +24,8 @@ const mainLoad = () => {
 
     chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 
-
         let originalData = result.hgltStoredElement;
-
+        console.log(originalData);
 
         if (originalData && originalData.length) {
 
@@ -144,7 +143,7 @@ const mainLoad = () => {
             [...document.getElementsByClassName("rate")].forEach(r => {
 
                 r.addEventListener('click', (e) => {
-                    showImage(e.target.id);
+                    showImage(e.target.id.value);                    
                 });
             });
 
@@ -157,13 +156,17 @@ const mainLoad = () => {
             const showImage = (rate) => {
 
                 const currentIndex = +document.getElementsByClassName("question")[0].id;
-
-                console.log(storedData[currentIndex]);
+                
+                //TODO: ARREGLAR ESTO QUE RATE VIENE UNDEFINED
+                console.log(rate);
+                
                 const newCard = sm2(storedData[currentIndex], rate);
 
                 originalData.originalIndex = newCard;
 
-                localStorage.setItem("hlt", JSON.stringify(originalData));
+                chrome.storage.local.set({ 'hgltStoredElement': originalData }, (res) => {
+                    console.log("updated");
+                });
 
 
                 const nextIndex = currentIndex + 1;
