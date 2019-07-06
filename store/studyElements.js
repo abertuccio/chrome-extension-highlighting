@@ -62,6 +62,7 @@ const mainLoad = () => {
                     // console.log(kindOfWrapper[property]);
                     var element = document.createElement(kindOfWrapper[property]);
                     if (kindOfWrapper[property] === 'p') {
+                        //TODO: ACOMODAR ESTE TEMA DE LOS NOMBRES
                         var prop = property; 
                         if(property === 'definition') prop = 'definitions';
                         if(property === 'selection') prop = 'search';
