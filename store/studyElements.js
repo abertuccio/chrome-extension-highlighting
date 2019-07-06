@@ -5,6 +5,7 @@ const cardContainer = document.getElementById("card");
 const messageNoItems = document.getElementById("no-elements");
 const rates = document.getElementById("rates");
 const reverseButton = document.getElementById("reverse");
+const kindOfWrapper = {search: "p", translations: "p", definitions: "p", context:"p", image: "img"};
 
 const drawNoItems = () => {
     messageNoItems.style.display = 'block';
@@ -20,118 +21,140 @@ const drawThereAreItems = () => {
 
 const mainLoad = () => {
 
-    let originalData = JSON.parse(localStorage.getItem("hlt"));
+    chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+        let originalData = result.hgltStoredElement;
 
-    if (originalData && originalData.length) {
+        if (originalData && originalData.length) {
 
-        isThereAnyElement = true;
+            isThereAnyElement = true;
 
-        let storedData = originalData.map((e, i) => {
-            originalData[i].originalIndex = i;
-            if (!('nextPracticeDate' in e)) {
-                originalData[i].nextPracticeDate = 0;
+            let storedData = originalData.map((e, i) => {
+                originalData[i].originalIndex = i;
+                if (!('nextPracticeDate' in e)) {
+                    originalData[i].nextPracticeDate = 0;
+                }
+                return originalData[i];
+            });
+
+            let todayInSeconds = Math.floor(Date.now() / 1000);
+
+            storedData = storedData.filter(e => e.nextPracticeDate < todayInSeconds);
+
+            storedData = storedData.sort((a, b) => { a.nextPracticeDate - b.nextPracticeDate });
+
+
+            let cards = storedData.map((e, i) => {
+                const card = document.createElement("div");
+                const question = document.createElement("div");
+                const answer = document.createElement("div");
+                const answerImage = document.createElement("img");
+                const answerText = document.createElement("div");
+
+                answer.appendChild(answerImage);
+                answer.appendChild(answerText);
+                card.appendChild(question);
+                card.appendChild(answer);
+
+                for (let property in e.positions) {
+                    if (e.positions[property] === 'front') {
+console.log(property+" es front");
+                    }
+                    else if(e.positions[property] === 'back') {
+                        console.log(property+" es back");
+                    }
+                    else{
+                        console.log(property+" es hide");
+                    }
+                }
+
+                question.innerText = e.search;
+                question.classList.add("question");
+                question.setAttribute("id", i);
+                answer.classList.add("answer");
+                answerImage.src = e.image;
+                answerText.innerText = e.translations.join(" | ");
+
+
+                return card;
+
+            });
+
+            if (cards.length) {
+                drawThereAreItems();
+                cardContainer.appendChild(cards[0]);
+                document.getElementsByClassName("question")[0].addEventListener("click", flipCard);
+                rates.style.display = 'none';
+            } else {
+                drawNoItems();
             }
-            return originalData[i];
-        });
-
-        let todayInSeconds = Math.floor(Date.now() / 1000);
-
-        storedData = storedData.filter(e => e.nextPracticeDate < todayInSeconds);
-
-        storedData = storedData.sort((a, b) => { a.nextPracticeDate - b.nextPracticeDate });
 
 
-        let cards = storedData.map((e, i) => {
-            const card = document.createElement("div");
-            const question = document.createElement("div");
-            const answer = document.createElement("div");
-            const answerImage = document.createElement("img");
-            const answerText = document.createElement("div");
+            [...document.getElementsByClassName("rate")].forEach(r => {
 
-            answer.appendChild(answerImage);
-            answer.appendChild(answerText);
-            card.appendChild(question);
-            card.appendChild(answer);
+                r.addEventListener('click', (e) => {
+                    showImage(e.target.id);
+                });
+            })
 
-            question.innerText = e.selection;
-            question.classList.add("question");
-            question.setAttribute("id", i);
-            answer.classList.add("answer");
-            answerImage.src = e.image;
-            answerText.innerText = e.translation;
+            const showImage = (rate) => {
+
+                const currentIndex = +document.getElementsByClassName("question")[0].id;
 
 
-            return card;
+                const newCard = sm2(storedData[currentIndex], rate);
 
-        });
+                originalData.originalIndex = newCard;
 
-        if (cards.length) {
-            drawThereAreItems();
-            cardContainer.appendChild(cards[0]);
-            document.getElementsByClassName("question")[0].addEventListener("click", flipCard);
-            rates.style.display = 'none';
+                localStorage.setItem("hlt", JSON.stringify(originalData));
+
+
+                const nextIndex = currentIndex + 1;
+
+                cardContainer.innerHTML = "";
+                if (nextIndex <= cards.length - 1) {
+                    cardContainer.appendChild(cards[nextIndex]);
+                    document.getElementsByClassName("question")[0].addEventListener("click", flipCard);
+                    rates.style.display = 'none';
+                }
+                else {
+                    drawNoItems();
+                }
+            }
         } else {
             drawNoItems();
         }
 
 
-        [...document.getElementsByClassName("rate")].forEach(r => {
 
-            r.addEventListener('click', (e) => {
-                showImage(e.target.id);
-            });
-        })
+    });
 
-        const showImage = (rate) => {
-
-            const currentIndex = +document.getElementsByClassName("question")[0].id;
-
-
-            const newCard = sm2(storedData[currentIndex], rate);
-
-            originalData.originalIndex = newCard;
-
-            localStorage.setItem("hlt", JSON.stringify(originalData));
-
-
-            const nextIndex = currentIndex + 1;
-
-            cardContainer.innerHTML = "";
-            if (nextIndex <= cards.length - 1) {
-                cardContainer.appendChild(cards[nextIndex]);
-                document.getElementsByClassName("question")[0].addEventListener("click", flipCard);
-                rates.style.display = 'none';
-            }
-            else {
-                drawNoItems();
-            }
-        }
-    } else {
-        drawNoItems();
-    }
 
 }
 
 reverseButton.addEventListener("click", () => {
 
-    let originalData = JSON.parse(localStorage.getItem("hlt"));
+    chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+        let originalData = result.hgltStoredElement;
 
-    originalData = originalData.map((e, i) => {
+        originalData = originalData.map((e, i) => {
 
-        const newRep = +originalData[i].repetitions - 1;
-        const secondsInDay = 60 * 60 * 24;
-        const newDay = originalData[i].nextPracticeDate - secondsInDay;
+            const newRep = +originalData[i].repetitions - 1;
+            const secondsInDay = 60 * 60 * 24;
+            const newDay = originalData[i].nextPracticeDate - secondsInDay;
 
-        originalData[i].repetitions = (newRep <= 0) ? 0 : newRep;
-        originalData[i].nextPracticeDate = (newDay <= 0) ? 0 : newDay;
+            originalData[i].repetitions = (newRep <= 0) ? 0 : newRep;
+            originalData[i].nextPracticeDate = (newDay <= 0) ? 0 : newDay;
 
-        return originalData[i];
+            return originalData[i];
 
-    })
+        })
 
-    localStorage.setItem("hlt", JSON.stringify(originalData));
+        chrome.storage.local.set({ 'hgltStoredElement': originalData }, (res) => {
+            mainLoad();
+        });
 
-    mainLoad();
+    });
+
 
 })
 
