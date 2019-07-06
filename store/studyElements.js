@@ -5,7 +5,7 @@ const cardContainer = document.getElementById("card");
 const messageNoItems = document.getElementById("no-elements");
 const rates = document.getElementById("rates");
 const reverseButton = document.getElementById("reverse");
-const kindOfWrapper = {search: "p", translations: "p", definitions: "p", context:"p", image: "img"};
+const kindOfWrapper = { selection: "p", translation: "p", definition: "p", context: "p", image: "img" };
 
 const drawNoItems = () => {
     messageNoItems.style.display = 'block';
@@ -56,23 +56,39 @@ const mainLoad = () => {
                 card.appendChild(answer);
 
                 for (let property in e.positions) {
+
+                    // console.log(property);
+                    // console.log(e[property]);
+                    // console.log(kindOfWrapper[property]);
+                    var element = document.createElement(kindOfWrapper[property]);
+                    if (kindOfWrapper[property] === 'p') {
+                        var prop = property; 
+                        if(property === 'definition') prop = 'definitions';
+                        if(property === 'selection') prop = 'search';
+                        if(property === 'translation') prop = 'translations';
+                        element.innerText = e[prop];
+                    }
+                    if (kindOfWrapper[property] === 'img') {                        
+                        element.src = e[property];
+                    }
                     if (e.positions[property] === 'front') {
-console.log(property+" es front");
+                        console.log("vamos a agregar")
+                        console.log(e.positions[property])
+                        question.appendChild(element);
                     }
-                    else if(e.positions[property] === 'back') {
-                        console.log(property+" es back");
+                    else if (e.positions[property] === 'back') {
+                        answer.appendChild(element);
                     }
-                    else{
-                        console.log(property+" es hide");
+                    else {
+                        // console.log(property + " es hide");
                     }
                 }
 
-                question.innerText = e.search;
                 question.classList.add("question");
                 question.setAttribute("id", i);
                 answer.classList.add("answer");
-                answerImage.src = e.image;
-                answerText.innerText = e.translations.join(" | ");
+                // answerImage.src = e.image;
+                // answerText.innerText = e.translations.join(" | ");
 
 
                 return card;
