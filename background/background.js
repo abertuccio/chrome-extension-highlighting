@@ -104,8 +104,29 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 storedDataTabId = tab.id;
             });
         } else {
-            chrome.tabs.reload(storedDataTabId);
-            chrome.tabs.update(storedDataTabId, {active: true});
+            chrome.tabs.query({}, (tabs) => {
+
+                var isAvailable = false;
+
+                for (let i = 0; i < tabs.length; i++) {
+                    if (tabs[i].id === storedDataTabId) {
+                        chrome.tabs.reload(storedDataTabId);
+                        chrome.tabs.update(storedDataTabId, { active: true });
+                        isAvailable = true;
+                        break;
+                    }
+                }
+
+                if (!isAvailable) {
+                    storedDataUrl = chrome.runtime.getURL("store/stored_data.html");
+                    chrome.tabs.create({ url: storedDataUrl }, (tab) => {
+                        storedDataTabId = tab.id;
+                    });
+                }
+
+            });
+
+
         }
 
 
@@ -115,18 +136,37 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         if (!studyElementsURL) {
             studyElementsURL = chrome.runtime.getURL("store/study_elements.html");
-            chrome.tabs.create({ url: studyElementsURL }, (tab)=>{
+            chrome.tabs.create({ url: studyElementsURL }, (tab) => {
                 studyElementsTabId = tab.id;
             });
-        }else{
-            chrome.tabs.reload(studyElementsTabId);
-            chrome.tabs.update(studyElementsTabId, {active: true});
+        } else {
+
+            chrome.tabs.query({}, (tabs) => {
+
+                var isAvailable = false;
+
+                for (let i = 0; i < tabs.length; i++) {
+                    if (tabs[i].id === studyElementsTabId) {
+                        chrome.tabs.reload(studyElementsTabId);
+                        chrome.tabs.update(studyElementsTabId, { active: true });
+                        isAvailable = true;
+                        break;
+                    }
+                }
+
+                if (!isAvailable) {
+                    studyElementsURL = chrome.runtime.getURL("store/study_elements.html");
+                    chrome.tabs.create({ url: studyElementsURL }, (tab) => {
+                        studyElementsTabId = tab.id;
+                    });
+                }
+
+            });
+
+
         }
 
-
     }
-
-
 
     return true;
 });
