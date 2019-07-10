@@ -35,7 +35,7 @@ const mainLoad = () => {
                 if (!('nextPracticeDate' in e)) {
                     originalData[i].nextPracticeDate = 0;
                 }
-                if (!('repetition' in e)) {
+                if (!('repetitions' in e)) {
                     originalData[i].repetitions = 0;
                 }
                 if (!('easinessFactor' in e)) {
@@ -138,7 +138,7 @@ const mainLoad = () => {
             [...document.getElementsByClassName("rate")].forEach(r => {
 
                 r.addEventListener('click', (e) => {
-                    showImage(e.target.id.value);                    
+                    showImage(e.target.value);                    
                 });
             });
 
@@ -150,9 +150,21 @@ const mainLoad = () => {
 
             const showImage = (rate) => {
 
+                [...document.getElementsByClassName("rate")].forEach(e=>e.checked = false)
+
+                const element = document.getElementsByClassName("question");
+
+                if(!element.length) return;
+
                 const currentIndex = +document.getElementsByClassName("question")[0].id;
+
+                console.log(currentIndex);
+                console.log(storedData[currentIndex]);
+                console.log(storedData[currentIndex].repetitions);
                 
                 //TODO: ARREGLAR ESTO QUE RATE VIENE UNDEFINED
+
+                // console.log(storedData[currentIndex]);
                 
                 const newCard = sm2(storedData[currentIndex], rate);
 
@@ -187,6 +199,15 @@ const mainLoad = () => {
 }
 
 reverseButton.addEventListener("click", () => {
+
+
+    [...document.getElementsByClassName("rate")].forEach(r => {
+
+        r.removeEventListener('click', (e) => {
+            showImage(e.target.value);                    
+        });
+    });
+
 
     chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
         let originalData = result.hgltStoredElement;
