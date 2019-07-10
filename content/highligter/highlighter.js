@@ -19,7 +19,6 @@ class HighlighterActions {
         this.hgltAddStoreStoreStudy = document.getElementById("hglt-add-store-store-study");
         this.hgltSeeStoredElements = document.getElementById("hglt-see-stored-elements");
         this.hgltStudyElements = document.getElementById("hglt-study-elements");
-        // this.hgltTranslationSound.src = chrome.extension.getURL("content/highligter/baseline-volume_up-24px.svg");
         this.hgltMeaningDefinition = document.getElementById("hglt-meaning-definition");
         this.hgltTranslationDivisor = document.getElementById("hglt-translation-divisor");
         this.hgltImagesArrowLeft = document.querySelectorAll(".hglt-images-arrow.hglt-left-arrow")[0];
@@ -78,7 +77,8 @@ class HighlighterActions {
         })
 
 
-        this.hgltTranslationSound.addEventListener("click", () => {
+        this.hgltTranslationSound.addEventListener("click", (e) => {
+            e.stopPropagation();
             window.speechSynthesis.speak(this.speachObject);
         });
 
@@ -90,8 +90,7 @@ class HighlighterActions {
             chrome.runtime.sendMessage({
                 'target': 'background',
                 'action': 'ASK_LARGER_IMAGE_LINK',
-                'id': this.imageIds[this.currentImageIndex],
-                // 'index': this.currentImageIndex,
+                'id': this.imageIds[this.currentImageIndex]
             }, (srcResponse) => {
                 chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
                     this.data.result.pronunciationLang = this.settingsData.translation.fromLang;
@@ -335,8 +334,9 @@ class HighlighterActions {
         this.images = data.result;
         this.imageIds = data.ids;
         this.hgltImageLoader.style.display = 'none';
+        // this.hgltImage.onload = ()=>this.adjustImageContainer();     
         this.hgltImage.src = data.result[0];
-        this.adjustImage();
+        // this.adjustImage();
         this.currentImageIndex = 0;
         this.hgltImage.setAttribute('idx', 0);
         this.hgltImage.style.display = 'inline-block';
@@ -355,6 +355,14 @@ class HighlighterActions {
             })
         }, 50);
     }
+
+    adjustImageContainer(){
+        this.hgltImage.style.marginTop = (this.hgltImageWrapper.offsetHeight - this.hgltImage.offsetHeight) / 2 - 3 + "px";
+            [...this.hgltImagesArrow].forEach(a => {
+                a.style.marginTop = (this.hgltImageWrapper.offsetHeight - a.offsetHeight) / 2 + "px";
+            })
+    }
+
 
     restoreInformation() {
         this.images = null;

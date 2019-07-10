@@ -68,6 +68,10 @@ class Highlighter {
                 this.html = true;
                 this.htmlElement = document.getElementById("hglt");                
                 this.hgltActions = new HighlighterActions(this.speachObject);
+                this.hgltActions.hgltImage.onload = ()=>{
+                    this.hgltActions.adjustImageContainer();
+                    this.positionHLTML();
+                }
                 //TODO: LOS SETTING POR PRIMERA VEZ HAY QUE VER SI ESTA BIEN PONERLO ASI;
                 this.hgltActions.settingsData = this.settingsData;
             }).catch(err => {
