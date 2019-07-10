@@ -64,12 +64,12 @@ class HighlighterActions {
 
     startListeners() {
 
-        this.hgltSeeStoredElements.addEventListener("click", ()=>{
-console.log("veriamos los elementos guardados");
+        this.hgltSeeStoredElements.addEventListener("click", () => {
+            console.log("veriamos los elementos guardados");
         });
 
-        this.hgltStudyElements.addEventListener("click", ()=>{
-            console.log("veriamos la pantalla para estudiar los elementos guardados");            
+        this.hgltStudyElements.addEventListener("click", () => {
+            console.log("veriamos la pantalla para estudiar los elementos guardados");
         })
 
 
@@ -86,17 +86,16 @@ console.log("veriamos los elementos guardados");
                 'target': 'background',
                 'action': 'ASK_LARGER_IMAGE_LINK',
                 'index': this.currentImageIndex
-            }, (srcResponse)=>{                
-               chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => { 
-                   console.log(this.settingsData.translation.fromLang);
-                   this.data.result.pronunciationLang = this.settingsData.translation.fromLang;                  
-                   this.data.result.image = srcResponse;
-                   result.hgltStoredElement.push(this.data.result);
-                   chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res)=>{
-                    this.hgltAddStoreSaving.style.display = 'none';
-                    this.hgltAddStoreStoreStudy.style.display = 'block';
-                   });
-               });
+            }, (srcResponse) => {
+                chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+                    this.data.result.pronunciationLang = this.settingsData.translation.fromLang;
+                    this.data.result.image = srcResponse;
+                    result.hgltStoredElement.push(this.data.result);
+                    chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res) => {
+                        this.hgltAddStoreSaving.style.display = 'none';
+                        this.hgltAddStoreStoreStudy.style.display = 'block';
+                    });
+                });
             });
 
         });
@@ -129,7 +128,8 @@ console.log("veriamos los elementos guardados");
             const next = this.getAreaPositionNext(e);
 
             //TODO: VER PORQUE PUEDE PASAR QUE SEA NULL O UN ARRAY VACIO
-            if (this.translations.length) { return; }
+            if (!this.translations.length) { return; }
+
 
             if (next && this.currentTranslationIndex > this.translations.length - 1) { return; }
             if (!next && this.currentTranslationIndex - 1 < 0) { return; }
@@ -154,20 +154,24 @@ console.log("veriamos los elementos guardados");
 
             const next = this.getAreaPositionNext(e);
 
+
+            if (!this.definitions.length) { return; }
+
             if (next && this.currentDefinitionIndex > this.definitions.length - 1) { return; }
             if (!next && this.currentDefinitionIndex - 1 < 0) { return; }
 
             var idx = (next) ? ++this.currentDefinitionIndex : --this.currentDefinitionIndex;
             const definition = this.definitions[idx];
+
             this.hgltMeaningDefinition.innerText = (definition || this.hgltMeaningDefinition.innerText);
             this.hgltMeaningDefinition.title = (definition || this.hgltMeaningDefinition.title);
             if (next) {
                 this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex > 0) ? 'block' : 'none';
-                e.target.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
+                this.hgltMeaningsArrowRight.style.display = (this.currentDefinitionIndex + 1 > this.definitions.length - 1) ? 'none' : 'block';
 
             } else {
                 this.hgltMeaningsArrowRight.style.display = (this.currentDefinitionIndex < this.definitions.length - 1) ? 'block' : 'none';
-                e.target.style.display = (this.currentDefinitionIndex - 1 < 0) ? 'none' : 'block';
+                this.hgltMeaningsArrowLeft.style.display = (this.currentDefinitionIndex - 1 < 0) ? 'none' : 'block';
             }
 
         });
@@ -296,6 +300,7 @@ console.log("veriamos los elementos guardados");
         this.applySettings();
         this.data = data;
         this.hgltAddStore.style.display = 'block';
+
         this.translations = data.result.translations;
         this.definitions = data.result.definitions;
 

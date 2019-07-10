@@ -1,14 +1,8 @@
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
-    console.log("SE SOLICITA UNA BUSQUEDA ---------------------");
-    console.log(request);
-    console.log("SE SOLICITA UNA BUSQUEDA ---------------------");
-
-
     if (request.target === 'translation' && request.action === 'ASK_TRANSLATION') {
         const translationURL = `https://translate.google.com/#view=home&op=translate&sl=${request.from}&tl=${request.to}&text=${request.selection}`;
-        window.location.href = translationURL;
-        // window.location = window.location;
+        window.location.href = translationURL;        
     }
     return true;
 });
@@ -24,43 +18,37 @@ const mutateTranslation = (mutations) => {
         //TODO:NO ES UNA BUENA FORMA DE ELEGIR EL MUTADO
         if (!/\.\.\./g.test(element.innerText)) {
             
-            var resultTable = {};
+            var results = {};
             
-            resultTable.search = decodeURIComponent(window.location.href.split("=")[5]);
+            results.search = decodeURIComponent(window.location.href.split("=")[5]);
 
-            resultTable.translations = [element.innerText]
+            results.translations = [element.innerText]
 
             var otherTranslations = document.querySelectorAll(".gt-baf-cell.gt-baf-word-clickable");
 
             if(otherTranslations.length){
-                // resultTable.translations = [resultTable.translations, [...otherTranslations].map(t=>t.innerText)]
                 [...otherTranslations].forEach(e=>{
+                    console.log(e);
                     if(/,/g.test(e.innerText)){
                         e.innerText.split(",").forEach(sub=>{
-                            resultTable.translations.push(sub); 
+                            results.translations.push(sub); 
                         })
                     }else{
-                        resultTable.translations.push(e.innerText); 
+                        results.translations.push(e.innerText); 
                     }
                 })
             }
 
-
-
             var defifitionGuess = document.querySelectorAll(".gt-def-row");
-            // console.log(defifitionGuess);
-             
-            resultTable.definitions = (defifitionGuess.length) ? [...defifitionGuess].map(e=>e.innerText) : [];
-
-            // console.log("mandamos");
-            // console.log(resultTable);
+                         
+            results.definitions = (defifitionGuess.length) ? [...defifitionGuess].map(e=>e.innerText) : [];
 
             chrome.runtime.sendMessage({
                 target: 'background',
                 action: 'SEND_INFORMATION',
                 kind: 'translation',
-                selection: resultTable.search,
-                result: resultTable
+                selection: results.search,
+                result: results
             });
 
             break;
