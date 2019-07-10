@@ -3,6 +3,10 @@
 
 var tabIdTranslation = null;
 var tabIdImageSearch = null;
+var storedDataUrl = null;
+var storedDataTabId = null;
+var studyElementsURL = null;
+var studyElementsTabId = null;
 
 const createSearchTabs = (search) => {
 
@@ -87,20 +91,38 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_LARGER_IMAGE_LINK') {
         message.target = 'images';
-        chrome.tabs.sendMessage(tabIdImageSearch, message, (response) => {            
+        chrome.tabs.sendMessage(tabIdImageSearch, message, (response) => {
             sendResponse(response);
         });
     }
 
     if (message.target === 'background' && message.action === 'SEE_STORED_DATA') {
 
-        chrome.tabs.create({ url: chrome.runtime.getURL("store/stored_data.html") });
+        if (!storedDataUrl) {
+            storedDataUrl = chrome.runtime.getURL("store/stored_data.html");
+            chrome.tabs.create({ url: storedDataUrl }, (tab) => {
+                storedDataTabId = tab.id;
+            });
+        } else {
+            chrome.tabs.reload(storedDataTabId);
+            chrome.tabs.update(storedDataTabId, {active: true});
+        }
+
 
     }
 
     if (message.target === 'background' && message.action === 'STUDY_ELEMENTS') {
 
-        chrome.tabs.create({ url: chrome.runtime.getURL("store/study_elements.html") });
+        if (!studyElementsURL) {
+            studyElementsURL = chrome.runtime.getURL("store/study_elements.html");
+            chrome.tabs.create({ url: studyElementsURL }, (tab)=>{
+                studyElementsTabId = tab.id;
+            });
+        }else{
+            chrome.tabs.reload(studyElementsTabId);
+            chrome.tabs.update(studyElementsTabId, {active: true});
+        }
+
 
     }
 
