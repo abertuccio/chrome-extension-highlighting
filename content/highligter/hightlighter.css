@@ -130,6 +130,10 @@ float: left;
   color:#000;
 }
 
+#hglt-add-store-error{
+  display: none;
+}
+
 #hglt-word-selected{
     font-style: italic;
     font-weight: bold;    

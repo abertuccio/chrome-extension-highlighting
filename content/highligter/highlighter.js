@@ -10,6 +10,7 @@ class HighlighterActions {
         this.hgltWordSelected = document.getElementById("hglt-word-selected");
         this.hgltImageWrapper = document.getElementById("hglt-image-wrapper");
         this.hgltImageDivisor = document.getElementById("hglt-image-divisor");
+        this.hgltAddStoreError = document.getElementById("hglt-add-store-error");
         this.hgltImagesArrow = document.querySelectorAll(".hglt-images-arrow");
         this.hgltTranslationWrapper = document.getElementById("hglt-translation");
         this.hgltTranslationWord = document.getElementById("hglt-translation-word");
@@ -87,6 +88,21 @@ class HighlighterActions {
 
             this.hgltAddStore.style.display = 'none';
             this.hgltAddStoreSaving.style.display = 'block';
+
+            //TODO: VER COMO HACER ESTO DE LOS MENSAJES BIEN
+            // if (!this.data || ('result' in this.data)) {
+            //     this.hgltAddStore.style.display = 'none';
+            //     this.hgltAddStoreSaving.style.display = 'none';
+            //     this.hgltAddStoreStoreStudy.style.display = 'none';
+            //     this.hgltAddStoreError.style.display = 'block';
+            // }
+
+            //TODO: VER SI AGREGAMOS ESTE CAMPO A SETTINGS
+            // this.data.result.context = (this.settingsData.context.avalible)?this.data.result.context:null; 
+            //TODO: COMPLETAR ESTO EN STUDY Y STORED
+            // this.data.result.definitions = (this.settingsData.definition.avalible)?this.data.result.definitions:null;
+            // this.data.result.image = (this.settingsData.images.avalible)?this.data.result.image:null;
+            // this.data.result.translations = (this.settingsData.translation.avalible)?this.data.result.translations:null;
 
             chrome.runtime.sendMessage({
                 'target': 'background',
@@ -256,7 +272,11 @@ class HighlighterActions {
         this.hgltImage.style.display = 'none';
         this.hgltImageLoader.style.display = 'inline-block';
         this.hgltAddStore.style.display = 'none';
+
         this.hgltAddStoreStoreStudy.style.display = 'none';
+        this.hgltAddStoreSaving.style.display = 'none';
+        this.hgltAddStoreError.style.display = 'none';
+
         this.translationLoader;
 
     }
@@ -305,6 +325,12 @@ class HighlighterActions {
     setTranslation(data) {
         this.applySettings();
         this.data = data;
+
+        // this.hgltAddStore.style.display = 'none';
+        // this.hgltAddStoreSaving.style.display = 'none';
+        // this.hgltAddStoreStoreStudy.style.display = 'none';
+        // this.hgltAddStoreError.style.display = 'none';
+
         this.hgltAddStore.style.display = 'block';
 
         this.translations = data.result.translations;
@@ -357,11 +383,11 @@ class HighlighterActions {
         }, 50);
     }
 
-    adjustImageContainer(){
+    adjustImageContainer() {
         this.hgltImage.style.marginTop = (this.hgltImageWrapper.offsetHeight - this.hgltImage.offsetHeight) / 2 - 3 + "px";
-            [...this.hgltImagesArrow].forEach(a => {
-                a.style.marginTop = (this.hgltImageWrapper.offsetHeight - a.offsetHeight) / 2 + "px";
-            })
+        [...this.hgltImagesArrow].forEach(a => {
+            a.style.marginTop = (this.hgltImageWrapper.offsetHeight - a.offsetHeight) / 2 + "px";
+        })
     }
 
 
