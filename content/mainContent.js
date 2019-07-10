@@ -67,7 +67,7 @@ class Highlighter {
                 document.documentElement.appendChild(hglt);
                 this.html = true;
                 this.htmlElement = document.getElementById("hglt");                
-                this.hgltActions = new HighlighterActions(this.speachObject);
+                this.hgltActions = new HighlighterActions();
                 this.hgltActions.hgltImage.onload = ()=>{
                     this.hgltActions.adjustImageContainer();
                     this.positionHLTML();
@@ -156,9 +156,12 @@ document.addEventListener("selectionchange", (e) => {
     hglt.selection = selection.trim();
     hglt.context = (window.getSelection().focusNode.data || "");
 
-    hglt.speachObject = new SpeechSynthesisUtterance(hglt.selection);
-    //TODO: SETEAR EL LENGUAGE AQUI
-    hglt.speachObject.lang = (hglt.settingsData.pronunciation.lang || 'en-US');
+    // hglt.speachObject = new SpeechSynthesisUtterance(hglt.selection);
+    
+
+    hglt.hgltActions.speachObject = new SpeechSynthesisUtterance(hglt.selection);
+    hglt.hgltActions.speachObject.lang = (hglt.settingsData.pronunciation.lang || 'en-US');
+
 
     if (!hglt.selection || hglt.selection.length < 2 || hglt.selection.length > 100) {
         hglt.deleteState();

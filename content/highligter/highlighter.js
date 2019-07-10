@@ -1,6 +1,6 @@
 class HighlighterActions {
-    constructor(speachObject) {
-        this.speachObject = speachObject;
+    constructor() {
+        this.speachObject = null;
         this.data = null;
         this.hgltImage = document.getElementById("hglt-image");
         this.arrows = document.getElementsByClassName("hglt-arrow");
@@ -79,6 +79,7 @@ class HighlighterActions {
 
         this.hgltTranslationSound.addEventListener("click", (e) => {
             e.stopPropagation();
+            // console.log(this.speachObject);
             window.speechSynthesis.speak(this.speachObject);
         });
 
