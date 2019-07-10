@@ -19,11 +19,11 @@ chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
 const setIcon = (active) => {
     if (active) {
         chrome.browserAction.setIcon({
-            path: 'pencil_active_64.png'
+            path: 'images/pencil_active_64.png'
         });
     } else {
         chrome.browserAction.setIcon({
-            path: 'pencil_64.png'
+            path: 'images/pencil_64.png'
         });
     }
 
