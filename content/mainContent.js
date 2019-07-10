@@ -118,9 +118,12 @@ class Highlighter {
 
     lookForInformation() {
         this.hgltActions.startLoader();
-
+        
         if (!this.selection) { return; }
-
+        
+        console.log("vamos a buscar informacion");
+        console.log(this.selection);
+        
         chrome.runtime.sendMessage({
             'target': 'background',
             'action': 'ASK_TRANSLATION_AND_IMAGES',
@@ -156,7 +159,7 @@ document.addEventListener("selectionchange", (e) => {
     hglt.selection = selection.trim();
     hglt.context = (window.getSelection().focusNode.data || "");
 
-    // hglt.speachObject = new SpeechSynthesisUtterance(hglt.selection);
+
     
 
     hglt.hgltActions.speachObject = new SpeechSynthesisUtterance(hglt.selection);

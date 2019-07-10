@@ -64,6 +64,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
 
+
+
         if (tabIdTranslation && tabIdImageSearch) {
 
             chrome.tabs.sendMessage(tabIdTranslation, {
@@ -84,6 +86,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             sendResponse("INFORMATION WAS ASKED FROM COMTENT->BACKGROUND TO ->PINEDTABS");
         } else {
             //TODO: TENEMOS QUE ABRIR LOS TABS SI NO EXISTEN
+
+            console.log("nos piden info!!! pero no tenemostabs !!!!")
         }
 
 
@@ -196,4 +200,18 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         }
     }
 
+});
+
+
+chrome.tabs.query({ pinned: true }, (tabs) => {
+
+    tabs.forEach(tab => {
+        if (tab.url.includes("https://www.google.com/search")) {
+            chrome.tabs.remove(tab.id);
+        }
+        if (tab.url.includes("https://translate.google.com/")) {
+            chrome.tabs.remove(tab.id);
+        }
+    });
+    createSearchTabs("example");
 });
