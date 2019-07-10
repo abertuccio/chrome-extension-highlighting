@@ -27,8 +27,7 @@ const mutateTranslation = (mutations) => {
             var otherTranslations = document.querySelectorAll(".gt-baf-cell.gt-baf-word-clickable");
 
             if(otherTranslations.length){
-                [...otherTranslations].forEach(e=>{
-                    console.log(e);
+                [...otherTranslations].forEach(e=>{                    
                     if(/,/g.test(e.innerText)){
                         e.innerText.split(",").forEach(sub=>{
                             results.translations.push(sub); 

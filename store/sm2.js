@@ -3,10 +3,6 @@ export function sm2(card, quality) {
     if (quality < 0 || quality > 5) {
         console.log("Invalid quality");
     }
-    console.log("------------------------------");
-    console.log(quality);
-    console.log("------------------------------");
-
     // retrieve the stored values (default values if new cards)
     let repetitions = card.repetitions;
     let easiness = card.easinessFactor;

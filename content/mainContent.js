@@ -123,9 +123,7 @@ class Highlighter {
             'selection': this.selection,
             'settings': this.settingsData,
         }, (info) => {
-            console.log("informacion solicitada");
-            console.log("backround says: " + info);
-            console.log("informacion solicitada");
+            console.log(info);
         });
     }
 
@@ -203,8 +201,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         //     console.log("se envio la definicion");
         // }
 
-        if (message.selection === hglt.selection && message.kind === 'images') {
-            // console.log(message);
+        if (message.selection === hglt.selection && message.kind === 'images') {           
             hglt.hgltActions.setImages(message);
         }
 

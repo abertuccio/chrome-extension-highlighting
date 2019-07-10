@@ -21,7 +21,6 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
     //TODO: ESTE ARCHIVO ES UN KILOMBO
 
     storedData.forEach((e, elementIndex) => {
-        console.log(e);
         if (!('positions' in e)) {
             e.positions = {
                 selection: 'front',
@@ -78,7 +77,6 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
             const utterance = new SpeechSynthesisUtterance(e.search);
             utterance.lang = e.pronunciationLang;
             speechSynthesis.speak(utterance);
-            console.log(utterance);
         })
         selection.appendChild(soundButtonWrapper);
         // pronunciation.innerHTML = "pronunciation";

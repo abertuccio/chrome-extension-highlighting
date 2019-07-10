@@ -25,7 +25,6 @@ const mainLoad = () => {
     chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 
         let originalData = result.hgltStoredElement;
-        console.log(originalData);
 
         if (originalData && originalData.length) {
 
@@ -76,9 +75,6 @@ const mainLoad = () => {
 
                 for (let property in e.positions) {
 
-                    // console.log(property);
-                    // console.log(e[property]);
-                    // console.log(kindOfWrapper[property]);
                     var element = document.createElement(kindOfWrapper[property]);
                     element.classList.add(property);
 
@@ -88,7 +84,6 @@ const mainLoad = () => {
                             const utterance = new SpeechSynthesisUtterance(e.search);
                             utterance.lang = e.pronunciationLang;
                             speechSynthesis.speak(utterance);
-                            console.log(utterance);
                         })
                     }
 
@@ -158,7 +153,6 @@ const mainLoad = () => {
                 const currentIndex = +document.getElementsByClassName("question")[0].id;
                 
                 //TODO: ARREGLAR ESTO QUE RATE VIENE UNDEFINED
-                console.log(rate);
                 
                 const newCard = sm2(storedData[currentIndex], rate);
 

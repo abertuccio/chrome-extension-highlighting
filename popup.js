@@ -104,7 +104,7 @@ highlight.addEventListener("change", () => {
         'action': 'SET_HIGHLIGHT_STATE',
         'value': highlight.checked
     }, function (response) {
-        console.log("BACKGROUND SAYS: " + response)
+        console.log(response)
     });
 
 })
@@ -147,9 +147,6 @@ const getSettings = () => {
 
 
 chrome.runtime.sendMessage({ 'target': 'settings-background', 'action': 'GET_HIGHLIGHT_STATE' }, function (response) {
-
-
-    console.log("me devuelve algo este puto "+response);
 
     if (response === 'true') {
         highlight.removeAttribute("checked");
