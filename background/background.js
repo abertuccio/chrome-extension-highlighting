@@ -60,12 +60,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
 
-        console.log("settings");
-        console.log(message.settings);
-        console.log(message.settings.translation.fromLang);
-        console.log(message.settings.translation.toLang);
-        console.log("settings");
-
         if (tabIdTranslation && tabIdImageSearch) {
 
             chrome.tabs.sendMessage(tabIdTranslation, {
@@ -93,9 +87,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_LARGER_IMAGE_LINK') {
         message.target = 'images';
-        chrome.tabs.sendMessage(tabIdImageSearch, message, (response) => {
-            console.log("in backgroud the response is.....");
-            console.log(response);
+        chrome.tabs.sendMessage(tabIdImageSearch, message, (response) => {            
             sendResponse(response);
         });
     }

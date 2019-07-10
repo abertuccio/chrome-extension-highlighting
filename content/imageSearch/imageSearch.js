@@ -1,5 +1,5 @@
 var img = [];
-var metaInfo = [];
+var ids = [];
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
@@ -7,17 +7,24 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         const imageSearchURL = `https://www.google.com/search?q=${request.selection}&source=lnms&tbm=isch`;
         window.location.href = imageSearchURL;
     }
-    if (request.target === 'images' && request.action === 'ASK_LARGER_IMAGE_LINK') {
-        document.querySelectorAll(".rg_ic.rg_i")[metaInfo[request.index]].click(); 
+    if (request.target === 'images' && request.action === 'ASK_LARGER_IMAGE_LINK') {        
+        // document.querySelectorAll(".rg_ic.rg_i")[metaInfo[request.index]].click(); 
+        document.getElementById(request.id).click();
         setInterval(() => {
             let candidates = [...document.getElementsByClassName("irc_mi")];
-            for(let i = 0; i < candidates.length -1; i++){
-                if(candidates[i].src){
-                    sendResponse(candidates[i].src);
-                    break;
+            
+            if(candidates[1].src){
+                sendResponse(candidates[1].src);                
+            }
+            else{
+                for(let i = 0; i < candidates.length -1; i++){
+                    if(candidates[i].src){
+                        sendResponse(candidates[i].src);
+                        break;
+                    }
                 }
             }
-        }, 1000);  
+        }, 500);  
     }
     return true;
 });
@@ -34,7 +41,7 @@ const mutateImages = (mutations) => {
         imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c, i) => {
             if (c.src) { 
                 a.push(c.src); 
-                metaInfo.push(i);
+                ids.push(c.id);
             } 
             return a;
         }, [])
@@ -45,7 +52,8 @@ const mutateImages = (mutations) => {
             action: 'SEND_INFORMATION',
             kind: 'images',
             selection: decodeURIComponent(window.location.href.split("=")[1].split("&")[0]),
-            result: imgs
+            result: imgs,
+            ids: ids
         });
 
         observerImages.disconnect();

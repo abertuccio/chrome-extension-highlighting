@@ -53,6 +53,7 @@ class HighlighterActions {
             this.hgltMeaningDefinition.innerText = Array(4 - this.count).fill(".").join(" ");
         }, 900);
         this.images = null;
+        this.imageIds = null;
         this.currentImageIndex = 0;
         this.translations = null;
         this.currentTranslationIndex = 0;
@@ -65,11 +66,15 @@ class HighlighterActions {
     startListeners() {
 
         this.hgltSeeStoredElements.addEventListener("click", () => {
-            console.log("veriamos los elementos guardados");
+            chrome.runtime.sendMessage({ 'target': 'background', 'action': 'SEE_STORED_DATA' }, function (res) {
+                console.log(res);
+            });
         });
 
         this.hgltStudyElements.addEventListener("click", () => {
-            console.log("veriamos la pantalla para estudiar los elementos guardados");
+            chrome.runtime.sendMessage({ 'target': 'background', 'action': 'STUDY_ELEMENTS' }, function (res) {
+                console.log(res);
+            })
         })
 
 
@@ -85,7 +90,8 @@ class HighlighterActions {
             chrome.runtime.sendMessage({
                 'target': 'background',
                 'action': 'ASK_LARGER_IMAGE_LINK',
-                'index': this.currentImageIndex
+                'id': this.imageIds[this.currentImageIndex],
+                // 'index': this.currentImageIndex,
             }, (srcResponse) => {
                 chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
                     this.data.result.pronunciationLang = this.settingsData.translation.fromLang;
@@ -327,6 +333,7 @@ class HighlighterActions {
         this.applySettings();
         // this.data = data;
         this.images = data.result;
+        this.imageIds = data.ids;
         this.hgltImageLoader.style.display = 'none';
         this.hgltImage.src = data.result[0];
         this.adjustImage();
@@ -351,6 +358,7 @@ class HighlighterActions {
 
     restoreInformation() {
         this.images = null;
+        this.imageIds = null;
         this.currentImageIndex = 0;
         this.translations = null;
         this.currentTranslationIndex = 0;
