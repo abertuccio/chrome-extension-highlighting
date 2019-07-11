@@ -22,36 +22,39 @@
       <label id="checkbox-label-site" class="custom-control-label" for="highlight-site"></label>
     </div>
     <div class="buttons" id="settings"><span id="setting-text"></span> <i id="more"
-        class="material-icons">keyboard_arrow_down</i> Settings</div>
+        class="material-icons">keyboard_arrow_down</i></div>
     <div class="settings hide">
       <div>
         <label id="translation-checkbox-label" for="translation">Translate</label>
         <input id="translation" type="checkbox" name="translation">
       </div>
       <div>
-        <span>From </span>
+        <label id="translation-from-label" >From </label>
         <select id="translation-from-target">
-          <option value="auto">Automatic</option>
+          <option value="auto">Auto</option>
         </select>
       </div>
       <div>
-        <span>To </span>
+        <label id="translation-to-label">To </label>
         <select id="translation-target">
-          <option value="auto">Automatic</option>
+          <option value="auto">Auto</option>
         </select>
       </div>
+      <hr />
       <div>
         <label id="pronunciation-checkbox-label" for="pronunciation">Pronunciation</label>
         <input id="pronunciation" type="checkbox" name="pronunciation">
       </div>
+      <hr />
       <div>
         <label id="definition-checkbox-label" for="definition">Definition</label>
         <input id="definition" type="checkbox" name="definition">
-        <span> in </span>
+        <span id="definition-checkbox-label-in" > in </span>
         <select id="definition-target">
-          <option value="auto">Automatic</option>
+          <option value="auto">Auto</option>
         </select>
       </div>
+      <hr />
       <div>
         <label id="image-checkbox-label" for="image">Images</label>
         <input id="image" type="checkbox" name="image">
@@ -60,7 +63,7 @@
     <div class="buttons" id="stored-elements">Stored elements</div>
     <div class="buttons" id="study-elements">Study elements</div>
   </div>
-  <script src="popup.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 
 </html>

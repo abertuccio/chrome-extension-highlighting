@@ -41,7 +41,7 @@ class Highlighter {
             const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
             const state = !result.hgltSitesNotAvailables.includes(currentDomain);
             this.allowed = state;
-
+            // chrome.browserAction.setBadgeText({text: (state)?"":"off"});
         });
 
         chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
@@ -150,8 +150,6 @@ document.addEventListener("selectionchange", (e) => {
 
     const activeElement = document.activeElement.nodeName;
 
-    console.log(e);
-
     const input = (activeElement === 'INPUT' ||
         activeElement === 'TEXTAREA' ||
         activeElement === 'CODE' ||
@@ -254,7 +252,6 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         }
 
         if (key === 'hgltSitesNotAvailables') {
-            console.log(changes[key].newValue)
 
             const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
             const state = !changes[key].newValue.includes(currentDomain);

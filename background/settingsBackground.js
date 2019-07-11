@@ -24,3 +24,24 @@ const setIcon = (active) => {
     }
 
 }
+
+chrome.tabs.onActivated.addListener(function(tab) {
+   
+    chrome.tabs.query({active: true, currentWindow: true}, function(tab) {
+
+        chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {                    
+            
+            const url = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);
+                    let state = false;
+                    let currentDomain = tab[0].url;
+                    if (url) {
+                        currentDomain = (url[1]);
+                        state = !resultSiteAvailable.hgltSitesNotAvailables.includes(currentDomain);
+                    } 
+    
+                    chrome.browserAction.setBadgeText({text: (state)?"":"off"});
+        });
+   
+                
+     })
+});

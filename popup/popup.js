@@ -1,7 +1,14 @@
+import { Lang } from '../languages.js';
+
 class Popup {
     constructor() {
         this.more = document.getElementById("more");
         this.image = document.getElementById("image");
+        this.translationFromLabel = document.getElementById("translation-from-label");
+        this.translationToLabel = document.getElementById("translation-to-label");
+        this.pronunciationCheckboxLabel = document.getElementById("pronunciation-checkbox-label");
+        this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
+        this.definitionCheckboxLabelIn = document.getElementById("definition-checkbox-label-in");
         this.highlight = document.getElementById("highlight");
         this.highlightSite = document.getElementById("highlight-site");
         this.checkboxLabelSite = document.getElementById("checkbox-label-site");
@@ -21,6 +28,7 @@ class Popup {
         this.imageCheckboxLabel = document.getElementById("image-checkbox-label");
         this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
         this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
+        this.locals = Lang['en'];
         this.settingsData = {
             translation: {
                 avalible: true,
@@ -87,13 +95,20 @@ class Popup {
     }
 
     getState() {
-        chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
-            this.setCheckboxState(result.hgltAvailible);
+        chrome.storage.sync.get({ 'hgltAvailible': false }, (resultAvailable) => {
+            chrome.storage.sync.get({ 'hgltGlobalLanguage': navigator.language.split("-")[0] }, (result) => {
+                const language = (result.hgltGlobalLanguage in Lang) ? result.hgltGlobalLanguage : 'en';
+                
+                this.locals = Lang[language];
+                this.setCheckboxState(resultAvailable.hgltAvailible);
+                chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {                    
+                    this.setCheckboxSiteState(resultSiteAvailable.hgltSitesNotAvailables);
+                    this.changeLanguage();
+                });
+            });
         });
 
-        chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
-            this.setCheckboxSiteState(result.hgltSitesNotAvailables);
-        });
+
 
         chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
 
@@ -105,6 +120,19 @@ class Popup {
             this.setSettings(this.settingsData);
         });
 
+    }
+
+    changeLanguage(){
+        this.settingText.innerText = this.locals.popup.settings;
+        this.translationCheckboxLabel.innerText = this.locals.popup.translate;
+        this.translationFromLabel.innerText = this.locals.popup.from;
+        this.translationToLabel.innerText = this.locals.popup.to;
+        this.pronunciationCheckboxLabel.innerText = this.locals.popup.pronunciation;
+        this.definitionCheckboxLabel.innerText = this.locals.popup.definition;
+        this.definitionCheckboxLabelIn.innerText = this.locals.popup.in;
+        this.imageCheckboxLabel.innerText = this.locals.popup.images;
+        this.storedElements.innerText = this.locals.popup.stored_elements;
+        this.studyElements.innerText = this.locals.popup.study_elements;
     }
 
     addActions() {
@@ -216,7 +244,7 @@ class Popup {
 
     setCheckboxState(state) {
         this.highlight.checked = state;
-        this.checkboxLabel.innerHTML = (state) ? '<b>HGLT Activated</b>' : 'Activate HGLT';
+        this.checkboxLabel.innerHTML = (state) ? `<b>${this.locals.popup.hglt_activated}</b>` : this.locals.popup.activate_hglt;
         [...this.buttons].forEach(e => {
             (!state) ? e.style.color = '#d2d2d2' : e.style.color = '#666'
         });
@@ -232,11 +260,13 @@ class Popup {
                 currentDomain = (url[1]);
                 state = !sitesNotAvailables.includes(currentDomain);
                 this.highlightSite.removeAttribute("disabled");
-            }else{
+            } else {
                 this.highlightSite.setAttribute("disabled", true);
             }
+            chrome.browserAction.setBadgeText({text: (state)?"":"off"});
             this.highlightSite.checked = state;
-            this.checkboxLabelSite.innerHTML = (state) ? `Active on <b>${currentDomain}</b>` : `Disabled on <b>${currentDomain}</b>`;
+            currentDomain = currentDomain.substr(0,25-1)+(currentDomain.length>25?'&hellip;':'');
+            this.checkboxLabelSite.innerHTML = (state) ? `${this.locals.popup.active_on} <b>${currentDomain}</b>` : `${this.locals.popup.disabled_on} <b>${currentDomain}</b>`;
         });
     }
 
@@ -253,6 +283,12 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         if (key === 'hgltSitesNotAvailables') {
             popup.setCheckboxSiteState(changes[key].newValue)
         }
+
+        if (key === 'hgltGlobalLanguage') {
+            const language = (changes[key].newValue in Lang) ? changes[key].newValue : 'en';
+            this.locals = Lang[language];
+        }
+
     }
 
 });
