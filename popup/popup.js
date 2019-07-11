@@ -3,6 +3,8 @@ class Popup {
         this.more = document.getElementById("more");
         this.image = document.getElementById("image");
         this.highlight = document.getElementById("highlight");
+        this.highlightSite = document.getElementById("highlight-site");
+        this.checkboxLabelSite = document.getElementById("checkbox-label-site");
         this.definition = document.getElementById("definition");
         this.translation = document.getElementById("translation");
         this.settingsButton = document.getElementById("settings");
@@ -11,6 +13,7 @@ class Popup {
         this.studyElements = document.getElementById("study-elements");
         this.checkboxLabel = document.getElementById("checkbox-label");
         this.settings = document.getElementsByClassName("settings")[0];
+        this.buttons = document.getElementsByClassName("buttons");
         this.storedElements = document.getElementById("stored-elements");
         this.definitionTarget = document.getElementById("definition-target");
         this.translationTarget = document.getElementById("translation-target");
@@ -88,6 +91,10 @@ class Popup {
             this.setCheckboxState(result.hgltAvailible);
         });
 
+        chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
+            this.setCheckboxSiteState(result.hgltSitesNotAvailables);
+        });
+
         chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
 
             if (!result.hgltSettings) {
@@ -116,6 +123,25 @@ class Popup {
         this.highlight.addEventListener("change", (e) => {
             chrome.storage.sync.set({ hgltAvailible: e.target.checked });
             this.setCheckboxState(e.target.checked);
+        });
+
+        this.highlightSite.addEventListener("change", (e) => {
+            chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
+                const currentDomain = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+                chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
+                    const sites = result.hgltSitesNotAvailables
+                    if (e.target.checked) {
+                        const idx = sites.indexOf(currentDomain);
+                        if (idx !== -1) {
+                            sites.splice(idx, 1);
+                        }
+                    } else {
+                        sites.push(currentDomain);
+                    }
+
+                    chrome.storage.sync.set({ hgltSitesNotAvailables: sites });
+                });
+            });
         });
 
 
@@ -190,7 +216,28 @@ class Popup {
 
     setCheckboxState(state) {
         this.highlight.checked = state;
-        this.checkboxLabel.innerText = (state) ? 'HGLT Activated' : 'Activate HGLT';
+        this.checkboxLabel.innerHTML = (state) ? '<b>HGLT Activated</b>' : 'Activate HGLT';
+        [...this.buttons].forEach(e => {
+            (!state) ? e.style.color = '#d2d2d2' : e.style.color = '#666'
+        });
+        (!state) ? this.highlightSite.setAttribute("disabled", true) : this.highlightSite.removeAttribute("disabled");
+    }
+
+    setCheckboxSiteState(sitesNotAvailables) {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
+            const url = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);
+            let state = false;
+            let currentDomain = tab[0].url;
+            if (url) {
+                currentDomain = (url[1]);
+                state = !sitesNotAvailables.includes(currentDomain);
+                this.highlightSite.removeAttribute("disabled");
+            }else{
+                this.highlightSite.setAttribute("disabled", true);
+            }
+            this.highlightSite.checked = state;
+            this.checkboxLabelSite.innerHTML = (state) ? `Active on <b>${currentDomain}</b>` : `Disabled on <b>${currentDomain}</b>`;
+        });
     }
 
 }
@@ -202,6 +249,9 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (var key in changes) {
         if (key === 'hgltSettings') {
             popup.setSettings(changes[key].newValue);
+        }
+        if (key === 'hgltSitesNotAvailables') {
+            popup.setCheckboxSiteState(changes[key].newValue)
         }
     }
 

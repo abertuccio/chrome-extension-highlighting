@@ -36,6 +36,14 @@ class Highlighter {
             this.allowed = result.hgltAvailible;
         });
 
+        chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
+
+            const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+            const state = !result.hgltSitesNotAvailables.includes(currentDomain);
+            this.allowed = state;
+
+        });
+
         chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
             if (result.hgltSettings) {
                 this.settingsData = result.hgltSettings;
@@ -66,9 +74,9 @@ class Highlighter {
                 hglt.innerHTML = data;
                 document.documentElement.appendChild(hglt);
                 this.html = true;
-                this.htmlElement = document.getElementById("hglt");                
+                this.htmlElement = document.getElementById("hglt");
                 this.hgltActions = new HighlighterActions();
-                this.hgltActions.hgltImage.onload = ()=>{
+                this.hgltActions.hgltImage.onload = () => {
                     this.hgltActions.adjustImageContainer();
                     this.positionHLTML();
                 }
@@ -106,7 +114,7 @@ class Highlighter {
     }
 
     positionHLTML() {
-        if(!this.selectionPosition) return;
+        if (!this.selectionPosition) return;
 
         let positionY = ((this.selectionPosition.y - this.htmlElement.offsetHeight) < 20) ?
             (this.selectionPosition.y + this.selectionPosition.height) :
@@ -118,12 +126,12 @@ class Highlighter {
 
     lookForInformation() {
         this.hgltActions.startLoader();
-        
+
         if (!this.selection) { return; }
-        
+
         console.log("vamos a buscar informacion");
         console.log(this.selection);
-        
+
         chrome.runtime.sendMessage({
             'target': 'background',
             'action': 'ASK_TRANSLATION_AND_IMAGES',
@@ -141,7 +149,14 @@ let hglt = new Highlighter();
 document.addEventListener("selectionchange", (e) => {
 
     const activeElement = document.activeElement.nodeName;
-    const input = (activeElement === 'INPUT' || activeElement === 'TEXTAREA' || false);
+
+    console.log(e);
+
+    const input = (activeElement === 'INPUT' ||
+        activeElement === 'TEXTAREA' ||
+        activeElement === 'CODE' ||
+        activeElement === 'PRE' ||
+        false);
 
     if (!hglt.allowed || hglt.boxActive || input) return;
     hglt.selection = null;
@@ -160,7 +175,7 @@ document.addEventListener("selectionchange", (e) => {
     hglt.context = (window.getSelection().focusNode.data || "");
 
 
-    
+
 
     hglt.hgltActions.speachObject = new SpeechSynthesisUtterance(hglt.selection);
     hglt.hgltActions.speachObject.lang = (hglt.settingsData.pronunciation.lang || 'en-US');
@@ -187,7 +202,7 @@ window.addEventListener('click', function (e) {
 
     } else {
         //TODO: VER SI ESTA BIEN REPOSICIONAR ACA
-        if(hglt.boxActive){
+        if (hglt.boxActive) {
             hglt.positionHLTML();
         }
         //TODO: VER SI HAY QUE HACER ALGO ACA
@@ -199,7 +214,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'main-content' && message.action === 'SEND_INFORMATION') {
 
-        if (message.selection === hglt.selection && message.kind === 'translation') {            
+        if (message.selection === hglt.selection && message.kind === 'translation') {
             message.result.context = hglt.context;
             hglt.hgltActions.setTranslation(message);
         }
@@ -211,7 +226,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         //     console.log("se envio la definicion");
         // }
 
-        if (message.selection === hglt.selection && message.kind === 'images') {           
+        if (message.selection === hglt.selection && message.kind === 'images') {
             hglt.hgltActions.setImages(message);
         }
 
@@ -237,6 +252,18 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             hglt.settingsData = changes[key].newValue;
             hglt.positionHLTML();
         }
+
+        if (key === 'hgltSitesNotAvailables') {
+            console.log(changes[key].newValue)
+
+            const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+            const state = !changes[key].newValue.includes(currentDomain);
+            hglt.allowed = state;
+
+        }
+
+
+
     }
 
 });
