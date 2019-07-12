@@ -25,24 +25,24 @@ h1{
 }
 
 .answer{
-    border: 1px solid #c3c3c3;
-    border-radius: 5px;
+    /* border: 1px solid #c3c3c3;
+    border-radius: 5px; */
 }
 
 .context{
     /* border: 1px solid #dcdcdc; */
-    padding: 9px;
+    /* padding: 9px;
     border-radius: 5px;
     color: #3e3e3e;
-    background-color: #dcdcdc;
+    background-color: #dcdcdc; */
 }
 
 .definition{
-    font-style: italic;
+    /* font-style: italic;
     /* border: 1px solid #c1c1c1; */
-    padding: 30px;
+    /* padding: 30px;
     border-radius: 5px;
-    color: #808080;
+    color: #808080; */
 }
 
 .image{
@@ -51,14 +51,15 @@ h1{
     display: block;
     box-shadow: 5px 4px 9px 0px #d2d2d2;
     margin-bottom: 23px;
+    max-height: 524px;
 }
 
 .translation{
-    font-weight: bold;
+    /* font-weight: bold;
     padding: 40px;
     color: blue;
     /* border: 1px solid blue; */
-    border-radius: 5px;
+    /* border-radius: 5px; */ 
 }
 
 #rates{
@@ -86,4 +87,13 @@ h1{
 #no-elements{
 text-align: center;
 margin: auto;
+}
+#rate-text{
+    min-height: 66px;
+    color: #739bff;
+    font-size: 22px;
+}
+
+#card .answer .card{
+    margin-bottom: 18px;
 }

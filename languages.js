@@ -43,6 +43,10 @@ const Lang =
             "star3":"Respondi correctamente, logre acordarme pero me costo bastante",
             "star4":"Respondi correctamente pero con alguna duda",
             "star5":"Respondi correcto sin ninguna duda",
+            "context":"Contexto",
+            "definition":"Definicion",
+            "image":"Imagen",
+            "translation":"Traduccion"
         }
 
     },
@@ -89,6 +93,10 @@ const Lang =
             "star3":"I answered correctly, I managed to remember but it cost me a lot",
             "star4":"I answered correctly but with some doubt",
             "star5":"I answered right without any doubt",
+            "context":"Context",
+            "definition":"Definition",
+            "image":"Image",
+            "translation":"Translation"
         }
     }
 };

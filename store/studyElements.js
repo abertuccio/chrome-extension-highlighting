@@ -8,7 +8,7 @@ const cardContainer = document.getElementById("card");
 const messageNoItems = document.getElementById("no-elements");
 const rates = document.getElementById("rates");
 const reverseButton = document.getElementById("reverse");
-const kindOfWrapper = { selection: "p", translation: "p", definition: "p", context: "p", image: "img" };
+const kindOfWrapper = { selection: "p", translation: "span", definition: "span", context: "span", image: "img" };
 const soundButton = '<svg id="hglt-translation-sound" title="Play Sound" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>';
 const title = document.getElementById("title");
 const questionRemember = document.getElementById("question-remember");
@@ -20,6 +20,8 @@ const star3Label = document.getElementById("star3-label");
 const star2Label = document.getElementById("star2-label");
 const star1Label = document.getElementById("star1-label");
 const star0Label = document.getElementById("star0-label");
+const rateText = document.getElementById("rate-text");
+
 
 const drawNoItems = () => {
     messageNoItems.style.display = 'block';
@@ -89,6 +91,22 @@ const mainLoad = () => {
                 for (let property in e.positions) {
 
                     var element = document.createElement(kindOfWrapper[property]);
+
+                    const elementCardWapper = document.createElement("div");
+                    elementCardWapper.classList.add("card");
+                    const elementCardBody = document.createElement("div");
+                    elementCardBody.classList.add("card-body");
+                    const titleCard = document.createElement("h5");
+                    titleCard.classList.add("card-header");
+                    titleCard.innerText = lang.study_elements[property];
+                    const pCard = document.createElement("p");
+                    pCard.classList.add("card-text");
+                    pCard.appendChild(element);
+                    elementCardBody.appendChild(pCard);
+                    elementCardWapper.appendChild(titleCard);
+                    elementCardWapper.appendChild(elementCardBody);
+                    
+
                     element.classList.add(property);
 
                     if (property === 'selection') {
@@ -101,7 +119,7 @@ const mainLoad = () => {
                     }
 
 
-                    if (kindOfWrapper[property] === 'p') {
+                    if (kindOfWrapper[property] === 'p' || kindOfWrapper[property] === 'span') {
                         //TODO: ACOMODAR ESTE TEMA DE LOS NOMBRES
                         var prop = property;
                         if (property === 'definition') prop = 'definitions';
@@ -110,6 +128,9 @@ const mainLoad = () => {
                         element.innerText = e[prop];
                         if (prop === 'search') {
                             element.innerHTML = element.innerText + " " + soundButton;
+                        }
+                        if (prop === 'translations') {
+                            element.innerText = e[prop].join(" | ");
                         }
                     }
                     if (kindOfWrapper[property] === 'img') {
@@ -120,7 +141,7 @@ const mainLoad = () => {
                         question.appendChild(element);
                     }
                     else if (e.positions[property] === 'back') {
-                        answer.appendChild(element);
+                        answer.appendChild(elementCardWapper);
                     }
                     else {
                         // console.log(property + " es hide");
@@ -153,13 +174,10 @@ const mainLoad = () => {
                 r.addEventListener('click', (e) => {
                     showImage(e.target.value);
                 });
+
+
             });
 
-            // [...document.getElementsByClassName("selection")].forEach(s => {
-            //     s.addEventListener("click", (e) => {
-
-            //     })
-            // })
 
             const showImage = (rate) => {
 
@@ -213,6 +231,7 @@ reverseButton.addEventListener("click", () => {
     [...document.getElementsByClassName("rate")].forEach(r => {
 
         r.removeEventListener('click', (e) => {
+            rateText.innerText = "";
             showImage(e.target.value);
         });
     });
@@ -274,3 +293,16 @@ const changeLanguageText = () => {
     star0Label.title = lang.study_elements.star0;
 
 }
+
+
+[...document.getElementsByClassName("rate-label")].forEach(s => {
+
+    s.addEventListener('mouseover', (e) => {
+        rateText.innerText = e.target.title;
+    });
+
+    s.addEventListener('mouseleave', (e) => {
+        rateText.innerText = "";
+    });
+
+});
