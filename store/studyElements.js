@@ -1,4 +1,7 @@
 import { sm2 } from './sm2.js';
+import { Lang } from '../languages.js';
+
+var lang = Lang[(navigator.language.split("-")[0] || 'en')];
 
 let isThereAnyElement = false;
 const cardContainer = document.getElementById("card");
@@ -7,6 +10,16 @@ const rates = document.getElementById("rates");
 const reverseButton = document.getElementById("reverse");
 const kindOfWrapper = { selection: "p", translation: "p", definition: "p", context: "p", image: "img" };
 const soundButton = '<svg id="hglt-translation-sound" title="Play Sound" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>';
+const title = document.getElementById("title");
+const questionRemember = document.getElementById("question-remember");
+const reverse = document.getElementById("reverse");
+const noElements = document.getElementById("no-elements");
+const star5Label = document.getElementById("star5-label");
+const star4Label = document.getElementById("star4-label");
+const star3Label = document.getElementById("star3-label");
+const star2Label = document.getElementById("star2-label");
+const star1Label = document.getElementById("star1-label");
+const star0Label = document.getElementById("star0-label");
 
 const drawNoItems = () => {
     messageNoItems.style.display = 'block';
@@ -79,7 +92,7 @@ const mainLoad = () => {
                     element.classList.add(property);
 
                     if (property === 'selection') {
-                        
+
                         element.addEventListener("click", () => {
                             const utterance = new SpeechSynthesisUtterance(e.search);
                             utterance.lang = e.pronunciationLang;
@@ -138,7 +151,7 @@ const mainLoad = () => {
             [...document.getElementsByClassName("rate")].forEach(r => {
 
                 r.addEventListener('click', (e) => {
-                    showImage(e.target.value);                    
+                    showImage(e.target.value);
                 });
             });
 
@@ -150,22 +163,18 @@ const mainLoad = () => {
 
             const showImage = (rate) => {
 
-                [...document.getElementsByClassName("rate")].forEach(e=>e.checked = false)
+                [...document.getElementsByClassName("rate")].forEach(e => e.checked = false)
 
                 const element = document.getElementsByClassName("question");
 
-                if(!element.length) return;
+                if (!element.length) return;
 
                 const currentIndex = +document.getElementsByClassName("question")[0].id;
 
-                console.log(currentIndex);
-                console.log(storedData[currentIndex]);
-                console.log(storedData[currentIndex].repetitions);
-                
                 //TODO: ARREGLAR ESTO QUE RATE VIENE UNDEFINED
 
                 // console.log(storedData[currentIndex]);
-                
+
                 const newCard = sm2(storedData[currentIndex], rate);
 
                 originalData.originalIndex = newCard;
@@ -204,7 +213,7 @@ reverseButton.addEventListener("click", () => {
     [...document.getElementsByClassName("rate")].forEach(r => {
 
         r.removeEventListener('click', (e) => {
-            showImage(e.target.value);                    
+            showImage(e.target.value);
         });
     });
 
@@ -242,3 +251,26 @@ const flipCard = () => {
 
 
 mainLoad();
+
+
+chrome.storage.sync.get({ 'hgltGlobalLanguage': navigator.language.split("-")[0] }, (result) => {
+    const language = (result.hgltGlobalLanguage in Lang) ? result.hgltGlobalLanguage : 'en';
+    lang = Lang[language];
+    changeLanguageText();
+});
+
+
+const changeLanguageText = () => {
+
+    title.innerText = lang.study_elements.title;
+    questionRemember.innerText = lang.study_elements.question_remember;
+    reverse.innerText = lang.study_elements.reverse;
+    noElements.innerText = lang.study_elements.no_elements;
+    star5Label.title = lang.study_elements.star5;
+    star4Label.title = lang.study_elements.star4;
+    star3Label.title = lang.study_elements.star3;
+    star2Label.title = lang.study_elements.star2;
+    star1Label.title = lang.study_elements.star1;
+    star0Label.title = lang.study_elements.star0;
+
+}

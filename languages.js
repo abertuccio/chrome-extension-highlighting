@@ -23,6 +23,7 @@ const Lang =
             "saving": "Guardando..."
         },
         "stored_elements": {
+            "title":"Elementos Guardados",
             "selection_th": "Seleccion",
             "translation_th": "Traduccion",
             "definition_th": "Definicion",
@@ -30,7 +31,20 @@ const Lang =
             "image_th": "Imagen",
             "actions_th": "Acciones",
             "remove": "Eliminar"
+        },
+        "study_elements":{
+            "title":"Estudiar",
+            "question_remember": "¿Como evaluarias que recordaste este elemento?",
+            "reverse": "Volver a estudiar lo pendiente para hoy",
+            "no_elements": "Por hoy, no hay mas elementos para estudiar.",
+            "star0":"No me lo acordaba ni un poco",
+            "star1":"Mi respuesta fue incorrecta aunque al ver la respuesta me acorde un poco",
+            "star2":"Mi respuesta fue incorrecta, pero la respuesta me parece ahora facil de recordar",
+            "star3":"Respondi correctamente, logre acordarme pero me costo bastante",
+            "star4":"Respondi correctamente pero con alguna duda",
+            "star5":"Respondi correcto sin ninguna duda",
         }
+
     },
     "en": {
         "popup": {
@@ -55,6 +69,7 @@ const Lang =
             "saving": "Saving..."
         },
         "stored_elements": {
+            "title":"Stored Elements",
             "selection_th": "Selection",
             "translation_th": "Translation",
             "definition_th": "Definition",
@@ -62,6 +77,18 @@ const Lang =
             "image_th": "Image",
             "actions_th": "Action",
             "remove": "Remove"
+        },
+        "study_elements":{
+            "title":"Study",
+            "question_remember": "How would you evaluate that you remembered this element?",
+            "reverse": "Revisit today's",
+            "no_elements": "For today, there are no elements to study.",
+            "star0":"I did not remember a bit",
+            "star1":"My answer was incorrect, but seeing the answer, I remembered something",
+            "star2":"My answer was incorrect, but the answer now seems easy to remember",
+            "star3":"I answered correctly, I managed to remember but it cost me a lot",
+            "star4":"I answered correctly but with some doubt",
+            "star5":"I answered right without any doubt",
         }
     }
 };
