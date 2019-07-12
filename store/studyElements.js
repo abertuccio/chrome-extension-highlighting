@@ -132,6 +132,10 @@ const mainLoad = () => {
                         if (prop === 'translations') {
                             element.innerText = e[prop].join(" | ");
                         }
+                        if (prop === 'context') {
+                            const reg = new RegExp("(" + e.search + ")", "g");
+                            element.innerHTML = e[prop].replace(reg, "<span class='hglt-selected-text'>$1</span>");
+                        }
                     }
                     if (kindOfWrapper[property] === 'img') {
                         element.src = e[property];

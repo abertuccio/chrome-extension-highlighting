@@ -97,3 +97,7 @@ margin: auto;
 #card .answer .card{
     margin-bottom: 18px;
 }
+
+.hglt-selected-text{
+    color:red;
+}

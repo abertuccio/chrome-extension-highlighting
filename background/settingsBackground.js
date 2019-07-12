@@ -55,3 +55,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 
 });
+
+
+chrome.runtime.onInstalled.addListener(details => { 
+    chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {        
+        chrome.storage.sync.set({ hgltSitesNotAvailables: ['translate.google.com'] });
+    });   
+  });

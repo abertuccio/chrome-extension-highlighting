@@ -19,6 +19,9 @@
       "matches": [
         "<all_urls>"
       ],
+      "exclude_matches": [
+        "*://translate.google.com/*"
+      ],
       "js": [
         "content/HgltElement.js",
         "content/highligter/highlighter.js",
@@ -52,7 +55,7 @@
     "content/highligter/*"
   ],
   "background": {
-    "page":"background/background.html",
+    "page": "background/background.html",
     "persistent": false
   }
-} 
+}

@@ -157,7 +157,7 @@ class Popup {
             chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
                 const currentDomain = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
                 chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
-                    const sites = result.hgltSitesNotAvailables
+                    const sites = result.hgltSitesNotAvailables                    
                     if (e.target.checked) {
                         const idx = sites.indexOf(currentDomain);
                         if (idx !== -1) {
@@ -256,7 +256,9 @@ class Popup {
             const url = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);
             let state = false;
             let currentDomain = tab[0].url;
-            if (url) {
+            //TODO: VER OTRA MANERA PARA PONER EL DISABLED ABSOLUTO
+            //PROBLABLEMENTE HAY QUE LEER LAS EXCLUIDAS DEL MANIFIEST
+            if (url && url[1] !== 'translate.google.com') {
                 currentDomain = (url[1]);
                 state = !sitesNotAvailables.includes(currentDomain);
                 this.highlightSite.removeAttribute("disabled");
@@ -265,7 +267,7 @@ class Popup {
             }
             chrome.browserAction.setBadgeText({ text: (state) ? "" : "off" });
             this.highlightSite.checked = state;
-            currentDomain = currentDomain.substr(0, 25 - 1) + (currentDomain.length > 25 ? '&hellip;' : '');
+            currentDomain = currentDomain.substr(0, 23 - 1) + (currentDomain.length > 23 ? '&hellip;' : '');
             this.checkboxLabelSite.innerHTML = (state) ? `${this.locals.popup.active_on} <b>${currentDomain}</b>` : `${this.locals.popup.disabled_on} <b>${currentDomain}</b>`;
         });
     }
