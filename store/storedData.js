@@ -1,6 +1,15 @@
-const content = document.getElementById("content")
+import { Lang } from '../languages.js';
 
+var lang = Lang[(navigator.language.split("-")[0] || 'en')];
+
+const content = document.getElementById("content");
 const tbody = document.getElementById("tbody");
+const selectionTh = document.getElementById("selection-th");
+const translationTh = document.getElementById("translation-th");
+const definitionTh = document.getElementById("definition-th");
+const contextTh = document.getElementById("context-th");
+const imageTh = document.getElementById("image-th");
+const actionsTh = document.getElementById("actions-th");
 
 
 const soundButton = '<svg id="hglt-translation-sound" title="Play Sound" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" ><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>';
@@ -49,8 +58,8 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
         const actions = document.createElement("td");
         const removeButton = document.createElement("button");
         removeButton.setAttribute("type", "button");
-        removeButton.classList.add("btn", "btn-danger");
-        removeButton.innerText = "Remove";
+        removeButton.classList.add("btn", "btn-danger", "remove-button");
+        removeButton.innerText = lang.stored_elements.remove;
         actions.appendChild(removeButton);
 
         removeButton.addEventListener("click", () => {
@@ -168,3 +177,23 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 });
 
 
+chrome.storage.sync.get({ 'hgltGlobalLanguage': navigator.language.split("-")[0] }, (result) => {
+    const language = (result.hgltGlobalLanguage in Lang) ? result.hgltGlobalLanguage : 'en';
+    lang = Lang[language];
+    changeLanguageText();
+});
+
+
+const changeLanguageText = () => {
+
+    selectionTh.innerText = lang.stored_elements.selection_th;
+    translationTh.innerText = lang.stored_elements.translation_th;
+    definitionTh.innerText = lang.stored_elements.definition_th;
+    contextTh.innerText = lang.stored_elements.context_th;
+    imageTh.innerText = lang.stored_elements.image_th;
+    actionsTh.innerText = lang.stored_elements.actions_th;
+
+    [...document.getElementsByClassName("btn btn-danger")].forEach(b => {
+        b.innerText = lang.stored_elements.remove;
+    })
+}

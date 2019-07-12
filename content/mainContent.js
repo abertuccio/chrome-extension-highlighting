@@ -8,7 +8,7 @@ class Highlighter {
         this.boxActive = false;
         this.hgltActions = null;
         this.htmlElement = null;
-        this.selectionPosition = null;
+        this.selectionPosition = null;               
         this.settingsData = {
             translation: {
                 avalible: true,
@@ -32,27 +32,25 @@ class Highlighter {
     }
 
     getState() {
+
         chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
             this.allowed = result.hgltAvailible;
+            chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {
+                const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
+                const state = !resultSiteAvailable.hgltSitesNotAvailables.includes(currentDomain);
+                this.allowed = state;
+                chrome.storage.sync.get({ 'hgltSettings': false }, (resultSettings) => {
+                    if (resultSettings.hgltSettings) {
+                        this.settingsData = resultSettings.hgltSettings;
+                        //TODO: VER OTRA MANERA DE ACTUALIZAR/PONER LOS DATOS DE SETTINGS
+                        if (this.hgltActions) {
+                            this.hgltActions.settingsData = resultSettings.hgltSettings;
+                        }
+                    }
+                });
+            });
         });
 
-        chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
-
-            const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
-            const state = !result.hgltSitesNotAvailables.includes(currentDomain);
-            this.allowed = state;
-            // chrome.browserAction.setBadgeText({text: (state)?"":"off"});
-        });
-
-        chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
-            if (result.hgltSettings) {
-                this.settingsData = result.hgltSettings;
-                //TODO: VER OTRA MANERA DE ACTUALIZAR/PONER LOS DATOS DE SETTINGS
-                if (this.hgltActions) {
-                    this.hgltActions.settingsData = result.hgltSettings;
-                }
-            }
-        });
     }
 
     deleteState() {
@@ -140,7 +138,7 @@ class Highlighter {
         }, (info) => {
             console.log(info);
         });
-    }
+    }    
 
 }
 let hglt = new Highlighter();

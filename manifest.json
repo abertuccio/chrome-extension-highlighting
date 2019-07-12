@@ -52,10 +52,7 @@
     "content/highligter/*"
   ],
   "background": {
-    "scripts": [
-      "background/settingsBackground.js",
-      "background/background.js"
-    ],
+    "page":"background/background.html",
     "persistent": false
   }
 } 

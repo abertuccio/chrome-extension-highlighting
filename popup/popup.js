@@ -98,10 +98,10 @@ class Popup {
         chrome.storage.sync.get({ 'hgltAvailible': false }, (resultAvailable) => {
             chrome.storage.sync.get({ 'hgltGlobalLanguage': navigator.language.split("-")[0] }, (result) => {
                 const language = (result.hgltGlobalLanguage in Lang) ? result.hgltGlobalLanguage : 'en';
-                
+
                 this.locals = Lang[language];
                 this.setCheckboxState(resultAvailable.hgltAvailible);
-                chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {                    
+                chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {
                     this.setCheckboxSiteState(resultSiteAvailable.hgltSitesNotAvailables);
                     this.changeLanguage();
                 });
@@ -122,7 +122,7 @@ class Popup {
 
     }
 
-    changeLanguage(){
+    changeLanguage() {
         this.settingText.innerText = this.locals.popup.settings;
         this.translationCheckboxLabel.innerText = this.locals.popup.translate;
         this.translationFromLabel.innerText = this.locals.popup.from;
@@ -263,9 +263,9 @@ class Popup {
             } else {
                 this.highlightSite.setAttribute("disabled", true);
             }
-            chrome.browserAction.setBadgeText({text: (state)?"":"off"});
+            chrome.browserAction.setBadgeText({ text: (state) ? "" : "off" });
             this.highlightSite.checked = state;
-            currentDomain = currentDomain.substr(0,25-1)+(currentDomain.length>25?'&hellip;':'');
+            currentDomain = currentDomain.substr(0, 25 - 1) + (currentDomain.length > 25 ? '&hellip;' : '');
             this.checkboxLabelSite.innerHTML = (state) ? `${this.locals.popup.active_on} <b>${currentDomain}</b>` : `${this.locals.popup.disabled_on} <b>${currentDomain}</b>`;
         });
     }

@@ -1,3 +1,5 @@
+import { Lang } from '../languages.js';
+
 chrome.storage.onChanged.addListener(function (changes, namespace) {
 
     for (var key in changes) {
@@ -15,11 +17,11 @@ chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
 const setIcon = (active) => {
     if (active) {
         chrome.browserAction.setIcon({
-            path: 'images/pencil_active_64.png'
+            path: chrome.runtime.getURL('images/pencil_active_64.png')
         });
     } else {
         chrome.browserAction.setIcon({
-            path: 'images/pencil_64.png'
+            path: chrome.runtime.getURL('images/pencil_64.png')            
         });
     }
 
@@ -44,4 +46,12 @@ chrome.tabs.onActivated.addListener(function(tab) {
    
                 
      })
+});
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+
+    if (message.target === 'settings-background' && message.action === 'ASK_LANG') {
+        sendResponse(Lang);
+    }
+
 });

@@ -5,17 +5,17 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
   <body>      
-    <h1>Stored Elements</h1>
+    <h1 id="title">Stored Elements</h1>
     <div id="content">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Selection</th>
-                    <th>Translation</th>
-                    <th>Definition</th>
-                    <th>Context</th>
-                    <th>Image</th>
-                    <th>Actions</th>
+                    <th id="selection-th">Selection</th>
+                    <th id="translation-th">Translation</th>
+                    <th id="definition-th">Definition</th>
+                    <th id="context-th">Context</th>
+                    <th id="image-th">Image</th>
+                    <th id="actions-th">Actions</th>
                 </tr>
             </thead>
             <tbody id="tbody">
@@ -23,6 +23,6 @@
             </tbody>
         </table>
     </div>
-    <script src="storedData.js"></script>
+    <script type="module" src="storedData.js"></script>
   </body>
 </html>

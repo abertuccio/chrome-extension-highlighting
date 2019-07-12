@@ -7,6 +7,8 @@ class HighlighterActions {
         this.hgltAddStore = document.getElementById("hglt-add-store");
         this.hgltImageLoader = document.getElementById("hglt-image-loader");
         this.hgltMeaningsWrapper = document.getElementById("hglt-meanings");
+        this.hgltAddStore1 = document.getElementById("hglt-add-store-1");
+        this.hgltAddStore2 = document.getElementById("hglt-add-store-2");
         this.hgltWordSelected = document.getElementById("hglt-word-selected");
         this.hgltImageWrapper = document.getElementById("hglt-image-wrapper");
         this.hgltImageDivisor = document.getElementById("hglt-image-divisor");
@@ -59,11 +61,27 @@ class HighlighterActions {
         this.currentTranslationIndex = 0;
         this.definitions = null;
         this.currentDefinitionIndex = 0;
+        this.langs = {};
+        this.lang = {}; 
         this.startListeners();
     }
 
 
     startListeners() {
+
+        chrome.runtime.sendMessage({ 
+            'target': 'settings-background', 
+            'action': 'ASK_LANG' 
+        }, (langs)=> {
+            this.langs = langs;
+            this.lang = langs[navigator.language.split("-")[0]];
+            chrome.storage.sync.get({ 'hgltGlobalLanguage': navigator.language.split("-")[0] }, (result) => {
+                const language = (result.hgltGlobalLanguage in this.langs) ? result.hgltGlobalLanguage : 'en';
+                this.lang = this.langs[language];
+                this.changeLanguageTexts();
+            });
+        });
+
 
         this.hgltSeeStoredElements.addEventListener("click", () => {
             chrome.runtime.sendMessage({ 'target': 'background', 'action': 'SEE_STORED_DATA' }, function (res) {
@@ -399,6 +417,15 @@ class HighlighterActions {
         this.currentTranslationIndex = 0;
         this.definitions = null;
         this.currentDefinitionIndex = 0;
+    }
+
+    changeLanguageTexts() {
+        console.log(this.lang);
+        this.hgltAddStore1.innerText = this.lang.tooltip.add_elements_to_the_store1;
+        this.hgltAddStore2.innerText = this.lang.tooltip.add_elements_to_the_store2; 
+        this.hgltAddStoreSaving.innerText = this.lang.tooltip.saving;  
+        this.hgltSeeStoredElements.innerText = this.lang.popup.stored_elements;
+        this.hgltStudyElements.innerText = this.lang.popup.study_elements;
     }
 
 
