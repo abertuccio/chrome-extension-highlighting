@@ -8,25 +8,29 @@ var storedDataTabId = null;
 var studyElementsURL = null;
 var studyElementsTabId = null;
 
-const createSearchTabs = (search) => {
+const createSearchTabs = (search, createImageTab = true, createTranslationTab = true) => {
 
     const newSearch = `https://www.google.com/search?q=${search}&source=lnms&tbm=isch`;
     const newTranslation = `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${search}`
 
-    chrome.tabs.create({
-        "url": newSearch,
-        "pinned": true,
-        "selected": false
-    }, (imageSearchTab) => {
-        tabIdImageSearch = imageSearchTab.id;
-    });
-    chrome.tabs.create({
-        "url": newTranslation,
-        "pinned": true,
-        "selected": false
-    }, (translationTab) => {
-        tabIdTranslation = translationTab.id;
-    });
+    if (createImageTab) {
+        chrome.tabs.create({
+            "url": newSearch,
+            "pinned": true,
+            "selected": false
+        }, (imageSearchTab) => {
+            tabIdImageSearch = imageSearchTab.id;
+        });
+    }
+    if (createTranslationTab) {
+        chrome.tabs.create({
+            "url": newTranslation,
+            "pinned": true,
+            "selected": false
+        }, (translationTab) => {
+            tabIdTranslation = translationTab.id;
+        });
+    }
 
 }
 
@@ -65,6 +69,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.target === 'background' && message.action === 'ASK_TRANSLATION_AND_IMAGES') {
 
 
+        chrome.tabs.query({ pinned: true }, (tabs) => {
+
+            let trasnlationTab = false;
+            let imageTab = false;
+
+            for (let i = 0; i < tabs.length; i++) {
+                if (tabs[i].url.includes("https://www.google.com/search")) {
+                    imageTab = true;
+                }
+                if (tabs[i].url.includes("https://translate.google.com/")) {
+                    trasnlationTab = true;
+                }
+            }
+
+            if (!trasnlationTab || !imageTab) {
+                //TODO: CAMBIAR ESTO PORQUE NO ES SINCRONO, ENTONCES VA A CREAR LOS TABS 
+                //PERO NO VA A GUARDARSE tabIdTranslation Y tabIdImageSearch
+                createSearchTabs("example", !imageTab, !trasnlationTab);
+            }
+
+        });
+
 
         if (tabIdTranslation && tabIdImageSearch) {
 
@@ -83,7 +109,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 selection: message.selection
             });
             // }
-            sendResponse("INFORMATION WAS ASKED FROM COMTENT->BACKGROUND TO ->PINEDTABS");
+            sendResponse("INFORMATION WAS ASKED");
         } else {
             //TODO: TENEMOS QUE ABRIR LOS TABS SI NO EXISTEN
 

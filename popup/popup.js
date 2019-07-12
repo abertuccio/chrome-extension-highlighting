@@ -267,7 +267,7 @@ class Popup {
             }
             chrome.browserAction.setBadgeText({ text: (state) ? "" : "off" });
             this.highlightSite.checked = state;
-            currentDomain = currentDomain.substr(0, 23 - 1) + (currentDomain.length > 23 ? '&hellip;' : '');
+            currentDomain = currentDomain.substr(0, 21 - 1) + (currentDomain.length > 21 ? '&hellip;' : '');
             this.checkboxLabelSite.innerHTML = (state) ? `${this.locals.popup.active_on} <b>${currentDomain}</b>` : `${this.locals.popup.disabled_on} <b>${currentDomain}</b>`;
         });
     }

@@ -8,7 +8,9 @@ class Highlighter {
         this.boxActive = false;
         this.hgltActions = null;
         this.htmlElement = null;
-        this.selectionPosition = null;               
+        this.selectionPosition = null;
+        this.waitingTranslation = false; 
+        this.waitingImages = false;            
         this.settingsData = {
             translation: {
                 avalible: true,
@@ -90,8 +92,17 @@ class Highlighter {
     showHTML() {
 
         if (!this.allowed) return;
-
+        
+        this.waitingTranslation = true; 
+        this.waitingImages = true;
+        
         this.lookForInformation();
+
+        setInterval(() => {
+            if(this.waitingTranslation || this.waitingImages){
+                this.lookForInformation();  
+            }
+        }, 4000);
 
         setTimeout(() => {
             hglt.boxActive = true;
@@ -212,6 +223,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         if (message.selection === hglt.selection && message.kind === 'translation') {
             message.result.context = hglt.context;
+            hglt.waitingTranslation = false;
             hglt.hgltActions.setTranslation(message);
         }
 
@@ -223,6 +235,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         // }
 
         if (message.selection === hglt.selection && message.kind === 'images') {
+            hglt.waitingImages = false;
             hglt.hgltActions.setImages(message);
         }
 
