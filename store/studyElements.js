@@ -110,8 +110,10 @@ const mainLoad = () => {
                     
                     var hear = ()=>{
                         hearElement.innerHTML = lang.study_elements.listening;
-                        var tryAgain = document.createElement("span");
-                        tryAgain.innerText = lang.study_elements.try_again;
+                        var tryAgain = document.createElement("span"); 
+                        tryAgain.innerHTML = hearButton;
+                        tryAgain.classList.add("hear-button-inside-text");
+                        tryAgain.title = lang.study_elements.try_again;
                         tryAgain.addEventListener("click",()=>{
                             hear();
                         })
@@ -130,7 +132,7 @@ const mainLoad = () => {
                                 color = 'green';
                                 var text = lang.study_elements.good_job;
                             }
-                            hearElement.innerHTML = `${lang.study_elements.you_said}<span style='color:${color}'>${result} </span> ${text}`;
+                            hearElement.innerHTML = `${lang.study_elements.you_said}<span style='color:${color}'> ${result}</span> ${text}`;
                             hearElement.appendChild(tryAgain);
                         };
                     }

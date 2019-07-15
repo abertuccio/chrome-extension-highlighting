@@ -107,3 +107,7 @@ margin: auto;
     width: 500px;
     text-align: center;
 }
+
+.hear-button-inside-text svg{
+    vertical-align: bottom;
+}
