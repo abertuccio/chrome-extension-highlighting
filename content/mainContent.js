@@ -199,6 +199,14 @@ document.addEventListener("selectionchange", (e) => {
 
 window.onmouseup = (e) => { if (hglt.candidate && !hglt.boxActive) hglt.showHTML(); }
 
+window.ondblclick = (e) => { if (!hglt.boxActive) {
+    setTimeout(()=>{
+        if(hglt.candidate){
+            hglt.showHTML();
+        }
+    },50)
+ } }
+
 window.onscroll = (e) => { hglt.deleteState(); }
 
 window.addEventListener('click', function (e) {
