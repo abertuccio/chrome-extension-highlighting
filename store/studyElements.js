@@ -116,7 +116,7 @@ const mainLoad = () => {
                             hear();
                         })
                         var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
-                        
+                        //TODO: PONER LANG QUE CORRESPONDE QUE ES EL DE LA TRADUCCION
                         recognition.lang = 'en-US';
                         recognition.interimResults = false;
                         recognition.maxAlternatives = 5;
