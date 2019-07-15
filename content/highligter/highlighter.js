@@ -349,6 +349,9 @@ class HighlighterActions {
         // this.hgltAddStoreStoreStudy.style.display = 'none';
         // this.hgltAddStoreError.style.display = 'none';
 
+        //TODO: VER PORQUE VIENE VACIO
+        // this.hgltTranslationSound.title = data.result.transliteration;         
+
         this.hgltAddStore.style.display = 'block';
 
         this.translations = data.result.translations;
