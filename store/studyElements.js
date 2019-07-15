@@ -124,6 +124,7 @@ const mainLoad = () => {
                         recognition.maxAlternatives = 5;
                         recognition.start();                        
                         recognition.onresult = function (event) {
+                            recognition.stop();
                             const selection = e.search.toLowerCase().trim();
                             const result = event.results[0][0].transcript.toLowerCase().trim();
                             var color = 'red';
