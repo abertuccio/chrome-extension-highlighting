@@ -124,6 +124,7 @@ class Popup {
 
         chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
             const count = result.hgltStoredElement.length;
+
             if(count){
                 this.storedBadge.style.display = 'block';
                 this.storedBadge.innerText = (+count>99)?'+99':count;
@@ -132,7 +133,7 @@ class Popup {
                 let studyToday = 0; 
                 let todayInSeconds = Math.floor(Date.now() / 1000);
                 result.hgltStoredElement.forEach(e=>{
-                    console.log(e);
+                    
                     if (('nextPracticeDate' in e) && e.nextPracticeDate < todayInSeconds) {                        
                         studyToday++; 
                     }
