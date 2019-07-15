@@ -46,7 +46,12 @@ const Lang =
             "context":"Contexto",
             "definition":"Definicion",
             "image":"Imagen",
-            "translation":"Traduccion"
+            "translation":"Traduccion",
+            "pronunciation_test_title":"Pruebe su pronunciacion",
+            "listening":"Escuchando...",
+            "try_again": "Intente nuevamente",
+            "you_said":"Usted dijo: ",
+            "good_job":" ¡Buen trabajo!"
         }
 
     },
@@ -96,7 +101,12 @@ const Lang =
             "context":"Context",
             "definition":"Definition",
             "image":"Image",
-            "translation":"Translation"
+            "translation":"Translation",
+            "pronunciation_test_title":"Test your pronunciation",
+            "listening":"Listening...",
+            "try_again": "Try again",
+            "you_said":"You said: ",
+            "good_job":" Good job!"
         }
     }
 };

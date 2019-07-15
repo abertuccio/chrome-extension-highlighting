@@ -101,3 +101,9 @@ margin: auto;
 .hglt-selected-text{
     color:red;
 }
+
+.hear-button{
+    cursor: pointer;
+    width: 500px;
+    text-align: center;
+}

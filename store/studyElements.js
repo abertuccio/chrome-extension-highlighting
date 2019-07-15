@@ -92,11 +92,11 @@ const mainLoad = () => {
                 const hearElement = document.createElement("div");
                 const hearCardWapper = document.createElement("div");
                 hearCardWapper.classList.add("card");
-                const hearCardBody = document.createElement("div");
-                hearCardBody.classList.add("card-body");
+                const hearCardBody = document.createElement("div");                
+                hearCardBody.classList.add("card-body","hear-button");                
                 const hearTitleCard = document.createElement("h5");
                 hearTitleCard.classList.add("card-header");
-                hearTitleCard.innerText = "Test your pronunciation";
+                hearTitleCard.innerText = lang.study_elements.pronunciation_test_title;
                 const hpCard = document.createElement("p");
                 hpCard.classList.add("card-text");
                 hpCard.appendChild(hearElement);
@@ -109,15 +109,15 @@ const mainLoad = () => {
                 hearElement.addEventListener("click",()=>{
                     
                     var hear = ()=>{
-                        hearElement.innerHTML = "Listening...";
+                        hearElement.innerHTML = lang.study_elements.listening;
                         var tryAgain = document.createElement("span");
-                        tryAgain.innerText = "Try Again";
+                        tryAgain.innerText = lang.study_elements.try_again;
                         tryAgain.addEventListener("click",()=>{
                             hear();
                         })
                         var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
-                        //TODO: PONER LANG QUE CORRESPONDE QUE ES EL DE LA TRADUCCION
-                        recognition.lang = 'en-US';
+                        
+                        recognition.lang = e.pronunciationLang;
                         recognition.interimResults = false;
                         recognition.maxAlternatives = 5;
                         recognition.start();                        
@@ -128,9 +128,9 @@ const mainLoad = () => {
                             var text = '';
                             if(selection === result){
                                 color = 'green';
-                                var text = ' Good Job!';
+                                var text = lang.study_elements.good_job;
                             }
-                            hearElement.innerHTML = `You said: <span style='color:${color}'>${result} </span> ${text}`;
+                            hearElement.innerHTML = `${lang.study_elements.you_said}<span style='color:${color}'>${result} </span> ${text}`;
                             hearElement.appendChild(tryAgain);
                         };
                     }
