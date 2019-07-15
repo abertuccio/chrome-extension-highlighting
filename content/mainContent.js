@@ -98,7 +98,7 @@ class Highlighter {
         
         this.lookForInformation();
 
-        setInterval(() => {
+        setTimeout(() => {
             if(this.waitingTranslation || this.waitingImages){
                 this.lookForInformation();  
             }

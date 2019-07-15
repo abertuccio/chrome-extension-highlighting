@@ -1,6 +1,7 @@
 
 // // var newTranslation = `https://www.wordreference.com/es/translation.asp?tranword=${message.search}`
-
+var imagesURL = (search) => `https://www.google.com/search?q=${search}&source=lnms&tbm=isch`;
+var translationURL = (search) => `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${search}`;
 var tabIdTranslation = null;
 var tabIdImageSearch = null;
 var storedDataUrl = null;
@@ -10,12 +11,9 @@ var studyElementsTabId = null;
 
 const createSearchTabs = (search, createImageTab = true, createTranslationTab = true) => {
 
-    const newSearch = `https://www.google.com/search?q=${search}&source=lnms&tbm=isch`;
-    const newTranslation = `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${search}`
-
     if (createImageTab) {
         chrome.tabs.create({
-            "url": newSearch,
+            "url": imagesURL(search),
             "pinned": true,
             "selected": false
         }, (imageSearchTab) => {
@@ -24,7 +22,7 @@ const createSearchTabs = (search, createImageTab = true, createTranslationTab = 
     }
     if (createTranslationTab) {
         chrome.tabs.create({
-            "url": newTranslation,
+            "url": translationURL(search),
             "pinned": true,
             "selected": false
         }, (translationTab) => {
@@ -33,25 +31,6 @@ const createSearchTabs = (search, createImageTab = true, createTranslationTab = 
     }
 
 }
-
-// chrome.runtime.onInstalled.addListener(function (details) {
-
-//     chrome.tabs.query({ pinned: true }, (tabs) => {
-
-//         tabs.forEach(tab => {
-//             if (tab.url.includes("https://www.google.com/search")) {
-//                 chrome.tabs.remove(tab.id);
-//             }
-//             if (tab.url.includes("https://translate.google.com/")) {
-//                 chrome.tabs.remove(tab.id);
-//             }
-//         });
-//             createSearchTabs("example");
-//     });
-
-
-// });
-
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
@@ -71,51 +50,65 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         chrome.tabs.query({ pinned: true }, (tabs) => {
 
-            let trasnlationTab = false;
-            let imageTab = false;
+            let translationTabOpen = false;
+            let imageTabOpen = false;
 
             for (let i = 0; i < tabs.length; i++) {
                 if (tabs[i].url.includes("https://www.google.com/search")) {
-                    imageTab = true;
+
+                    chrome.tabs.sendMessage(tabs[i].id, {
+                        target: 'images',
+                        action: 'ASK_IMAGES',
+                        selection: message.selection
+                    });
+
+                    imageTabOpen = true;
                 }
                 if (tabs[i].url.includes("https://translate.google.com/")) {
-                    trasnlationTab = true;
+
+                    chrome.tabs.sendMessage(tabs[i].id, {
+                        target: 'translation',
+                        action: 'ASK_TRANSLATION',
+                        selection: message.selection,
+                        from: message.settings.translation.fromLang,
+                        to: message.settings.translation.toLang
+                    });
+
+                    translationTabOpen = true;
                 }
             }
 
-            if (!trasnlationTab || !imageTab) {
-                //TODO: CAMBIAR ESTO PORQUE NO ES SINCRONO, ENTONCES VA A CREAR LOS TABS 
-                //PERO NO VA A GUARDARSE tabIdTranslation Y tabIdImageSearch
-                createSearchTabs("example", !imageTab, !trasnlationTab);
+            if (!translationTabOpen) {
+                chrome.tabs.create({
+                    "url": translationURL(message.selection),
+                    "pinned": true,
+                    "selected": false
+                }, (translationTab) => {
+                    chrome.tabs.sendMessage(translationTab.id, {
+                        target: 'translation',
+                        action: 'ASK_TRANSLATION',
+                        selection: message.selection,
+                        from: message.settings.translation.fromLang,
+                        to: message.settings.translation.toLang
+                    });
+                });
+            }
+
+            if (!imageTabOpen) {
+                chrome.tabs.create({
+                    "url": imagesURL(message.selection),
+                    "pinned": true,
+                    "selected": false
+                }, (imageSearchTab) => {
+                    chrome.tabs.sendMessage(imageSearchTab.id, {
+                        target: 'images',
+                        action: 'ASK_IMAGES',
+                        selection: message.selection
+                    });
+                });
             }
 
         });
-
-
-        if (tabIdTranslation && tabIdImageSearch) {
-
-            chrome.tabs.sendMessage(tabIdTranslation, {
-                target: 'translation',
-                action: 'ASK_TRANSLATION',
-                selection: message.selection,
-                from: message.settings.translation.fromLang,
-                to: message.settings.translation.toLang
-            });
-
-            // if(message.settings.images.availible){
-            chrome.tabs.sendMessage(tabIdImageSearch, {
-                target: 'images',
-                action: 'ASK_IMAGES',
-                selection: message.selection
-            });
-            // }
-            sendResponse("INFORMATION WAS ASKED");
-        } else {
-            //TODO: TENEMOS QUE ABRIR LOS TABS SI NO EXISTEN
-
-            console.log("nos piden info!!! pero no tenemostabs !!!!")
-        }
-
 
     }
 
