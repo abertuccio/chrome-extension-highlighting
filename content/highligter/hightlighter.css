@@ -150,6 +150,11 @@ float: left;
 .hglt-arrow{  
     color: #dcdcdc;
     user-select: none;
+    transform: scale(0.9,1.9);
+    font-size: 16px;
+    font-family: serif;
+    line-height: 16px;
+    font-weight: normal;
 }
 
 .hglt-arrow-hover{

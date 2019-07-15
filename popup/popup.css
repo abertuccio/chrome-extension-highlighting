@@ -52,3 +52,33 @@ color: #666;
 input{
     vertical-align: middle;
 }
+
+#definition-checkbox-label-in{
+    display: none;
+}
+
+#definition-target{
+    display: none;
+}
+
+.custom-control-input:checked~.custom-control-label::before {
+background-color: #4e87e2;
+border-color: #4e87e2;
+}
+
+.study-stored-wrapper{
+    font-size: 13px;
+}
+
+.study-stored-wrapper img{
+    float: left;
+    margin-right: 5px;
+}
+
+.study-stored-wrapper .buttons{
+    color: #969696 !important;
+}
+
+.study-stored-wrapper .buttons:hover{
+    color:#565656  !important;
+}

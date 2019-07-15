@@ -22,7 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -37,16 +37,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1322"
-     inkscape:window-height="704"
+     inkscape:window-width="1370"
+     inkscape:window-height="836"
      id="namedview871"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:zoom="5.6568543"
-     inkscape:cx="-15.23881"
-     inkscape:cy="10.620186"
-     inkscape:window-x="44"
+     inkscape:zoom="11.313709"
+     inkscape:cx="6.2501997"
+     inkscape:cy="18.961351"
+     inkscape:window-x="70"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg869">
@@ -59,16 +59,18 @@
   <path
      d="m 1.3135809,27.733294 v 6.953125 h 6.953125 L 28.773789,14.179336 21.820664,7.2262108 Z M 34.150873,8.8022524 c 0.723125,-0.7231249 0.723125,-1.89125 0,-2.614375 l -4.33875,-4.33875 c -0.723125,-0.723125 -1.89125,-0.723125 -2.614375,0 l -3.393125,3.393125 6.953125,6.9531246 z"
      id="path865"
-     style="fill:#a3fff5;fill-opacity:1;stroke:#0e0e0e;stroke-width:1.85416663;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     style="fill:#94b7ef;fill-opacity:1;stroke:#0e0e0e;stroke-width:1.85416663;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
      inkscape:connector-curvature="0" />
   <path
      d="M -4.2499998,-4.2500002 H 40.25 V 40.25 H -4.2499998 Z"
      id="path867"
      inkscape:connector-curvature="0"
      style="fill:none;stroke-width:1.85416663" />
-  <path
-     style="fill:none;stroke:#5a5a5a;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
-     d="m 13.633494,34.6875 h 22.01512 z"
-     id="path881"
-     inkscape:connector-curvature="0" />
+  <rect
+     style="fill:#5a5a5a;fill-opacity:1;stroke-width:19.37714767;stroke-miterlimit:4;stroke-dasharray:none"
+     id="rect2190"
+     width="22"
+     height="2"
+     x="13.620503"
+     y="33.646446" />
 </svg>
