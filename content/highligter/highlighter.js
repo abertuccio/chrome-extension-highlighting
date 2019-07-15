@@ -130,6 +130,10 @@ class HighlighterActions {
                 chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
                     this.data.result.pronunciationLang = this.settingsData.translation.fromLang;
                     this.data.result.image = srcResponse;
+                    this.data.result.nextPracticeDate = 0;
+                    this.data.result.repetitions = 0;
+                    this.data.result.easinessFactor = 2.5;
+                    this.data.result.interval = 1;
                     result.hgltStoredElement.push(this.data.result);
                     chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res) => {
                         this.hgltAddStoreSaving.style.display = 'none';

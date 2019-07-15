@@ -12,6 +12,8 @@ class Popup {
         this.highlight = document.getElementById("highlight");
         this.highlightSite = document.getElementById("highlight-site");
         this.checkboxLabelSite = document.getElementById("checkbox-label-site");
+        this.storedBadge = document.getElementById("stored-badge");
+        this.studyBadge = document.getElementById("study-badge");
         this.definition = document.getElementById("definition");
         this.translation = document.getElementById("translation");
         this.settingsButton = document.getElementById("settings");
@@ -118,6 +120,36 @@ class Popup {
                 this.settingsData = result.hgltSettings;
             }
             this.setSettings(this.settingsData);
+        });
+
+        chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+            const count = result.hgltStoredElement.length;
+            if(count){
+                this.storedBadge.style.display = 'block';
+                this.storedBadge.innerText = (+count>99)?'+99':count;
+                this.storedBadge.style.width = (+count>99)?'21px':'14px';   
+                
+                let studyToday = 0; 
+                let todayInSeconds = Math.floor(Date.now() / 1000);
+                result.hgltStoredElement.forEach(e=>{
+                    console.log(e);
+                    if (('nextPracticeDate' in e) && e.nextPracticeDate < todayInSeconds) {                        
+                        studyToday++; 
+                    }
+                });
+                if(studyToday){
+                    this.studyBadge.style.display = 'block';
+                    this.studyBadge.innerText = (+studyToday>99)?'+99':studyToday;
+                    this.studyBadge.style.width = (+studyToday>99)?'21px':'14px';
+                }else{
+                    this.studyBadge.style.display = 'none';
+                }
+                
+            }
+            else{
+                this.storedBadge.style.display = 'none';
+                this.studyBadge.style.display = 'none';
+            }
         });
 
     }

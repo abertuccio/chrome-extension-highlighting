@@ -82,3 +82,13 @@ border-color: #4e87e2;
 .study-stored-wrapper .buttons:hover{
     color:#565656  !important;
 }
+
+.study-stored-badge{
+    position: relative;
+    top: -21px;
+    display: none;
+    width: 14px;
+    height: 14px;
+    line-height: 14px;
+    padding: 0px;
+}
