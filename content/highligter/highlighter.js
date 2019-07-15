@@ -134,6 +134,19 @@ class HighlighterActions {
                     this.data.result.repetitions = 0;
                     this.data.result.easinessFactor = 2.5;
                     this.data.result.interval = 1;
+                    
+                    //TODO arreglar bien este objeto para mandarlo a sync
+                    tO = {}
+                    tO.ef = 2.5; //easinessFactor
+                    tO.i = "https://i.ytimg.com/vi/4I5p_ui4HlI/maxresdefault.jpg";//image
+                    tO.it = 1;//interval
+                    tO.np = 0;//nextPracticeDate
+                    tO.lf = "en";//lang from - pronunciationLang
+                    tO.lt = "";//lang to 
+                    tO.r = 0; // repetitions
+                    tO.s = "captured"; // search
+                    
+
                     result.hgltStoredElement.push(this.data.result);
                     chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res) => {
                         this.hgltAddStoreSaving.style.display = 'none';
