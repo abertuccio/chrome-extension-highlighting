@@ -52,6 +52,7 @@ h1{
     box-shadow: 5px 4px 9px 0px #d2d2d2;
     margin-bottom: 23px;
     max-height: 524px;
+    max-width: 500px;
 }
 
 .translation{
@@ -95,7 +96,10 @@ margin: auto;
 }
 
 #card .answer .card{
-    margin-bottom: 18px;
+    margin: 1%;
+    display: block;
+    float: left;
+    width: 48%;
 }
 
 .hglt-selected-text{
@@ -110,4 +114,9 @@ margin: auto;
 
 .hear-button-inside-text svg{
     vertical-align: bottom;
+}
+
+.context-wrapper{
+    clear: both;
+    width: 100%;
 }

@@ -63,11 +63,11 @@ const mainLoad = () => {
                 }
                 if (!('positions' in e)) {
                     originalData[i].positions = {
-                        selection: 'front',
+                        image: 'back',
                         translation: 'back',
                         definition: 'back',
-                        context: 'back',
-                        image: 'back'
+                        selection: 'front',
+                        context: 'back'
                     };
                 }
                 return originalData[i];
@@ -82,6 +82,7 @@ const mainLoad = () => {
 
 
             let cards = storedData.map((e, i) => {
+
                 const card = document.createElement("div");
                 const question = document.createElement("div");
                 const answer = document.createElement("div");
@@ -92,8 +93,8 @@ const mainLoad = () => {
                 const hearElement = document.createElement("div");
                 const hearCardWapper = document.createElement("div");
                 hearCardWapper.classList.add("card");
-                const hearCardBody = document.createElement("div");                
-                hearCardBody.classList.add("card-body","hear-button");                
+                const hearCardBody = document.createElement("div");
+                hearCardBody.classList.add("card-body", "hear-button");
                 const hearTitleCard = document.createElement("h5");
                 hearTitleCard.classList.add("card-header");
                 hearTitleCard.innerText = lang.study_elements.pronunciation_test_title;
@@ -103,33 +104,34 @@ const mainLoad = () => {
                 hearCardBody.appendChild(hpCard);
                 hearCardWapper.appendChild(hearTitleCard);
                 hearCardWapper.appendChild(hearCardBody);
+
                 answer.appendChild(hearCardWapper);
                 hearElement.innerHTML = hearButton;
-                
-                hearElement.addEventListener("click",()=>{
-                    
-                    var hear = ()=>{
+
+                hearElement.addEventListener("click", () => {
+
+                    var hear = () => {
                         hearElement.innerHTML = lang.study_elements.listening;
-                        var tryAgain = document.createElement("span"); 
+                        var tryAgain = document.createElement("span");
                         tryAgain.innerHTML = hearButton;
                         tryAgain.classList.add("hear-button-inside-text");
                         tryAgain.title = lang.study_elements.try_again;
-                        tryAgain.addEventListener("click",()=>{
+                        tryAgain.addEventListener("click", () => {
                             hear();
                         })
                         var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
-                        
+
                         recognition.lang = e.pronunciationLang;
                         recognition.interimResults = false;
                         recognition.maxAlternatives = 5;
-                        recognition.start();                        
+                        recognition.start();
                         recognition.onresult = function (event) {
                             recognition.stop();
                             const selection = e.search.toLowerCase().trim();
                             const result = event.results[0][0].transcript.toLowerCase().trim();
                             var color = 'red';
                             var text = '';
-                            if(selection === result){
+                            if (selection === result) {
                                 color = 'green';
                                 var text = lang.study_elements.good_job;
                             }
@@ -139,8 +141,10 @@ const mainLoad = () => {
                     }
 
                     hear();
-                
+
                 });
+
+
 
                 for (let property in e.positions) {
 
@@ -180,6 +184,11 @@ const mainLoad = () => {
                         if (property === 'selection') prop = 'search';
                         if (property === 'translation') prop = 'translations';
                         element.innerText = e[prop];
+
+                        // if(prop === 'definitions'){
+                        //     elementCardWapper.classList.add("context-wrapper")
+                        // }
+
                         if (prop === 'search') {
                             element.innerHTML = element.innerText + " " + soundButton;
                         }
@@ -205,6 +214,16 @@ const mainLoad = () => {
                         // console.log(property + " es hide");
                     }
                 }
+
+                var wrapper = answer;
+                var items = [...wrapper.children];
+
+
+                const newOrder = [3, 0, 4, 2, 1]
+
+                items = items.sort((a, b) => newOrder.indexOf(items.indexOf(a)) - newOrder.indexOf(items.indexOf(b)));
+
+                items.forEach(it => wrapper.appendChild(it));
 
                 question.classList.add("question");
                 question.setAttribute("id", i);
