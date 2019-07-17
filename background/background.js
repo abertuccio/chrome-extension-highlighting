@@ -235,14 +235,14 @@ chrome.tabs.query({ pinned: true }, (tabs) => {
     createSearchTabs("example");
 });
 
-chrome.contextMenus.create({
-    id: "some-command",
-    title: "Put a marker here",
-    contexts: ["all"]
-});
+// chrome.contextMenus.create({
+//     id: "some-command",
+//     title: "Put a marker here",
+//     contexts: ["all"]
+// });
 
-chrome.contextMenus.onClicked.addListener(function(info, tab) {
-    if (info.menuItemId == "some-command") {
-        console.log("yay!");
-    }
-});
+// chrome.contextMenus.onClicked.addListener(function(info, tab) {
+//     if (info.menuItemId == "some-command") {
+//         console.log("yay!");
+//     }
+// });

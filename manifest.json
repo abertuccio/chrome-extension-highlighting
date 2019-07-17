@@ -8,9 +8,9 @@
     "default_popup": "popup/popup.html"
   },
   "icons": {
-    "16": "images/bookmarker.png",
-    "48": "images/inactive.svg",
-    "128": "images/inactive.svg"
+    "16": "images/inactive.png",
+    "48": "images/inactive_48.png",
+    "128": "images/inactive_128.png"
   },
   "permissions": [
     "storage",
