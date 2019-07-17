@@ -7,10 +7,16 @@
     "default_icon": "images/inactive.svg",
     "default_popup": "popup/popup.html"
   },
+  "icons": {
+    "16": "images/bookmarker.png",
+    "48": "images/inactive.svg",
+    "128": "images/inactive.svg"
+  },
   "permissions": [
     "storage",
     "activeTab",
     "tabs",
+    "contextMenus",
     "https://*/",
     "http://*/"
   ],
