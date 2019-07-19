@@ -1,16 +1,22 @@
 # HGLT
 #### What is it for?
-HGLT is primarily designed to learn languages while you visit web sites, but it could be used to learn or remember many things.
+HGLT is a Chrome extension designed primarily to learn languages ​​while visiting websites, but could be used to learn or remember many other things. HGLT has no servers behind or databases, so it does not store any kind of information, personal or not. We do not use any external API, we open tabs and copy the texts and links as you could do.
+
 #### Mainly features
-When HGTL is active and available on certain web site we can:
-- Select a word or phrase 
+
+  When you select a word or phrase, this happens:
 - HGLT opens a new pinned tab and looks up the word or phrase for you. 
 - Also, it opens a new pinned tab and looks for the images for you. 
 - Then, HGLT put all the results in a tooltip near the selection.
+
+##### When HGTL is active and available on certain web site you will be able to:
+
+- See the information colected 
 - In that tooltip, we could also hear the pronunciation of that word or phrase. 
 - You can store that word or phrase and the information collected.
 - You can also study those elements using the same algorithm as Memrise, Duolingo or Ankidroid.
 - In the study section, you can also test your pronunciation against the original pronunciation.
+
 ##### Settings
 We can choose what to see in the tooltip and what languages to use. Depends on what you want to study you coud change the settings to feel confortable.
 
