@@ -10,7 +10,7 @@ HGLT is a Chrome extension designed primarily to learn languages ​​while vis
 
 ##### When HGTL is active and available on certain web site you will be able to:
 
-- See all the information colected (you could decide what information will show the tooltip).
+- See all the information collected (you could decide what information will show the tooltip).
 - In that tooltip, we could also hear the pronunciation of that word or phrase.
 - You could choose between different translations, different definitions and different images. 
 - You can store that word or phrase and the information collected.
