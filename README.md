@@ -29,7 +29,7 @@ Since we store elements, a badge appears in the popup menu:
 
 ![alt text](https://i.imgur.com/8ntRtHg.png)
 
-Each day a badge warns you the elements available to study that day.
+Each day, a badge warns you about the items available to study that day. In each study session, you should evaluate how well you remembered that element and the algorithm decides when it will be the best time to revisit that element.
 
 
 
