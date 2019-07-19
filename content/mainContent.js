@@ -1,7 +1,8 @@
 class Highlighter {
     constructor() {
         this.html = false;
-        this.allowed = true;
+        this.HGLTAvailible = false;
+        this.siteAllowed = false;
         this.selection = null;
         this.context = null;
         this.candidate = false;
@@ -9,8 +10,8 @@ class Highlighter {
         this.hgltActions = null;
         this.htmlElement = null;
         this.selectionPosition = null;
-        this.waitingTranslation = false; 
-        this.waitingImages = false;            
+        this.waitingTranslation = false;
+        this.waitingImages = false;
         this.settingsData = {
             translation: {
                 avalible: true,
@@ -36,11 +37,11 @@ class Highlighter {
     getState() {
 
         chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
-            this.allowed = result.hgltAvailible;
+            this.HGLTAvailible = result.hgltAvailible;
             chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {
                 const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
                 const state = !resultSiteAvailable.hgltSitesNotAvailables.includes(currentDomain);
-                this.allowed = state;
+                this.siteAllowed = state;
                 chrome.storage.sync.get({ 'hgltSettings': false }, (resultSettings) => {
                     if (resultSettings.hgltSettings) {
                         this.settingsData = resultSettings.hgltSettings;
@@ -91,16 +92,16 @@ class Highlighter {
 
     showHTML() {
 
-        if (!this.allowed) return;
-        
-        this.waitingTranslation = true; 
+        if (!this.siteAllowed || !this.HGLTAvailible) return;
+
+        this.waitingTranslation = true;
         this.waitingImages = true;
-        
+
         this.lookForInformation();
 
         setTimeout(() => {
-            if(this.waitingTranslation || this.waitingImages){
-                this.lookForInformation();  
+            if (this.waitingTranslation || this.waitingImages) {
+                this.lookForInformation();
             }
         }, 4000);
 
@@ -149,7 +150,7 @@ class Highlighter {
         }, (info) => {
             console.log(info);
         });
-    }    
+    }
 
 }
 let hglt = new Highlighter();
@@ -165,7 +166,7 @@ document.addEventListener("selectionchange", (e) => {
         activeElement === 'PRE' ||
         false);
 
-    if (!hglt.allowed || hglt.boxActive || input) return;
+    if (!hglt.siteAllowed || !hglt.HGLTAvailible || hglt.boxActive || input) return;
     hglt.selection = null;
     const sel = window.getSelection();
     const selection = sel.toString();
@@ -199,13 +200,15 @@ document.addEventListener("selectionchange", (e) => {
 
 window.onmouseup = (e) => { if (hglt.candidate && !hglt.boxActive) hglt.showHTML(); }
 
-window.ondblclick = (e) => { if (!hglt.boxActive) {
-    setTimeout(()=>{
-        if(hglt.candidate){
-            hglt.showHTML();
-        }
-    },50)
- } }
+window.ondblclick = (e) => {
+    if (!hglt.boxActive) {
+        setTimeout(() => {
+            if (hglt.candidate) {
+                hglt.showHTML();
+            }
+        }, 50)
+    }
+}
 
 window.onscroll = (e) => { hglt.deleteState(); }
 
@@ -258,7 +261,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
     for (var key in changes) {
         if (key === 'hgltAvailible') {
-            hglt.allowed = changes[key].newValue;
+            hglt.HGLTAvailible = changes[key].newValue;
             if (changes[key].newValue) hglt.deleteState();
         }
 
@@ -274,7 +277,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
             const currentDomain = window.location.href.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
             const state = !changes[key].newValue.includes(currentDomain);
-            hglt.allowed = state;
+            hglt.siteAllowed = state;
 
         }
 
@@ -282,4 +285,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
     }
 
+});
+
+chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
+    hglt.HGLTAvailible= result.hgltAvailible;
 });
