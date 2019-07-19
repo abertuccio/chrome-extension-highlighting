@@ -20,17 +20,20 @@ We can choose what to see in the tooltip and what languages to use. Depends on w
 <table><tr><td>
     <img src="https://i.imgur.com/M8e0rYq.png" />
 </td></tr></table>
-![alt text](https://i.imgur.com/M8e0rYq.png) 
 
 - We could set English to English and set only definitions. So the tooltip will try to translate from English to English and we see only the definition:
 
-![alt text](https://i.imgur.com/vavTxTo.png) 
+<table><tr><td>
+    <img src="https://i.imgur.com/vavTxTo.png" />
+</td></tr></table>
 
 ##### Study
 
 Since we store elements, a badge appears in the popup menu:
 
-![alt text](https://i.imgur.com/8ntRtHg.png)
+<table><tr><td>
+    <img src="https://i.imgur.com/8ntRtHg.png" />
+</td></tr></table>
 
 Each day, a badge warns you about the items available to study that day. In each study session, you should evaluate how well you remembered that element and the algorithm decides when it will be the best time to revisit that element.
 
