@@ -13,7 +13,8 @@ When HGTL is active and available on certain web site we can:
 - In the study section, you can also test your pronunciation against the original pronunciation.
 ###### Settings
 We can choose what to see in the tooltip and what languages to use. Depends on what you want to study you coud change the settings to feel confortable.
-####### Different approaches
+
+###### Different approaches
 We could use all the features and translate for example from Spanish to English:
 
 ![alt text](https://i.imgur.com/M8e0rYq.png) 
