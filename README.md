@@ -27,6 +27,10 @@ We can choose what to see in the tooltip and what languages to use. Depends on w
     <img src="https://i.imgur.com/vavTxTo.png" />
 </td></tr></table>
 
+##### Stored elements
+
+Once you decide that certain word or phrase deserves to be stored because you think that word or phrase is relevant to remember, you should click on "Add _My relevant selection_ to the store?". You can access to the stored elements by clicking in the tooltip (after one element was added) or in the popup. In the stored elements page, you can remove items and see all the stored information. So far information is stored locally, this means information is not shared between browsers 
+
 ##### Study
 
 Since we store elements, a badge appears in the popup menu:
