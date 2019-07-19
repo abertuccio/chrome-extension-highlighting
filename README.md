@@ -17,6 +17,9 @@ We can choose what to see in the tooltip and what languages to use. Depends on w
 ##### Different approaches
 - We could use all the features and translate for example from Spanish to English:
 
+<table><tr><td>
+    <img src="https://i.imgur.com/M8e0rYq.png" />
+</td></tr></table>
 ![alt text](https://i.imgur.com/M8e0rYq.png) 
 
 - We could set English to English and set only definitions. So the tooltip will try to translate from English to English and we see only the definition:
