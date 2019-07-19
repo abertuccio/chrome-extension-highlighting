@@ -15,7 +15,7 @@ HGLT is a Chrome extension designed primarily to learn languages ​​while vis
 - You could choose between different translations, different definitions and different images. 
 - You can store that word or phrase and the information collected.
 - You can also study those elements using the same algorithm as Memrise, Duolingo or Ankidroid.
-- In the study section, you can also test your pronunciation against the original pronunciation.
+- In the study section, you can also test your pronunciation against the original pronunciation (images below). 
 
 ##### Settings
 We can choose what to see in the tooltip and what languages to use. Depends on what you want to study you coud change the settings to feel confortable.
