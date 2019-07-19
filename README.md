@@ -5,29 +5,29 @@ HGLT is a Chrome extension designed primarily to learn languages ​​while vis
 #### Mainly features
 
 ##### When you select a word or phrase, this happens:
-- HGLT opens two pinned tabs (not focused) and looks for the translation, definition and images of the word or phrase for you. You can select the languages but this we will explain it further.
+- HGLT opens two pinned tabs (not focused) and looks for the translation, definition, and images of the word or phrase for you. You can select the languages but this we will explain it further.
 - Then, HGLT puts all the collected results in a tooltip near the selection, along with the pronunciation.
 
 ##### When HGTL is active and available on certain web site you will be able to:
 
-- See all the information collected (you could decide what information will show the tooltip).
+- See all the information collected in a tooltip near the selection (you could decide what information will show the tooltip).
 - In that tooltip, we could also hear the pronunciation of that word or phrase.
 - You could choose between different translations, different definitions and different images. 
-- You can store that word or phrase and the information collected.
+- You can store that word or phrase previously selected and the information collected by HGLT.
 - You can also study those elements using the same algorithm as Memrise, Duolingo or Ankidroid.
 - In the study section, you can also test your pronunciation against the original pronunciation (images below). 
 
 ##### Settings
-We can choose what to see in the tooltip and what languages to use. Depends on what you want to study you coud change the settings to feel confortable.
+We can choose what to see in the tooltip and what languages to use. Depends on what you want to study you could change the settings to feel comfortable. 
 
 ##### Different approaches
-- We could use all the features and translate for example from Spanish to English:
+- We could use all the features, and translate e.g: from Spanish to English:
 
 <table><tr><td>
     <img src="https://i.imgur.com/M8e0rYq.png" />
 </td></tr></table>
 
-- We could set English to English and set only definitions. So the tooltip will try to translate from English to English and we see only the definition:
+- We could set English to English and set only definitions. So the tooltip will try to translate from English to English and we will see only the definition:
 
 <table><tr><td>
     <img src="https://i.imgur.com/vavTxTo.png" />
@@ -35,7 +35,7 @@ We can choose what to see in the tooltip and what languages to use. Depends on w
 
 ##### Stored elements
 
-Once you decide that certain word or phrase deserves to be stored because you think that word or phrase is relevant to remember, you should click on "Add _My relevant selection_ to the store?". You can access to the stored elements by clicking in the tooltip (after one element was added) or in the popup. In the stored elements page, you can remove items and see all the stored information. So far information is stored locally, this means information is not shared between browsers 
+Once you decide that certain word or phrase deserves to be stored because you think that word or phrase is relevant to remember, you should click on "Add _example_ to the store?". You can access the stored elements by clicking on the tooltip (after one element was added) or in the popup. In the stored elements page, you can remove items and see all the stored information. So far information is stored locally, this means information is not shared between browsers 
 
 ##### Study
 
