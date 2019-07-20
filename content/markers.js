@@ -1,44 +1,93 @@
+const hashCode = function (string) {
+    var hash = 0, i, chr;
+    if (string.length === 0) return hash;
+    for (i = 0; i < string.length; i++) {
+        chr = string.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+
+var hashURL = hashCode(window.location.href);
+var fullMarkers = [];
 var markers = [];
 
 var lastPosition = null;
 
-window.addEventListener('contextmenu', function (e) {
-    lastPosition = {x:e.pageX,y:e.pageY};    
+window.addEventListener('contextmenu', function (e) {    
+    lastPosition = { x: e.pageX, y: e.pageY };
 });
 
 const reorderMarkers = () => {
-    markers.sort((p,n)=>p.y - n.y);
-    [...document.getElementsByClassName("hglt-marker")].forEach(e=>{
-          markers.forEach((m,i)=>{
-              if(e.id === m.id){
-                  e.innerText = i + 1;
-              }
-          })
+    markers.sort((p, n) => +p.y - n.y);
+    [...document.getElementsByClassName("hglt-marker")].forEach(e => {
+        markers.forEach((m, i) => {
+            if (+e.id === +m.id) {
+                e.innerText = i + 1;
+            }
+        })
     })
 }
 
 const removeMarker = (id) => {
-    markers = markers.filter(e=>e.id !== id);
+    markers = markers.filter(e => +e.id !== +id);
+    console.log(markers);
+    chrome.storage.sync.set({ hgltMarkers: fullMarkers.concat(markers) });
     document.getElementById(id).remove();
     reorderMarkers();
 }
 
 const addMarker = () => {
+    const id = Math.floor(Math.random() * 1000) + 1;
+    markers.push({ id: id, x: lastPosition.x, y: lastPosition.y, hashURL: hashURL, url:window.location.href });
+    chrome.storage.sync.set({ hgltMarkers: fullMarkers.concat(markers) });
+    createMarker(id, lastPosition.x, lastPosition.y);
+}
+
+const removeAllMarkers = () => {
+    [...document.getElementsByClassName("hglt-marker")].forEach(e => {
+        e.remove();
+    })
+}
+
+const createMarker = (id, x, y) => {
     const marker = document.createElement("div");
-    marker.addEventListener("click", (e)=>{removeMarker(e.target.id)});
-    marker.id = Math.floor(Math.random() * 1000) + 1;
-    markers.push({id:marker.id, y:lastPosition.y});
+    marker.addEventListener("click", (e) => { removeMarker(e.target.id) });
+    marker.id = id;
     marker.title = 'Remove this marker';
     marker.classList.add("hglt-marker");
-    marker.style.top = lastPosition.y + "px";
-    marker.style.left = lastPosition.x + "px";
+    marker.style.top = y + "px";
+    marker.style.left = x + "px";
     document.body.appendChild(marker);
     reorderMarkers();
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    console.log(message);
-    if(message.target === 'content-marker' && message.action === 'ADD_MARKER'){
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {    
+    if (message.target === 'content-marker' && message.action === 'ADD_MARKER') {
         addMarker();
+    }
+});
+
+
+chrome.storage.sync.get({ 'hgltMarkers': [] }, (result) => {    
+    fullMarkers = result.hgltMarkers.filter(m => m.hashURL !== hashURL);
+    markers = result.hgltMarkers.filter(m => m.hashURL === hashURL);
+    removeAllMarkers();
+    markers.forEach(m => {
+        createMarker(m.id, m.x, m.y);
+    })
+});
+
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+    for (var key in changes) {
+        if (key === 'hgltMarkers') {
+            fullMarkers = changes[key].newValue.filter(m => m.hashURL !== hashURL);
+            markers = changes[key].newValue.filter(m => m.hashURL === hashURL);
+            removeAllMarkers();
+            markers.forEach(m => {
+                createMarker(m.id, m.x, m.y);
+            })
+        }
     }
 });

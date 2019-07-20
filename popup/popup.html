@@ -22,14 +22,14 @@
       <label id="checkbox-label-site" class="custom-control-label" for="highlight-site"></label>
     </div>
     <div class="buttons" id="settings"><span id="setting-text"></span> <i id="more"
-        class="material-icons">keyboard_arrow_down</i></div>
+        class="material-icons more">keyboard_arrow_down</i></div>
     <div class="settings hide">
       <div>
         <label id="translation-checkbox-label" for="translation">Translate</label>
         <input id="translation" type="checkbox" name="translation">
       </div>
       <div>
-        <label id="translation-from-label" >From </label>
+        <label id="translation-from-label">From </label>
         <select id="translation-from-target">
           <option value="auto">Auto</option>
         </select>
@@ -49,7 +49,7 @@
       <div>
         <label id="definition-checkbox-label" for="definition">Definition</label>
         <input id="definition" type="checkbox" name="definition">
-        <span id="definition-checkbox-label-in" > in </span>
+        <span id="definition-checkbox-label-in"> in </span>
         <select id="definition-target">
           <option value="auto">Auto</option>
         </select>
@@ -60,19 +60,23 @@
         <input id="image" type="checkbox" name="image">
       </div>
     </div>
+    <div class="buttons" id="markers"><span id="markers-text">Markers</span> <i id="more-markers"
+        class="material-icons more">keyboard_arrow_down</i></div>
+    <div class="markers hide">
+    </div>
     <hr />
-<div class="row study-stored-wrapper">
-  <div class="col">
-    <img src="../images/stored.svg" />
-    <div class="buttons" id="stored-elements">Stored elements</div>
-    <span id="stored-badge" class="badge badge-pill badge-primary study-stored-badge">0</span>
-  </div>
-  <div class="col">
-    <img src="../images/study.svg" />
-    <div class="buttons" id="study-elements">Study elements</div>
-    <span id="study-badge" class="badge badge-pill badge-primary study-stored-badge">0</span>
-  </div>
-</div>
+    <div class="row study-stored-wrapper">
+      <div class="col">
+        <img src="../images/stored.svg" />
+        <div class="buttons" id="stored-elements">Stored elements</div>
+        <span id="stored-badge" class="badge badge-pill badge-primary study-stored-badge">0</span>
+      </div>
+      <div class="col">
+        <img src="../images/study.svg" />
+        <div class="buttons" id="study-elements">Study elements</div>
+        <span id="study-badge" class="badge badge-pill badge-primary study-stored-badge">0</span>
+      </div>
+    </div>
 
   </div>
   <script type="module" src="popup.js"></script>
