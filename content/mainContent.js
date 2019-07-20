@@ -288,5 +288,5 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 });
 
 chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
-    hglt.HGLTAvailible= result.hgltAvailible;
+    hglt.HGLTAvailible = result.hgltAvailible;
 });

@@ -249,3 +249,19 @@ color: rgb(172, 119, 119);
     }
   }
   
+
+  .hglt-marker{
+    background-color: red;
+    position: absolute;
+    padding: 0px;
+    font-size: 12px;
+    border-radius: 8px;
+    width: 16px;
+    height: 16px;
+    line-height: 17px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    background-color: #c70000a3;
+    cursor: pointer;
+  }

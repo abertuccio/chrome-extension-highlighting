@@ -8,6 +8,8 @@ var storedDataUrl = null;
 var storedDataTabId = null;
 var studyElementsURL = null;
 var studyElementsTabId = null;
+var HGLTAvailable = false;
+var HGLTSiteAvailable = false;
 
 const createSearchTabs = (search, createImageTab = true, createTranslationTab = true) => {
 
@@ -235,14 +237,42 @@ chrome.tabs.query({ pinned: true }, (tabs) => {
     createSearchTabs("example");
 });
 
-// chrome.contextMenus.create({
-//     id: "some-command",
-//     title: "Put a marker here",
-//     contexts: ["all"]
-// });
 
-// chrome.contextMenus.onClicked.addListener(function(info, tab) {
-//     if (info.menuItemId == "some-command") {
-//         console.log("yay!");
-//     }
-// });
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
+    if (info.menuItemId == "marker") {
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            const message = {};
+            message.target = 'content-marker';
+            message.action = 'ADD_MARKER';
+            chrome.tabs.sendMessage(tabs[0].id, message);
+        });
+    }
+});
+
+const createContextMenu = () => {
+    chrome.contextMenus.create({
+        id: "marker",
+        title: "Put a marker here",
+        contexts: ["all"]
+    });
+}
+
+const removeContextMenu = () => {
+    chrome.contextMenus.remove("marker");
+}
+
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+
+    for (var key in changes) {
+        if (key === 'hgltAvailible') {
+            HGLTAvailable = changes[key].newValue;
+            (HGLTAvailable)?createContextMenu():removeContextMenu();
+        }
+    }
+
+});
+
+chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
+    HGLTAvailable = result.hgltAvailible;
+    (HGLTAvailable)?createContextMenu():removeContextMenu();
+});
