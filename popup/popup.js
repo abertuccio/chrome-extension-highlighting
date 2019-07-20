@@ -31,6 +31,7 @@ class Popup {
         this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
         this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
         this.locals = Lang['en'];
+        this.markersSites = [];
         this.settingsData = {
             translation: {
                 avalible: true,
@@ -110,6 +111,14 @@ class Popup {
             });
         });
 
+        chrome.storage.sync.get({ 'hgltMarkers': [] }, (result) => {
+            result.hgltMarkers.forEach(m => {
+                if (!this.markersSites.includes(m.url)) {
+                    this.markersSites.push(m.url);
+                }
+            })
+        });
+
 
 
         chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
@@ -125,29 +134,29 @@ class Popup {
         chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
             const count = result.hgltStoredElement.length;
 
-            if(count){
+            if (count) {
                 this.storedBadge.style.display = 'block';
-                this.storedBadge.innerText = (+count>99)?'+99':count;
-                this.storedBadge.style.width = (+count>99)?'21px':'14px';   
-                
-                let studyToday = 0; 
+                this.storedBadge.innerText = (+count > 99) ? '+99' : count;
+                this.storedBadge.style.width = (+count > 99) ? '21px' : '14px';
+
+                let studyToday = 0;
                 let todayInSeconds = Math.floor(Date.now() / 1000);
-                result.hgltStoredElement.forEach(e=>{
-                    
-                    if (('nextPracticeDate' in e) && e.nextPracticeDate < todayInSeconds) {                        
-                        studyToday++; 
+                result.hgltStoredElement.forEach(e => {
+
+                    if (('nextPracticeDate' in e) && e.nextPracticeDate < todayInSeconds) {
+                        studyToday++;
                     }
                 });
-                if(studyToday){
+                if (studyToday) {
                     this.studyBadge.style.display = 'block';
-                    this.studyBadge.innerText = (+studyToday>99)?'+99':studyToday;
-                    this.studyBadge.style.width = (+studyToday>99)?'21px':'14px';
-                }else{
+                    this.studyBadge.innerText = (+studyToday > 99) ? '+99' : studyToday;
+                    this.studyBadge.style.width = (+studyToday > 99) ? '21px' : '14px';
+                } else {
                     this.studyBadge.style.display = 'none';
                 }
-                
+
             }
-            else{
+            else {
                 this.storedBadge.style.display = 'none';
                 this.studyBadge.style.display = 'none';
             }
@@ -190,7 +199,7 @@ class Popup {
             chrome.tabs.query({ active: true, currentWindow: true }, (tab) => {
                 const currentDomain = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i)[1];
                 chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
-                    const sites = result.hgltSitesNotAvailables                    
+                    const sites = result.hgltSitesNotAvailables
                     if (e.target.checked) {
                         const idx = sites.indexOf(currentDomain);
                         if (idx !== -1) {
@@ -265,6 +274,10 @@ class Popup {
 
     }
 
+    //TODO: aca hacer funcion de poner los sitios de los marcadores
+    setMarkers() {
+    }
+
     setSettings(settings) {
         this.translation.checked = settings.translation.avalible;
         this.pronunciation.checked = settings.pronunciation.avalible;
@@ -322,6 +335,13 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         if (key === 'hgltGlobalLanguage') {
             const language = (changes[key].newValue in Lang) ? changes[key].newValue : 'en';
             this.locals = Lang[language];
+        }
+        if (key === 'hgltMarkers') {
+            result.hgltMarkers.forEach(m => {
+                if (!popup.markersSites.includes(m.url)) {
+                    popup.markersSites.push(m.url);
+                }
+            })
         }
 
     }
