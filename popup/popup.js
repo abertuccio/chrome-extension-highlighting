@@ -3,6 +3,7 @@ import { Lang } from '../languages.js';
 class Popup {
     constructor() {
         this.more = document.getElementById("more");
+        this.moreMarkers = document.getElementById("more-markers");
         this.image = document.getElementById("image");
         this.translationFromLabel = document.getElementById("translation-from-label");
         this.translationToLabel = document.getElementById("translation-to-label");
@@ -17,6 +18,7 @@ class Popup {
         this.definition = document.getElementById("definition");
         this.translation = document.getElementById("translation");
         this.settingsButton = document.getElementById("settings");
+        this.markersButton = document.getElementById("markers");
         this.settingText = document.getElementById("setting-text");
         this.pronunciation = document.getElementById("pronunciation");
         this.studyElements = document.getElementById("study-elements");
@@ -30,6 +32,7 @@ class Popup {
         this.imageCheckboxLabel = document.getElementById("image-checkbox-label");
         this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
         this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
+        this.markers = document.getElementsByClassName("markers")[0];
         this.locals = Lang['en'];
         this.markersSites = [];
         this.settingsData = {
@@ -116,7 +119,8 @@ class Popup {
                 if (!this.markersSites.includes(m.url)) {
                     this.markersSites.push(m.url);
                 }
-            })
+            });
+            this.setMarkers();
         });
 
 
@@ -217,8 +221,13 @@ class Popup {
 
         this.settingsButton.addEventListener("click", () => {
             this.settings.classList.toggle("hide");
-            (this.more.innerText === 'keyboard_arrow_down') ? this.more.innerText = 'keyboard_arrow_up' : more.innerText = 'keyboard_arrow_down';
+            (this.more.innerText === 'keyboard_arrow_down') ? this.more.innerText = 'keyboard_arrow_up' : this.more.innerText = 'keyboard_arrow_down';
         });
+
+        this.markersButton.addEventListener("click", () => {
+            this.markers.classList.toggle("hide");
+            (this.moreMarkers.innerText === 'keyboard_arrow_down') ? this.moreMarkers.innerText = 'keyboard_arrow_up' : this.moreMarkers.innerText = 'keyboard_arrow_down';
+        })
 
         this.translation.addEventListener("change", (e) => {
             this.settingsData.translation.avalible = e.target.checked;
@@ -276,6 +285,42 @@ class Popup {
 
     //TODO: aca hacer funcion de poner los sitios de los marcadores
     setMarkers() {
+        this.markers.innerHTML = "";
+        if (this.markersSites.length === 0) {
+            this.markers.innerText = 'There is no markers.';
+            return;
+        }
+        this.markersSites.forEach(site => {
+            if (site) {
+                const element = document.createElement("div");
+                element.classList.add("marked-sites");
+                const removeElement = document.createElement("i");
+                removeElement.innerText = 'delete_outline';
+                removeElement.title = 'Remove all markers from this site';
+                removeElement.classList.add("markers-remove", "material-icons");
+                removeElement.addEventListener("click", () => {                   
+                    chrome.storage.sync.get({ 'hgltMarkers': [] }, (result) => {
+                        const filtered = result.hgltMarkers.filter(s => s.url !== site);
+                        chrome.storage.sync.set({'hgltMarkers':filtered});
+                        this.markersSites = [];
+                        filtered.forEach(m => {
+                            if (!this.markersSites.includes(m.url)) {
+                                this.markersSites.push(m.url);
+                            }
+                        });
+                        this.setMarkers();
+                    });
+                });
+                element.appendChild(removeElement);
+                const link = document.createElement("a");
+                link.target = '_blank';
+                link.title = site;
+                link.href = site;
+                link.innerText = site;
+                element.appendChild(link);
+                this.markers.appendChild(element)
+            }
+        });
     }
 
     setSettings(settings) {
@@ -337,10 +382,11 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             this.locals = Lang[language];
         }
         if (key === 'hgltMarkers') {
-            result.hgltMarkers.forEach(m => {
+            changes[key].newValue.forEach(m => {
                 if (!popup.markersSites.includes(m.url)) {
                     popup.markersSites.push(m.url);
                 }
+                popup.setMarkers();
             })
         }
 
