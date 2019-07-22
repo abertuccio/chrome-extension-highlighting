@@ -21,7 +21,8 @@ const Lang =
             "markers":"Marcadores",
             "no_markers":"No hay marcadores",
             "remove_all_markers":"Eliminar todos los marcadores de este sitio",            
-            "markers_help": "Una vez que abras alguno de estos sitios, podes navegar a través de los marcadores haciendo Ctrl+Alt+m"
+            "markers_help": `- Puedes agregar marcadores desde el menu contextual (click derecho), y luego haciendo click en 'Agregar un marcador aqui'.
+- Una vez que abras alguno de estos sitios, podes navegar a través de los marcadores de ese sitio haciendo Ctrl+Alt+m`
         },
         "tooltip": {
             "add_elements_to_the_store1": "Agregar ",
@@ -29,7 +30,8 @@ const Lang =
             "saving": "Guardando..."
         },
         "marker":{
-            "remove_this_marker":"Eliminar este marcador"
+            "remove_this_marker":"Eliminar este marcador",
+            "add_a_marker_here": "Agregar un marcador aquí"
         },
         "stored_elements": {
             "title":"Elementos Guardados",
@@ -85,7 +87,8 @@ const Lang =
             "markers":"Markers",
             "no_markers":"There is no markers",
             "remove_all_markers":"Remove all markers from this site",
-            "markers_help": "Once you opened one of this sites, you could browse through markers doing Ctrl+Alt+m"
+            "markers_help": `- You can add markers from the contextual menu (right click), and then clicking on 'Add a marker here'.
+- Once you opened one of these sites, you can browse between the markers of that site doing Ctrl+Alt+m`
         },
         "tooltip": {
             "add_elements_to_the_store1": "Add ",
@@ -93,7 +96,8 @@ const Lang =
             "saving": "Saving..."
         },
         "marker":{
-            "remove_this_marker":"Eliminar este marcador"
+            "remove_this_marker":"Eliminar este marcador",
+            "add_a_marker_here": "Add a marker here"
         },
         "stored_elements": {
             "title":"Stored Elements",

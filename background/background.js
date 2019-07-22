@@ -1,4 +1,5 @@
 
+import { Lang } from '../languages.js';
 // // var newTranslation = `https://www.wordreference.com/es/translation.asp?tranword=${message.search}`
 var imagesURL = (search) => `https://www.google.com/search?q=${search}&source=lnms&tbm=isch`;
 var translationURL = (search) => `https://translate.google.com/#view=home&op=translate&sl=auto&tl=auto&text=${search}`;
@@ -252,7 +253,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
 const createContextMenu = () => {
     chrome.contextMenus.create({
         id: "marker",
-        title: "Put a marker here",
+        title: Lang[navigator.language.split("-")[0]].marker.add_a_marker_here,
         contexts: ["all"]
     });
 }
