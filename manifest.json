@@ -29,6 +29,7 @@
         "*://translate.google.com/*"
       ],
       "js": [
+        "content/highlightstoredElemets.js",
         "content/markers.js",
         "content/HgltElement.js",
         "content/highligter/highlighter.js",

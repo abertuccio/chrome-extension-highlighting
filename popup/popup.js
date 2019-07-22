@@ -5,6 +5,7 @@ class Popup {
         this.more = document.getElementById("more");
         this.moreMarkers = document.getElementById("more-markers");
         this.image = document.getElementById("image");
+        this.storedMarkers = document.getElementById("stored-markers");
         this.translationFromLabel = document.getElementById("translation-from-label");
         this.translationToLabel = document.getElementById("translation-to-label");
         this.pronunciationCheckboxLabel = document.getElementById("pronunciation-checkbox-label");
@@ -50,7 +51,8 @@ class Popup {
             },
             images: {
                 avalible: true
-            }
+            },
+            markStoredElements:true
         };
         this.languagesEquivalence = [
             {
@@ -268,6 +270,11 @@ class Popup {
             chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
         });
 
+        this.storedMarkers.addEventListener("change", (e) => {
+            this.settingsData.markStoredElements = e.target.checked;
+            chrome.storage.sync.set({ 'hgltSettings': this.settingsData });
+        });
+
         //TODO: VER EL TEMA DE ELIMINAR EL ERROR AL LANZAR ESTO
         this.storedElements.addEventListener("click", function () {
             chrome.runtime.sendMessage({ 'target': 'background', 'action': 'SEE_STORED_DATA' }, function (res) {
@@ -331,6 +338,7 @@ class Popup {
         this.definition.checked = settings.definition.avalible;
         this.definitionTarget.value = settings.definition.lang;
         this.image.checked = settings.images.avalible;
+        this.storedMarkers.checked = settings.markStoredElements;
     }
 
     setCheckboxState(state) {

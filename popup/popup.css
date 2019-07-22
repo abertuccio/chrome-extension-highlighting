@@ -1,8 +1,9 @@
 label{
-    min-width: 98px;
+    min-width: 159px;
+    margin-bottom: 0px;
 }
 hr{
-    margin: 10px;
+    margin: 6px;
 }
 select{
     background-color: #FFF;
@@ -43,6 +44,7 @@ color: #666;
     margin-bottom: 12px;
     border-radius: 5px;
     color: #5d5d5d;
+    font-size: 13px;
 }
 
 .settings div{

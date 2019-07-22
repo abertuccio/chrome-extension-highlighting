@@ -440,7 +440,6 @@ class HighlighterActions {
     }
 
     changeLanguageTexts() {
-        console.log(this.lang);
         this.hgltAddStore1.innerText = this.lang.tooltip.add_elements_to_the_store1;
         this.hgltAddStore2.innerText = this.lang.tooltip.add_elements_to_the_store2; 
         this.hgltAddStoreSaving.innerText = this.lang.tooltip.saving;  

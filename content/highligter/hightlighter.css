@@ -265,3 +265,6 @@ color: rgb(172, 119, 119);
     background-color: #c70000a3;
     cursor: pointer;
   }
+  .hglt-stored-selection{
+    background-color: #FFFF77;
+  }
