@@ -196,6 +196,7 @@ const mainLoad = () => {
                             element.innerText = e[prop].join(" | ");
                         }
                         if (prop === 'context') {
+                            elementCardWapper.classList.add("context-wrapper");
                             const reg = new RegExp("(" + e.search + ")", "g");
                             element.innerHTML = e[prop].replace(reg, "<span class='hglt-selected-text'>$1</span>");
                         }
@@ -387,7 +388,8 @@ const changeLanguageText = () => {
 
 
 window.onscroll = function(ev) {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    const vis = (document.getElementById("rates").style.display === 'none')?false:true;
+    if (vis && (window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
         window.scrollTo(0, window.scrollY - 5);
         document.getElementById("rates-container").classList.add("modal");
     }
