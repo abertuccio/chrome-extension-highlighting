@@ -8,7 +8,7 @@
     "default_popup": "popup/popup.html"
   },
   "icons": {
-    "16": "images/inactive.png",
+    "16": "images/inactive_16.png",
     "48": "images/inactive_48.png",
     "128": "images/inactive_128.png"
   },

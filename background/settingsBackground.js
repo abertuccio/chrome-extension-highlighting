@@ -4,14 +4,24 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
     for (var key in changes) {
         if (key === 'hgltAvailible') {
-            setIcon(changes[key].newValue);
+            chrome.storage.sync.get({ 'hgltSettings': false }, (resultHighliter) => {
+                setIcon(changes[key].newValue, resultHighliter.hgltSettings.markStoredElements);
+            });
+        }
+
+        if (key === 'hgltSettings') {
+            chrome.storage.sync.get({ 'hgltAvailible': false }, (resultAvailable) => {
+                setIcon(resultAvailable.hgltAvailible, changes[key].newValue.markStoredElements);
+            });
         }
     }
 
 });
 
-chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
-    setIcon(result.hgltAvailible);
+chrome.storage.sync.get({ 'hgltAvailible': false }, (resultAvailable) => {
+    chrome.storage.sync.get({ 'hgltSettings': false }, (resultHighliter) => {
+        setIcon(resultAvailable.hgltAvailible, resultHighliter.hgltSettings.markStoredElements);
+    });
 });
 
 chrome.tabs.onActivated.addListener(function (tab) {
@@ -59,12 +69,18 @@ const setBadge = () => {
     })
 }  
 
-const setIcon = (active) => {
-    if (active) {
+const setIcon = (active, highlighter = false) => {
+    if (active && !highlighter) {
         chrome.browserAction.setIcon({
             path: chrome.runtime.getURL('images/active.svg')
         });
-    } else {
+    }
+    else if(active && highlighter){
+        chrome.browserAction.setIcon({
+            path: chrome.runtime.getURL('images/active_highlighting.svg')
+        });
+    } 
+    else {
         chrome.browserAction.setIcon({
             path: chrome.runtime.getURL('images/inactive.svg')
         });
