@@ -91,3 +91,13 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
         }
     }
 });
+
+chrome.runtime.sendMessage({ 
+    'target': 'settings-background', 
+    'action': 'ASK_LANG' 
+}, (langs)=> {
+    const lang = langs[navigator.language.split("-")[0]];
+    [...document.getElementsByClassName("hglt-marker")].forEach(m=>{
+        m.title = lang.marker.remove_this_marker;
+    })
+});

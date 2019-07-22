@@ -15,12 +15,18 @@ const Lang =
             "in": "en",
             "images": "Imágenes",
             "stored_elements": "Items guardados",
-            "study_elements": "Estudiar items"
+            "study_elements": "Estudiar items",
+            "markers":"Marcadores",
+            "no_markers":"No hay marcadores",
+            "remove_all_markers":"Eliminar todos los marcadores de este sitio"
         },
         "tooltip": {
             "add_elements_to_the_store1": "¿Agregar ",
             "add_elements_to_the_store2": " al almacen?",
             "saving": "Guardando..."
+        },
+        "marker":{
+            "remove_this_marker":"Eliminar este marcador"
         },
         "stored_elements": {
             "title":"Elementos Guardados",
@@ -70,12 +76,18 @@ const Lang =
             "in": "in",
             "images": "Images",
             "stored_elements": "Stored elements",
-            "study_elements": "Study elements"
+            "study_elements": "Study elements",
+            "markers":"Markers",
+            "no_markers":"There is no markers",
+            "remove_all_markers":"Remove all markers from this site"
         },
         "tooltip": {
             "add_elements_to_the_store1": "Add ",
             "add_elements_to_the_store2": " to the store?",
             "saving": "Saving..."
+        },
+        "marker":{
+            "remove_this_marker":"Eliminar este marcador"
         },
         "stored_elements": {
             "title":"Stored Elements",

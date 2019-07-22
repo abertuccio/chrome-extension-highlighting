@@ -4,6 +4,7 @@ class Popup {
     constructor() {
         this.more = document.getElementById("more");
         this.moreMarkers = document.getElementById("more-markers");
+        this.markersText = document.getElementById("markers-text");
         this.image = document.getElementById("image");
         this.storedMarkers = document.getElementById("stored-markers");
         this.translationFromLabel = document.getElementById("translation-from-label");
@@ -52,7 +53,7 @@ class Popup {
             images: {
                 avalible: true
             },
-            markStoredElements:true
+            markStoredElements: true
         };
         this.languagesEquivalence = [
             {
@@ -181,6 +182,16 @@ class Popup {
         this.imageCheckboxLabel.innerText = this.locals.popup.images;
         this.storedElements.innerText = this.locals.popup.stored_elements;
         this.studyElements.innerText = this.locals.popup.study_elements;
+        this.markersText.innerText = this.locals.popup.markers;
+
+        [...document.querySelectorAll(".marked-sites i")].forEach(e => {
+            e.title = this.locals.popup.remove_all_markers;
+        });
+        //TODO: cambiar esta manera
+        if (this.markers.innerText === 'There is no markers') {
+            this.markers.innerText = this.locals.popup.no_markers;
+        }
+
     }
 
     addActions() {
@@ -294,7 +305,7 @@ class Popup {
     setMarkers() {
         this.markers.innerHTML = "";
         if (this.markersSites.length === 0) {
-            this.markers.innerText = 'There is no markers.';
+            this.markers.innerText = this.locals.popup.no_markers;
             return;
         }
         this.markersSites.forEach(site => {
@@ -303,12 +314,12 @@ class Popup {
                 element.classList.add("marked-sites");
                 const removeElement = document.createElement("i");
                 removeElement.innerText = 'delete_outline';
-                removeElement.title = 'Remove all markers from this site';
+                removeElement.title = this.locals.popup.remove_all_markers;
                 removeElement.classList.add("markers-remove", "material-icons");
-                removeElement.addEventListener("click", () => {                   
+                removeElement.addEventListener("click", () => {
                     chrome.storage.sync.get({ 'hgltMarkers': [] }, (result) => {
                         const filtered = result.hgltMarkers.filter(s => s.url !== site);
-                        chrome.storage.sync.set({'hgltMarkers':filtered});
+                        chrome.storage.sync.set({ 'hgltMarkers': filtered });
                         this.markersSites = [];
                         filtered.forEach(m => {
                             if (!this.markersSites.includes(m.url)) {
