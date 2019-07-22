@@ -5,6 +5,8 @@ class Popup {
         this.more = document.getElementById("more");
         this.moreMarkers = document.getElementById("more-markers");
         this.markersText = document.getElementById("markers-text");
+        this.markersHelp = document.getElementById("markers-help");
+        this.storedMarkersHelp = document.getElementById("stored-markers-help");
         this.image = document.getElementById("image");
         this.storedMarkers = document.getElementById("stored-markers");
         this.translationFromLabel = document.getElementById("translation-from-label");
@@ -35,6 +37,7 @@ class Popup {
         this.definitionCheckboxLabel = document.getElementById("definition-checkbox-label");
         this.translationCheckboxLabel = document.getElementById("translation-checkbox-label");
         this.markers = document.getElementsByClassName("markers")[0];
+        this.storedMarkersCheckboxLabel = document.getElementById("stored-markers-checkbox-label");
         this.locals = Lang['en'];
         this.markersSites = [];
         this.settingsData = {
@@ -183,6 +186,9 @@ class Popup {
         this.storedElements.innerText = this.locals.popup.stored_elements;
         this.studyElements.innerText = this.locals.popup.study_elements;
         this.markersText.innerText = this.locals.popup.markers;
+        this.markersHelp.title = this.locals.popup.markers_help;
+        this.storedMarkersCheckboxLabel.innerText = this.locals.popup.stored_markers_checkbox_label;
+        this.storedMarkersHelp.title = this.locals.popup.stored_markers_help;
 
         [...document.querySelectorAll(".marked-sites i")].forEach(e => {
             e.title = this.locals.popup.remove_all_markers;

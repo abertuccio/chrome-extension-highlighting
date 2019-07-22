@@ -16,9 +16,12 @@ const Lang =
             "images": "Imágenes",
             "stored_elements": "Items guardados",
             "study_elements": "Estudiar items",
+            "stored_markers_checkbox_label": "Resaltar elementos",
+            "stored_markers_help": "Resaltar cada elemento guardado en cada sitio visitado",
             "markers":"Marcadores",
             "no_markers":"No hay marcadores",
-            "remove_all_markers":"Eliminar todos los marcadores de este sitio"
+            "remove_all_markers":"Eliminar todos los marcadores de este sitio",            
+            "markers_help": "Una vez que abras alguno de estos sitios, podes navegar a través de los marcadores haciendo Ctrl+Alt+m"
         },
         "tooltip": {
             "add_elements_to_the_store1": "Agregar ",
@@ -77,9 +80,12 @@ const Lang =
             "images": "Images",
             "stored_elements": "Stored elements",
             "study_elements": "Study elements",
+            "stored_markers_checkbox_label": "Highlight elements",
+            "stored_markers_help": "Highlight every stored element in each site you visit",
             "markers":"Markers",
             "no_markers":"There is no markers",
-            "remove_all_markers":"Remove all markers from this site"
+            "remove_all_markers":"Remove all markers from this site",
+            "markers_help": "Once you opened one of this sites, you could browse through markers doing Ctrl+Alt+m"
         },
         "tooltip": {
             "add_elements_to_the_store1": "Add ",
