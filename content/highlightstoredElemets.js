@@ -150,6 +150,13 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
                 e.classList.remove("hglt-stored-selection");
             })
         }
+        if(key === 'hgltStoredElement'){
+            chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
+                if (result.hgltSettings && result.hgltSettings.markStoredElements) {
+                    highlightStoredElements();
+                }
+            });   
+        }
 
     }
 

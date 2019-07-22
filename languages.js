@@ -21,8 +21,8 @@ const Lang =
             "remove_all_markers":"Eliminar todos los marcadores de este sitio"
         },
         "tooltip": {
-            "add_elements_to_the_store1": "¿Agregar ",
-            "add_elements_to_the_store2": " al almacen?",
+            "add_elements_to_the_store1": "Agregar ",
+            "add_elements_to_the_store2": " al almacen",
             "saving": "Guardando..."
         },
         "marker":{
@@ -83,7 +83,7 @@ const Lang =
         },
         "tooltip": {
             "add_elements_to_the_store1": "Add ",
-            "add_elements_to_the_store2": " to the store?",
+            "add_elements_to_the_store2": " to the store",
             "saving": "Saving..."
         },
         "marker":{
