@@ -12,10 +12,11 @@ const hashCode = function (string) {
 var hashURL = hashCode(window.location.href);
 var fullMarkers = [];
 var markers = [];
+var currentMarker = 0;
 
 var lastPosition = null;
 
-window.addEventListener('contextmenu', function (e) {    
+window.addEventListener('contextmenu', function (e) {
     lastPosition = { x: e.pageX, y: e.pageY };
 });
 
@@ -31,8 +32,7 @@ const reorderMarkers = () => {
 }
 
 const removeMarker = (id) => {
-    markers = markers.filter(e => +e.id !== +id);
-    console.log(markers);
+    markers = markers.filter(e => +e.id !== +id);    
     chrome.storage.sync.set({ hgltMarkers: fullMarkers.concat(markers) });
     document.getElementById(id).remove();
     reorderMarkers();
@@ -40,7 +40,7 @@ const removeMarker = (id) => {
 
 const addMarker = () => {
     const id = Math.floor(Math.random() * 1000) + 1;
-    markers.push({ id: id, x: lastPosition.x, y: lastPosition.y, hashURL: hashURL, url:window.location.href });
+    markers.push({ id: id, x: lastPosition.x, y: lastPosition.y, hashURL: hashURL, url: window.location.href });
     chrome.storage.sync.set({ hgltMarkers: fullMarkers.concat(markers) });
     createMarker(id, lastPosition.x, lastPosition.y);
 }
@@ -63,14 +63,14 @@ const createMarker = (id, x, y) => {
     reorderMarkers();
 }
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {    
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.target === 'content-marker' && message.action === 'ADD_MARKER') {
         addMarker();
     }
 });
 
 
-chrome.storage.sync.get({ 'hgltMarkers': [] }, (result) => {    
+chrome.storage.sync.get({ 'hgltMarkers': [] }, (result) => {
     fullMarkers = result.hgltMarkers.filter(m => m.hashURL !== hashURL);
     markers = result.hgltMarkers.filter(m => m.hashURL === hashURL);
     removeAllMarkers();
@@ -92,12 +92,32 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     }
 });
 
-chrome.runtime.sendMessage({ 
-    'target': 'settings-background', 
-    'action': 'ASK_LANG' 
-}, (langs)=> {
+chrome.runtime.sendMessage({
+    'target': 'settings-background',
+    'action': 'ASK_LANG'
+}, (langs) => {
     const lang = langs[navigator.language.split("-")[0]];
-    [...document.getElementsByClassName("hglt-marker")].forEach(m=>{
+    [...document.getElementsByClassName("hglt-marker")].forEach(m => {
         m.title = lang.marker.remove_this_marker;
     })
+});
+
+document.addEventListener("keydown", function (keyEvent) {
+    if (keyEvent.ctrlKey && keyEvent.altKey && keyEvent.key === "m") {
+        if (markers.length) {
+            currentMarker++;
+            if(currentMarker === markers.length || !markers[currentMarker]){
+                currentMarker = 0; 
+            }
+
+            const currMarker = document.getElementById(markers[currentMarker].id);
+            currMarker.classList.add("hglt-stored-selection-blink");
+            
+            window.scrollTo(0, markers[currentMarker].y - 100);
+
+                setTimeout(()=>{
+                    currMarker.classList.remove("hglt-stored-selection-blink");
+                },400);
+        }
+    }
 });

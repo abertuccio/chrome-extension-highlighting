@@ -262,9 +262,15 @@ color: rgb(172, 119, 119);
     text-align: center;
     color: #FFF;
     font-weight: bold;
-    background-color: #c70000a3;
+    background-color: #007bff;
     cursor: pointer;
   }
   .hglt-stored-selection{
+    transition: all 0.5s ease-in-out;
     background-color: #FFFF77;
+  }
+  
+  .hglt-stored-selection-blink{    
+    background-color: red;
+    color: #FFF;
   }
