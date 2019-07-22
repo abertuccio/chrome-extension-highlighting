@@ -1,9 +1,7 @@
 var InstantSearch = {
 
-    "highlight": function (container, highlightText)
-    {
-        var internalHighlighter = function (options)
-        {
+    "highlight": function (container, highlightText) {
+        var internalHighlighter = function (options) {
 
             var id = {
                 container: "container",
@@ -13,21 +11,20 @@ var InstantSearch = {
                 className: "className",
                 sensitiveSearch: "sensitiveSearch"
             },
-            tokens = options[id.tokens],
-            allClassName = options[id.all][id.className],
-            allSensitiveSearch = options[id.all][id.sensitiveSearch];
+                tokens = options[id.tokens],
+                allClassName = options[id.all][id.className],
+                allSensitiveSearch = options[id.all][id.sensitiveSearch];
 
 
-            function checkAndReplace(node, tokenArr, classNameAll, sensitiveSearchAll)
-            {
+            function checkAndReplace(node, tokenArr, classNameAll, sensitiveSearchAll) {
+                
                 var nodeVal = node.nodeValue, parentNode = node.parentNode,
                     i, j, curToken, myToken, myClassName, mySensitiveSearch,
                     finalClassName, finalSensitiveSearch,
                     foundIndex, begin, matched, end,
                     textNode, span, isFirst;
 
-                for (i = 0, j = tokenArr.length; i < j; i++)
-                {
+                for (i = 0, j = tokenArr.length; i < j; i++) {
                     curToken = tokenArr[i];
                     myToken = curToken[id.token];
                     myClassName = curToken[id.className];
@@ -38,20 +35,17 @@ var InstantSearch = {
                     finalSensitiveSearch = (typeof sensitiveSearchAll !== "undefined" ? sensitiveSearchAll : mySensitiveSearch);
 
                     isFirst = true;
-                    while (true)
-                    {
+                    while (true) {
                         if (finalSensitiveSearch)
                             foundIndex = nodeVal.indexOf(myToken);
                         else
                             foundIndex = nodeVal.toLowerCase().indexOf(myToken.toLowerCase());
 
-                        if (foundIndex < 0)
-                        {
+                        if (foundIndex < 0) {
                             if (isFirst)
                                 break;
 
-                            if (nodeVal)
-                            {
+                            if (nodeVal) {
                                 textNode = document.createTextNode(nodeVal);
                                 parentNode.insertBefore(textNode, node);
                             } // End if (nodeVal)
@@ -66,8 +60,7 @@ var InstantSearch = {
                         begin = nodeVal.substring(0, foundIndex);
                         matched = nodeVal.substr(foundIndex, myToken.length);
 
-                        if (begin)
-                        {
+                        if (begin) {
                             textNode = document.createTextNode(begin);
                             parentNode.insertBefore(textNode, node);
                         } // End if (begin)
@@ -83,23 +76,21 @@ var InstantSearch = {
                 } // Next i 
             }; // End Function checkAndReplace 
 
-            function iterator(p)
-            {
+            function iterator(p) {
                 if (p === null) return;
 
                 var children = Array.prototype.slice.call(p.childNodes), i, cur;
 
-                if (children.length)
-                {
-                    for (i = 0; i < children.length; i++)
-                    {
+                if (children.length) {
+                    for (i = 0; i < children.length; i++) {
+                        if(cur && (cur.localName === "textarea" || cur.localName === "input")){
+                            return;
+                        }
                         cur = children[i];
-                        if (cur.nodeType === 3)
-                        {
+                        if (cur.nodeType === 3) {
                             checkAndReplace(cur, tokens, allClassName, allSensitiveSearch);
                         }
-                        else if (cur.nodeType === 1)
-                        {
+                        else if (cur.nodeType === 1) {
                             iterator(cur);
                         }
                     }
@@ -108,16 +99,16 @@ var InstantSearch = {
 
             iterator(options[id.container]);
         } // End Function highlighter
-        ;
+            ;
 
 
         internalHighlighter(
             {
                 container: container
                 , all:
-                    {
-                        className: "highlighter"
-                    }
+                {
+                    className: "highlighter"
+                }
                 , tokens: [
                     {
                         token: highlightText
@@ -132,24 +123,34 @@ var InstantSearch = {
 
 };
 
-//TODO: DETECTAR LOS SETINGS AL INICIO Y SI HAY ALGUN CAMBIO
-
 const highlightStoredElements = () => {
     chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
         result.hgltStoredElement.forEach(element => {
-            // console.log(element.search);
-            // const reg = new RegExp(element.search, "g");
-            // doc = [...document.querySelectorAll("*")].filter(e=>!e.childNodes.length);
-            // doc.forEach(d=>{
-            //     console.log(d.innerHTML);
-            //     // d.innerText = d.innerText.replace(reg, `<span class="hglt-stored-selection">${element.search}</span>`);
-            // })
-            // document.body.innerHTML = document.body.innerHTML.replace("replace", "pepe");   
-            // console.log(element.search)
             var container = document.body;
             InstantSearch.highlight(container, element.search);
         });
     });
 }
 
-highlightStoredElements();
+
+chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
+    if (result.hgltSettings && result.hgltSettings.markStoredElements) {
+        highlightStoredElements();
+    }
+});
+
+chrome.storage.onChanged.addListener(function (changes, namespace) {
+
+    for (var key in changes) {
+        if (key === 'hgltSettings' && changes[key].newValue.markStoredElements) {
+            highlightStoredElements();
+        }
+        else {
+            [...document.getElementsByClassName("hglt-stored-selection")].forEach(e => {
+                e.classList.remove("hglt-stored-selection");
+            })
+        }
+
+    }
+
+});
