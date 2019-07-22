@@ -375,8 +375,10 @@ class HighlighterActions {
         this.definitions = data.result.definitions;
 
         clearInterval(this.translationLoader);
+        
         this.hgltTranslationWord.innerText = data.result.translations[0];
         this.hgltTranslationWord.title = data.result.translations[0];
+        
         this.hgltMeaningDefinition.innerText = data.result.definitions[0];
         this.hgltMeaningDefinition.title = data.result.definitions[0];
         this.hgltTranslationWord.setAttribute('idx', 0);

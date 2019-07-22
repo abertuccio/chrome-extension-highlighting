@@ -248,7 +248,8 @@ const mainLoad = () => {
 
             [...document.getElementsByClassName("rate")].forEach(r => {
 
-                r.addEventListener('click', (e) => {
+                r.addEventListener('click', (e) => {    
+                    document.getElementById("rates-container").classList.remove("modal");          
                     showImage(e.target.value);
                 });
 
@@ -340,7 +341,7 @@ reverseButton.addEventListener("click", () => {
 })
 
 const flipCard = () => {
-
+    
     document.getElementsByClassName("answer")[0].style.display = "block";
     rates.style.display = 'block';
 }
@@ -383,3 +384,15 @@ const changeLanguageText = () => {
     });
 
 });
+
+
+window.onscroll = function(ev) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+        window.scrollTo(0, window.scrollY - 5);
+        document.getElementById("rates-container").classList.add("modal");
+    }
+};
+
+window.onclick = function() {
+    document.getElementById("rates-container").classList.remove("modal");
+}

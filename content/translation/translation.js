@@ -47,17 +47,26 @@ const mutateTranslation = (mutations) => {
                 })
             }
 
-            var defifitionGuess = document.querySelectorAll(".gt-def-row");
+            // setTimeout(()=>{
 
-            results.definitions = (defifitionGuess.length) ? [...defifitionGuess].map(e => e.innerText) : [];
+                var defifitionGuess = document.querySelectorAll(".gt-def-row");
 
-            chrome.runtime.sendMessage({
-                target: 'background',
-                action: 'SEND_INFORMATION',
-                kind: 'translation',
-                selection: results.search,
-                result: results
-            });
+                // console.log(defifitionGuess);
+    
+                results.definitions = (defifitionGuess.length) ? [...defifitionGuess].map(e => e.innerText) : [""];
+    
+                chrome.runtime.sendMessage({
+                    target: 'background',
+                    action: 'SEND_INFORMATION',
+                    kind: 'translation',
+                    selection: results.search,
+                    result: results
+                });
+
+                [...defifitionGuess].forEach(d=>{d.remove()});
+
+            // },100)
+
 
             break;
 
