@@ -41,19 +41,50 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 });
 
-
 chrome.runtime.onInstalled.addListener(details => {
     chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (result) => {
         chrome.storage.sync.set({ hgltSitesNotAvailables: ['translate.google.com'] });
     });
+
+    // chrome.tabs.query({}, (tabs) => {
+    //     tabs.forEach(tab => {
+    //         if (tab.url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i) && !tab.url.includes('translate.google.com')) {
+    //             chrome.tabs.reload(tab.id);
+    //         }
+    //     })
+    // });
+
+    chrome.tabs.query({}, (tabs) => {
+        tabs.forEach(tab => {
+            if (tab.url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i) && !tab.url.includes('translate.google.com')) {
+                chrome.tabs.executeScript(tab.id, {
+                    file: 'content/upgrade.js'
+                });
+            }
+        })
+    });
+
+    // const  scripts = chrome.app.getDetails().content_scripts[0].js;
+    // chrome.tabs.query({}, (tabs) => {
+    //     tabs.forEach(tab => {
+    //         if (tab.url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i) && !tab.url.includes('translate.google.com')) {
+    //             scripts.forEach(script => {
+    //                 chrome.tabs.executeScript(tab.id, {
+    //                     file: script
+    //                 });
+    //             });
+    //         }
+    //     })
+    // });
+
 });
+
 
 const setBadge = () => {
 
     chrome.tabs.query({ active: true, currentWindow: true }, function (tab) {
 
         chrome.storage.sync.get({ 'hgltSitesNotAvailables': [] }, (resultSiteAvailable) => {
-
             const url = tab[0].url.match(/^https?\:\/\/([^\/:?#]+)(?:[\/:?#]|$)/i);
             let state = false;
             let currentDomain = tab[0].url;
@@ -67,7 +98,7 @@ const setBadge = () => {
 
 
     })
-}  
+}
 
 const setIcon = (active, highlighter = false) => {
     if (active && !highlighter) {
@@ -75,11 +106,11 @@ const setIcon = (active, highlighter = false) => {
             path: chrome.runtime.getURL('images/active.svg')
         });
     }
-    else if(active && highlighter){
+    else if (active && highlighter) {
         chrome.browserAction.setIcon({
             path: chrome.runtime.getURL('images/active_highlighting.svg')
         });
-    } 
+    }
     else {
         chrome.browserAction.setIcon({
             path: chrome.runtime.getURL('images/inactive.svg')

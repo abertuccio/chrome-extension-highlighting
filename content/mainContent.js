@@ -139,17 +139,32 @@ class Highlighter {
 
         if (!this.selection) { return; }
 
-        console.log("vamos a buscar informacion");
-        console.log(this.selection);
+        try {
+            chrome.runtime.sendMessage({
+                'target': 'background',
+                'action': 'ASK_TRANSLATION_AND_IMAGES',
+                'selection': this.selection,
+                'settings': this.settingsData,
+            }, (info) => {
+                console.log(info);
+            });
 
-        chrome.runtime.sendMessage({
-            'target': 'background',
-            'action': 'ASK_TRANSLATION_AND_IMAGES',
-            'selection': this.selection,
-            'settings': this.settingsData,
-        }, (info) => {
-            console.log(info);
-        });
+        } catch (error) {
+            this.hgltActions.hgltTranslationWrapper.style.display = 'none';
+            this.hgltActions.hgltTranslationDivisor.style.display = 'none';
+            this.hgltActions.hgltTranslationSound.style.display = 'none';
+            this.hgltActions.hgltMeaningsWrapper.style.display = 'none';
+            this.hgltActions.hgltMeaningsDivisor.style.display = 'none';
+            this.hgltActions.hgltImageDivisor.style.display = 'none';
+            this.hgltActions.hgltImageWrapper.style.display = 'none';
+            this.hgltActions.innerHTML = this.hgltActions.innerHTML;             
+            this.hgltActions.hgltAddStore.style.display = 'block';
+            this.hgltActions.hgltAddStore.innerHTML = 'A new version of <b>HGLT</b> is available, we should refresh this tab';
+            this.hgltActions.hgltAddStore.addEventListener("click", (e)=>{
+                window.location.reload();
+            });
+        }
+
     }
 
 }
@@ -280,8 +295,6 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
             hglt.siteAllowed = state;
 
         }
-
-
 
     }
 

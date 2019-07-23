@@ -251,15 +251,18 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
 });
 
 const createContextMenu = () => {
-    chrome.contextMenus.create({
-        id: "marker",
-        title: Lang[navigator.language.split("-")[0]].marker.add_a_marker_here,
-        contexts: ["all"]
+    chrome.contextMenus.removeAll(()=>{
+        chrome.contextMenus.create({
+            id: "marker",
+            title: Lang[navigator.language.split("-")[0]].marker.add_a_marker_here,
+            contexts: ["all"]
+        });
     });
 }
 
 const removeContextMenu = () => {
-    chrome.contextMenus.remove("marker");
+    // chrome.contextMenus.remove("marker");
+    chrome.contextMenus.removeAll(()=>{});
 }
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
