@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "HGLT",
+  "short_name": "Translate, learn, study and memorize languages", 
   "version": "0.0.1",
   "default_locale": "en",
   "browser_action": {
