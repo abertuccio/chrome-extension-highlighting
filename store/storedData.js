@@ -65,11 +65,12 @@ chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
 
         removeButton.addEventListener("click", () => {
             storedData.splice(elementIndex, 1);
-            const newData = storedData.reverse();
+            const newData = storedData.reverse();            
             chrome.storage.local.set({ 'hgltStoredElement': newData }, (res) => {
                 window.location = window.location;
             });
-        })
+
+        });
 
 
         selection.id = "selection";
