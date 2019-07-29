@@ -103,17 +103,17 @@ const setBadge = () => {
 const setIcon = (active, highlighter = false) => {
     if (active && !highlighter) {
         chrome.browserAction.setIcon({
-            path: chrome.runtime.getURL('images/active.svg')
+            path: chrome.runtime.getURL('images/active.png')
         });
     }
     else if (active && highlighter) {
         chrome.browserAction.setIcon({
-            path: chrome.runtime.getURL('images/active_highlighting.svg')
+            path: chrome.runtime.getURL('images/active_highlighting.png')
         });
     }
     else {
         chrome.browserAction.setIcon({
-            path: chrome.runtime.getURL('images/inactive.svg')
+            path: chrome.runtime.getURL('images/inactive_128.png')
         });
     }
 
