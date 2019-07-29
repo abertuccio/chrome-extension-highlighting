@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "HGLT",
   "short_name": "Translate, learn, study and memorize languages", 
-  "version": "0.0.2",
+  "version": "0.0.3",
   "default_locale": "en",
   "browser_action": {
     "default_icon": "images/inactive_128.png",
@@ -27,7 +27,8 @@
         "<all_urls>"
       ],
       "exclude_matches": [
-        "*://translate.google.com/*"
+        "*://translate.google.com/*",
+        "*://chrome.google.com/*"
       ],
       "js": [
         "content/highlightstoredElemets.js",
