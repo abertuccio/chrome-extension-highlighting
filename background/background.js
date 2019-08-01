@@ -61,17 +61,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             for (let i = 0; i < tabs.length; i++) {
                 if (tabs[i].url.includes("https://www.google.com/search")) {
-
+                    
+                    imageTabOpen = true;
                     chrome.tabs.sendMessage(tabs[i].id, {
                         target: 'images',
                         action: 'ASK_IMAGES',
                         selection: message.selection
                     });
 
-                    imageTabOpen = true;
                 }
                 if (tabs[i].url.includes("https://translate.google.com/")) {
-
+                    
+                    translationTabOpen = true;
                     chrome.tabs.sendMessage(tabs[i].id, {
                         target: 'translation',
                         action: 'ASK_TRANSLATION',
@@ -80,7 +81,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         to: message.settings.translation.toLang
                     });
 
-                    translationTabOpen = true;
                 }
             }
 
