@@ -16,7 +16,7 @@ class Highlighter {
             translation: {
                 avalible: true,
                 fromLang: 'auto',
-                toLang: 'es',
+                toLang: 'auto',
             },
             pronunciation: {
                 avalible: true,

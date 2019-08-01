@@ -14,6 +14,7 @@ var HGLTSiteAvailable = false;
 
 const createSearchTabs = (search, createImageTab = true, createTranslationTab = true) => {
 
+if(HGLTAvailable){
     if (createImageTab) {
         chrome.tabs.create({
             "url": imagesURL(search),
@@ -32,6 +33,8 @@ const createSearchTabs = (search, createImageTab = true, createTranslationTab = 
             tabIdTranslation = translationTab.id;
         });
     }
+}
+
 
 }
 

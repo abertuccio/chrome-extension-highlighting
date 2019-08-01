@@ -44,7 +44,7 @@ class Popup {
             translation: {
                 avalible: true,
                 fromLang: 'auto',
-                toLang: 'es',
+                toLang: 'auto',
             },
             pronunciation: {
                 avalible: true

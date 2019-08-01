@@ -24,7 +24,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://*/*"
+        "https://*/*",
+        "http://*/*"
       ],
       "exclude_matches": [
         "*://translate.google.com/*",
