@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "HGLT",
   "short_name": "Translate, learn, study and memorize languages", 
-  "version": "0.0.3",
+  "version": "0.0.4",
   "default_locale": "en",
   "browser_action": {
     "default_icon": "images/inactive_128.png",
