@@ -121,28 +121,39 @@ class HighlighterActions {
             // this.data.result.definitions = (this.settingsData.definition.avalible)?this.data.result.definitions:null;
             // this.data.result.image = (this.settingsData.images.avalible)?this.data.result.image:null;
             // this.data.result.translations = (this.settingsData.translation.avalible)?this.data.result.translations:null;
+            this.data.result.pronunciationLang = this.settingsData.translation.fromLang;
+            this.data.result.nextPracticeDate = 0;
+            this.data.result.repetitions = 0;
+            this.data.result.easinessFactor = 2.5;
+            this.data.result.interval = 1;
+            this.data.result.hgltID = Date.now();
 
-            chrome.runtime.sendMessage({
-                'target': 'background',
-                'action': 'ASK_LARGER_IMAGE_LINK',
-                'id': this.imageIds[this.currentImageIndex]
-            }, (srcResponse) => {
+            if(this.settingsData.images.avalible){
+                chrome.runtime.sendMessage({
+                    'target': 'background',
+                    'action': 'ASK_LARGER_IMAGE_LINK',
+                    'id': this.imageIds[this.currentImageIndex]
+                }, (srcResponse) => {
+                    chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
+                        this.data.result.image = srcResponse;
+                        result.hgltStoredElement.push(this.data.result);
+                        chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res) => {
+                            this.hgltAddStoreSaving.style.display = 'none';
+                            this.hgltAddStoreStoreStudy.style.display = 'block';
+                        });
+                    });
+                });
+            }else{
                 chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
-                    this.data.result.pronunciationLang = this.settingsData.translation.fromLang;
-                    this.data.result.image = srcResponse;
-                    this.data.result.nextPracticeDate = 0;
-                    this.data.result.repetitions = 0;
-                    this.data.result.easinessFactor = 2.5;
-                    this.data.result.interval = 1;
-                    this.data.result.hgltID = Date.now();
+                    this.data.result.image = "";
                     result.hgltStoredElement.push(this.data.result);
-
                     chrome.storage.local.set({ 'hgltStoredElement': result.hgltStoredElement }, (res) => {
                         this.hgltAddStoreSaving.style.display = 'none';
                         this.hgltAddStoreStoreStudy.style.display = 'block';
                     });
                 });
-            });
+            }
+            
 
         });
 
