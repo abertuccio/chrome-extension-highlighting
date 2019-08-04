@@ -14,26 +14,26 @@ var HGLTSiteAvailable = false;
 
 const createSearchTabs = (search, createImageTab = true, createTranslationTab = true) => {
 
-if(HGLTAvailable){
-    if (createImageTab) {
-        chrome.tabs.create({
-            "url": imagesURL(search),
-            "pinned": true,
-            "selected": false
-        }, (imageSearchTab) => {
-            tabIdImageSearch = imageSearchTab.id;
-        });
+    if (HGLTAvailable) {
+        if (createImageTab) {
+            chrome.tabs.create({
+                "url": imagesURL(search),
+                "pinned": true,
+                "selected": false
+            }, (imageSearchTab) => {
+                tabIdImageSearch = imageSearchTab.id;
+            });
+        }
+        if (createTranslationTab) {
+            chrome.tabs.create({
+                "url": translationURL(search),
+                "pinned": true,
+                "selected": false
+            }, (translationTab) => {
+                tabIdTranslation = translationTab.id;
+            });
+        }
     }
-    if (createTranslationTab) {
-        chrome.tabs.create({
-            "url": translationURL(search),
-            "pinned": true,
-            "selected": false
-        }, (translationTab) => {
-            tabIdTranslation = translationTab.id;
-        });
-    }
-}
 
 
 }
@@ -61,7 +61,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             for (let i = 0; i < tabs.length; i++) {
                 if (tabs[i].url.includes("https://www.google.com/search")) {
-                    
+
                     imageTabOpen = true;
                     chrome.tabs.sendMessage(tabs[i].id, {
                         target: 'images',
@@ -71,7 +71,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
                 }
                 if (tabs[i].url.includes("https://translate.google.com/")) {
-                    
+
                     translationTabOpen = true;
                     chrome.tabs.sendMessage(tabs[i].id, {
                         target: 'translation',
@@ -120,9 +120,31 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     if (message.target === 'background' && message.action === 'ASK_LARGER_IMAGE_LINK') {
         message.target = 'images';
-        chrome.tabs.sendMessage(tabIdImageSearch, message, (response) => {
-            sendResponse(response);
+
+        chrome.tabs.query({ active:true }, (tabs) => {
+        
+            const activeTabId = tabs[0].id; 
+            
+            chrome.tabs.query({ pinned: true }, (tabs) => {
+                tabs.forEach(tab => {
+                    if (tab.url.includes("https://www.google.com/search")) {
+    
+                        chrome.tabs.sendMessage(tab.id, message, (response) => {
+                            sendResponse(response);
+                        });
+    
+                        chrome.tabs.update(tab.id, {selected: true});
+                        setTimeout(()=>{
+                            chrome.tabs.update(activeTabId, {selected: true});
+                        },1000)
+    
+                    }
+                });
+    
+            });        
+        
         });
+
     }
 
     if (message.target === 'background' && message.action === 'SEE_STORED_DATA') {
@@ -242,9 +264,9 @@ chrome.tabs.query({ pinned: true }, (tabs) => {
 });
 
 
-chrome.contextMenus.onClicked.addListener(function(info, tab) {
+chrome.contextMenus.onClicked.addListener(function (info, tab) {
     if (info.menuItemId == "marker") {
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
             const message = {};
             message.target = 'content-marker';
             message.action = 'ADD_MARKER';
@@ -254,7 +276,7 @@ chrome.contextMenus.onClicked.addListener(function(info, tab) {
 });
 
 const createContextMenu = () => {
-    chrome.contextMenus.removeAll(()=>{
+    chrome.contextMenus.removeAll(() => {
         chrome.contextMenus.create({
             id: "marker",
             title: Lang[navigator.language.split("-")[0]].marker.add_a_marker_here,
@@ -265,7 +287,7 @@ const createContextMenu = () => {
 
 const removeContextMenu = () => {
     // chrome.contextMenus.remove("marker");
-    chrome.contextMenus.removeAll(()=>{});
+    chrome.contextMenus.removeAll(() => { });
 }
 
 chrome.storage.onChanged.addListener(function (changes, namespace) {
@@ -273,7 +295,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     for (var key in changes) {
         if (key === 'hgltAvailible') {
             HGLTAvailable = changes[key].newValue;
-            (HGLTAvailable)?createContextMenu():removeContextMenu();
+            (HGLTAvailable) ? createContextMenu() : removeContextMenu();
         }
     }
 
@@ -281,5 +303,5 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
 chrome.storage.sync.get({ 'hgltAvailible': false }, (result) => {
     HGLTAvailable = result.hgltAvailible;
-    (HGLTAvailable)?createContextMenu():removeContextMenu();
+    (HGLTAvailable) ? createContextMenu() : removeContextMenu();
 });

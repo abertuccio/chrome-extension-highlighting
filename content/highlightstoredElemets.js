@@ -17,7 +17,7 @@ var InstantSearch = {
 
 
             function checkAndReplace(node, tokenArr, classNameAll, sensitiveSearchAll) {
-                
+
                 var nodeVal = node.nodeValue, parentNode = node.parentNode,
                     i, j, curToken, myToken, myClassName, mySensitiveSearch,
                     finalClassName, finalSensitiveSearch,
@@ -83,7 +83,7 @@ var InstantSearch = {
 
                 if (children.length) {
                     for (i = 0; i < children.length; i++) {
-                        if(cur && (cur.localName === "textarea" || cur.localName === "input")){
+                        if (cur && (cur.localName === "textarea" || cur.localName === "input")) {
                             return;
                         }
                         cur = children[i];
@@ -142,20 +142,23 @@ chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
 chrome.storage.onChanged.addListener(function (changes, namespace) {
 
     for (var key in changes) {
-        if (key === 'hgltSettings' && changes[key].newValue.markStoredElements) {
-            highlightStoredElements();
+        if (key === 'hgltSettings') {
+            if (changes[key].newValue.markStoredElements) {
+                highlightStoredElements();
+            }
+            else {
+                [...document.getElementsByClassName("hglt-stored-selection")].forEach(e => {
+                    e.classList.remove("hglt-stored-selection");
+                })
+            }
+
         }
-        else {
-            [...document.getElementsByClassName("hglt-stored-selection")].forEach(e => {
-                e.classList.remove("hglt-stored-selection");
-            })
-        }
-        if(key === 'hgltStoredElement'){
+        if (key === 'hgltStoredElement') {
             chrome.storage.sync.get({ 'hgltSettings': false }, (result) => {
                 if (result.hgltSettings && result.hgltSettings.markStoredElements) {
                     highlightStoredElements();
                 }
-            });   
+            });
         }
 
     }
