@@ -40,9 +40,11 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     }
 });
 
-//INITIAL STATE SYNC TO LOCAL 
+//ALL SYNC TO LOCAL
 chrome.storage.sync.get({ 'hgltSyncElementsLength': 0 }, (syncElementsLenth) => {
     const lengthSync = syncElementsLenth.hgltSyncElementsLength;
+
+    chrome.storage.local.set({ 'hgltStoredElement': [] });
 
     for(let i = 1; i<=lengthSync; i++){
         chrome.storage.sync.get(['hgltStoredSyncElements' + i], (elementSyncStored) => {
