@@ -1,31 +1,31 @@
-// var cantElementsStored = 0;
+    // var cantElementsStored = 0;
 
-// const changeElementSync = () => {
+    // const changeElementSync = () => {
 
-//     chrome.storage.sync.get({ 'hgltSyncElementsLength': 0 }, (syncElementsLenth) => {
-//         const lengthSync = syncElementsLenth.hgltSyncElementsLength;
+    //     chrome.storage.sync.get({ 'hgltSyncElementsLength': 0 }, (syncElementsLenth) => {
+    //         const lengthSync = syncElementsLenth.hgltSyncElementsLength;
 
-//         //REMOVE ALL SYNC ELEMENTS
-//         for (let i = 1; i <= lengthSync; i++) {
-//             chrome.storage.sync.remove('hgltStoredSyncElements' + i);
-//         }
+    //         //REMOVE ALL SYNC ELEMENTS
+    //         for (let i = 1; i <= lengthSync; i++) {
+    //             chrome.storage.sync.remove('hgltStoredSyncElements' + i);
+    //         }
 
-//         chrome.storage.local.get({ 'hgltStoredElement': [] }, (elementsStored) => {
+    //         chrome.storage.local.get({ 'hgltStoredElement': [] }, (elementsStored) => {
 
-//             //ADD ALL LOCAL ELEMENTS TO SYNC ELEMENTS
-//             for (let i = 0; i < elementsStored.hgltStoredElement.length; i++) {
-//                 let newKey = 'hgltStoredSyncElements' + (i + 1);
-//                 let newElement = {};
-//                 newElement[newKey] = elementsStored.hgltStoredElement[i];
-//                 chrome.storage.sync.set(newElement);
-//             }
-//             chrome.storage.sync.set({ 'hgltSyncElementsLength': elementsStored.hgltStoredElement.length });
-//         });
+    //             //ADD ALL LOCAL ELEMENTS TO SYNC ELEMENTS
+    //             for (let i = 0; i < elementsStored.hgltStoredElement.length; i++) {
+    //                 let newKey = 'hgltStoredSyncElements' + (i + 1);
+    //                 let newElement = {};
+    //                 newElement[newKey] = elementsStored.hgltStoredElement[i];
+    //                 chrome.storage.sync.set(newElement);
+    //             }
+    //             chrome.storage.sync.set({ 'hgltSyncElementsLength': elementsStored.hgltStoredElement.length });
+    //         });
 
-//     });
+    //     });
 
 
-// }
+    // }
 
 
 //CHANGE ON ELEMENTS LOCAL STORED
