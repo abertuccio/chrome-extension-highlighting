@@ -418,3 +418,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
     }
 
 });
+
+document.getElementById("donate-button").addEventListener("click",()=>{
+    chrome.tabs.create({url: "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=44425059-79f727f5-7095-4b7e-89c4-d1994ed1aca5"});
+})
