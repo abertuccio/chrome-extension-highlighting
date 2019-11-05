@@ -16,8 +16,11 @@ const searchData = function () {
 
     results.search = decodeURIComponent(window.location.href.split("=")[5]);
 
-    results.translations = [element.innerText]
-
+    if("innerText" in element){
+        results.translations = [element.innerText];
+    }else{
+        results.translations = "";
+    }
 
     var otherTranslations = document.querySelectorAll(".gt-baf-cell.gt-baf-word-clickable");
 
@@ -65,8 +68,9 @@ const mutateTranslation = (mutations) => {
 
     for (let i = 0; i < [...mutations].length - 1; i++) {
 
-
         const element = document.querySelectorAll(".tlid-translation.translation")[0];
+
+        console.log(element.innerText);
 
         //TODO:NO ES UNA BUENA FORMA DE ELEGIR EL MUTADO
         if (!/\.\.\./g.test(element.innerText)) {
