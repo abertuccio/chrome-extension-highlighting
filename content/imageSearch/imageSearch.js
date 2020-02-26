@@ -1,5 +1,6 @@
 var img = [];
 var ids = [];
+var idxs = [];
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
@@ -9,9 +10,25 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
     if (request.target === 'images' && request.action === 'ASK_LARGER_IMAGE_LINK') {        
         // document.querySelectorAll(".rg_ic.rg_i")[metaInfo[request.index]].click(); 
-        document.getElementById(request.id).click();
+
+
+        console.log(request.id); 
+        console.log(request.idx); 
+
+        if(!request.id && !request.id){
+
+            [...document.querySelectorAll(".rg_i.Q4LuWd.tx8vtf")][0].click();
+
+        }
+
+        // [...document.querySelectorAll(".rg_i.Q4LuWd.tx8vtf")][request.idx].click();
+
+        // document.getElementById(request.id).click();
+
+
+
         setInterval(() => {
-            let candidates = [...document.getElementsByClassName("irc_mi")];
+            let candidates = [...document.getElementsByClassName("rg_i")];
             
             if(candidates[1].src){
                 sendResponse(candidates[1].src);                
@@ -31,17 +48,18 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
 
 const mutateImages = (mutations) => {
     
-    if (mutations.length > 5) {
+    if (mutations.length > 0) {
 
         //TODO: GUARDAR ESTAS IMAGENES AFUERA CUANDO EL USUARIO ELIJA GUARDAR EL 
         //ELEMENTO, HAY QUE HACER CLICK Y GUARDAR el vinculo de LA GRANDE 
         //si guardamos el index hacemos document.getElementsByClassName("irc_mi")[INDEX].CLICK()
         //quiza hay que esperar unos milisegundos
         //document.getElementsByClassName("irc_mi")[0, 1 o 2].currentSrc
-        imgs = [...document.querySelectorAll(".rg_ic.rg_i")].reduce((a, c, i) => {
+        imgs = [...document.querySelectorAll(".rg_i.Q4LuWd.tx8vtf")].reduce((a, c, i) => {
             if (c.src) { 
                 a.push(c.src); 
                 ids.push(c.id);
+                idxs.push(i);
             } 
             return a;
         }, [])
@@ -53,7 +71,8 @@ const mutateImages = (mutations) => {
             kind: 'images',
             selection: decodeURIComponent(window.location.href.split("=")[1].split("&")[0]),
             result: imgs,
-            ids: ids
+            ids: ids,
+            idxs:idxs
         });
 
         observerImages.disconnect();
@@ -62,7 +81,7 @@ const mutateImages = (mutations) => {
 }
 
 
-var targetImages = document.querySelectorAll("#search")[0];
+var targetImages = document.querySelectorAll("#islmp")[0];
 var observerImages = new MutationObserver(mutateImages);
 var configImages = { characterData: true, attributes: true, childList: true, subtree: true };
 observerImages.observe(targetImages, configImages);

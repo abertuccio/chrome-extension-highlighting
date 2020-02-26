@@ -132,7 +132,8 @@ class HighlighterActions {
                 chrome.runtime.sendMessage({
                     'target': 'background',
                     'action': 'ASK_LARGER_IMAGE_LINK',
-                    'id': this.imageIds[this.currentImageIndex]
+                    'id': this.imageIds[this.currentImageIndex],
+                    'idx':this.imageIdxs[this.currentImageIndex]
                 }, (srcResponse) => {
                     chrome.storage.local.get({ 'hgltStoredElement': [] }, (result) => {
                         this.data.result.image = srcResponse;
@@ -400,6 +401,7 @@ class HighlighterActions {
         // this.data = data;
         this.images = data.result;
         this.imageIds = data.ids;
+        this.imageIdxs = data.idxs; 
         this.hgltImageLoader.style.display = 'none';
         // this.hgltImage.onload = ()=>this.adjustImageContainer();     
         this.hgltImage.src = data.result[0];
