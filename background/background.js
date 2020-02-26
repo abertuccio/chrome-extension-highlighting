@@ -14,6 +14,20 @@ var HGLTSiteAvailable = false;
 
 const createSearchTabs = (search, createImageTab = true, createTranslationTab = true) => {
 
+
+    chrome.tabs.query({ pinned: true }, (tabs) => {
+
+        tabs.forEach(t => {
+            if (t.url.includes("https://www.google.com/search")) {
+                chrome.tabs.remove(t.id);
+            }
+            if (t.url.includes("https://translate.google.com/")) {
+                chrome.tabs.remove(t.id);
+            }
+        });
+    });
+
+
     if (HGLTAvailable) {
         if (createImageTab) {
             chrome.tabs.create({
@@ -121,28 +135,28 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.target === 'background' && message.action === 'ASK_LARGER_IMAGE_LINK') {
         message.target = 'images';
 
-        chrome.tabs.query({ active:true }, (tabs) => {
-        
-            const activeTabId = tabs[0].id; 
-            
+        chrome.tabs.query({ active: true }, (tabs) => {
+
+            const activeTabId = tabs[0].id;
+
             chrome.tabs.query({ pinned: true }, (tabs) => {
                 tabs.forEach(tab => {
                     if (tab.url.includes("https://www.google.com/search")) {
-    
+
                         chrome.tabs.sendMessage(tab.id, message, (response) => {
                             sendResponse(response);
                         });
-    
-                        chrome.tabs.update(tab.id, {selected: true});
-                        setTimeout(()=>{
-                            chrome.tabs.update(activeTabId, {selected: true});
-                        },1000)
-    
+
+                        chrome.tabs.update(tab.id, { selected: true });
+                        setTimeout(() => {
+                            chrome.tabs.update(activeTabId, { selected: true });
+                        }, 1000)
+
                     }
                 });
-    
-            });        
-        
+
+            });
+
         });
 
     }
@@ -232,8 +246,7 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
                 if (tabIdImageSearch) chrome.tabs.remove(tabIdImageSearch);
             } else {
                 chrome.tabs.query({ pinned: true }, (tabs) => {
-                    tabs.forEach(tab => {  
-                        console.log(tab.url);                      
+                    tabs.forEach(tab => {
                         if (tab.url.includes("https://www.google.com/search")) {
                             chrome.tabs.remove(tab.id);
                         }
