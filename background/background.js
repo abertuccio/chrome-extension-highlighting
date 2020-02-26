@@ -232,7 +232,8 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
                 if (tabIdImageSearch) chrome.tabs.remove(tabIdImageSearch);
             } else {
                 chrome.tabs.query({ pinned: true }, (tabs) => {
-                    tabs.forEach(tab => {
+                    tabs.forEach(tab => {  
+                        console.log(tab.url);                      
                         if (tab.url.includes("https://www.google.com/search")) {
                             chrome.tabs.remove(tab.id);
                         }
